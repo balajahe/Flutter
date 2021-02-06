@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../dao/Item.dart';
-import '../dao/ItemDao.dart';
+import '../settings.dart';
 
 class ItemState {
   final List<Item> items;
@@ -40,7 +40,7 @@ class ItemModel extends Cubit<ItemState> {
     _isLoading = true;
     _emit();
 
-    _items = await ItemDao.getAll();
+    _items = await itemDao.getAll();
     _isLoading = false;
     _emit();
   }

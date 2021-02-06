@@ -55,11 +55,15 @@ class _ItemsListState extends State<ItemsList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(el.text),
-                                    ElevatedButton(
+                                    TextButton(
                                       child: Text('подробнее...'),
+                                      style: ButtonStyle(
+                                          padding: MaterialStateProperty.all(
+                                              EdgeInsets.zero)),
                                       onPressed: () => Navigator.push(
                                         context,
                                         PageRouteBuilder(
+                                          fullscreenDialog: true,
                                           opaque: false,
                                           pageBuilder: (context, _, __) =>
                                               ItemView(el),

@@ -26,8 +26,9 @@ class ItemView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.title),
-                    Text(item.text),
+                    Text(item.title, style: TextStyle(fontSize: 18)),
+                    Container(height: 5),
+                    Text(item.text, style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),

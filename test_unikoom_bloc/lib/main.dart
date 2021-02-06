@@ -9,12 +9,11 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   build(context) => BlocProvider(
-      create: (context) => ItemModel(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+        create: (context) => ItemModel(),
+        child: MaterialApp(
+          title: 'test_unikoom_bloc',
+          theme: ThemeData(primarySwatch: Colors.blue),
+          home: ItemsList(),
         ),
-        home: ItemsList(),
-      ));
+      );
 }
