@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../dao/Bid.dart';
 import '../model/BidModel.dart';
 import '../view/BidView.dart';
 
@@ -131,7 +132,6 @@ class _BidListState extends State<BidList> {
       context,
       PageRouteBuilder(
         opaque: false,
-        fullscreenDialog: true,
         pageBuilder: (context, _, __) => BidView(bid),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../model/BidModel.dart';
+import '../dao/Bid.dart';
 
 class BidView extends StatelessWidget {
   final Bid _bid;

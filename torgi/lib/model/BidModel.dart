@@ -3,23 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 import 'package:intl/intl.dart';
 
+import '../dao/Bid.dart';
+
 const _apiUrl =
     'https://torgi.gov.ru/opendata/7710349494-torgi/data-{publishDateFrom}-{publishDateTo}-structure-20130401T0000.xml';
 
 const _apiStep = Duration(hours: 1); //размер порции данных
-
-class Bid {
-  String bidNumber;
-  int bidKindId;
-  String bidKindName;
-  String organizationName;
-  bool isArchived;
-  DateTime publishDate;
-  DateTime lastChanged;
-  String odDetailedHref;
-  String xml;
-  List<String> lots = [];
-}
 
 abstract class _BidEvent {}
 
