@@ -4,7 +4,7 @@ import 'ItemDaoAbstract.dart';
 class ItemDaoStub extends ItemDaoAbstract {
   @override
   Future<List<Item>> getAll() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
     return _items;
   }
 }

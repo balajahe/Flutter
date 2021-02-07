@@ -10,6 +10,12 @@ class ItemState {
   final bool isLoading;
 
   ItemState(this.items, this.selected, this.searchString, this.isLoading);
+
+  ItemState.blank()
+      : items = [],
+        selected = null,
+        searchString = '',
+        isLoading = true;
 }
 
 class ItemModel extends Cubit<ItemState> {
@@ -18,8 +24,8 @@ class ItemModel extends Cubit<ItemState> {
   String _searchString;
   bool _isLoading;
 
-  ItemModel() : super(ItemState([], null, '', true)) {
-    getAll(); //не уверен, что это методологически правильно, но работает
+  ItemModel() : super(ItemState.blank()) {
+    getAll(); //не уверен, что это методологически верно, но работает
   }
 
   void _emit() => emit(ItemState(
