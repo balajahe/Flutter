@@ -37,7 +37,7 @@ class UserModel extends Cubit<UserState> {
         user.email.isEmpty) return [false, 'Заполните все поля!'];
 
     if (user.photoOrigin == null || user.photoOrigin.isEmpty)
-      return [false, 'Загрузите фотографию!'];
+      return [true, 'Загрузите фотографию!'];
 
     return [true];
   }
