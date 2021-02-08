@@ -14,8 +14,6 @@ class UserState {
 }
 
 class UserModel extends Cubit<UserState> {
-  User _user;
-
   UserModel() : super(UserState(null, UserStatus.loading)) {
     _load();
   }
@@ -24,32 +22,33 @@ class UserModel extends Cubit<UserState> {
     await Hive.initFlutter();
     await Hive.openBox<User>('users');
 
-    _user = Hive.box<User>('users').get('me');
-    if (_user == null) {
-      _user = User();
-      emit(UserState(_user, UserStatus.notExist));
+    var user = Hive.box<User>('users').get('me');
+    if (user == null) {
+      emit(UserState(User(), UserStatus.notExist));
     } else {
-      emit(UserState(_user, UserStatus.exist));
+      emit(UserState(user, UserStatus.exist));
     }
   }
 
-  List _validate(User user) => [true, ''];
+  List<dynamic> _validate(User user) {
+    if (user.name.isEmpty ||
+        user.patronymic.isEmpty ||
+        user.surname.isEmpty ||
+        user.email.isEmpty) return [false, 'Заполните все поля'];
+
+    if (user.photoOrigin == null || user.photoOrigin.isEmpty)
+      return [true, 'Загрузите фотографию!'];
+
+    return [true, ''];
+  }
 
   void save(User user) {
     var valid = _validate(user);
     if (valid[0]) {
-      _user = user;
       //Hive.box<User>('users').put('me', _user);
-      emit(UserState(_user, UserStatus.saved));
+      emit(UserState(user, UserStatus.saved));
     } else {
-      emit(UserState(_user, UserStatus.notSaved, message: valid[1]));
+      emit(UserState(user, UserStatus.notSaved, message: valid[1]));
     }
-  }
-
-  void _emitChange() => emit(UserState(_user, UserStatus.exist));
-
-  void setName(String name) {
-    _user.name = name;
-    _emitChange();
   }
 }

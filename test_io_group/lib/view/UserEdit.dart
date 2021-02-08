@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../settings.dart';
 import '../dao/User.dart';
@@ -14,7 +16,6 @@ Widget _textField(String label, TextEditingController controller) => Container(
           labelText: label,
           border: OutlineInputBorder(),
         ),
-        validator: (v) => (v.isEmpty) ? 'Обязательное поле' : null,
       ),
     );
 
@@ -24,19 +25,20 @@ class UserEdit extends StatefulWidget {
 }
 
 class _UserEditState extends State<UserEdit> {
-  TextEditingController name;
-  TextEditingController patronymic;
-  TextEditingController surname;
-  TextEditingController email;
+  final _form = GlobalKey<FormState>();
+  final _name = TextEditingController();
+  final _patronymic = TextEditingController();
+  final _surname = TextEditingController();
+  final _email = TextEditingController();
 
   @override
   build(context) {
     return BlocConsumer<UserModel, UserState>(
       builder: (context, state) {
-        name = TextEditingController(text: state.user.name);
-        patronymic = TextEditingController(text: state.user.patronymic);
-        surname = TextEditingController(text: state.user.surname);
-        email = TextEditingController(text: state.user.email);
+        _name.text = state.user.name;
+        _patronymic.text = state.user.patronymic;
+        _surname.text = state.user.surname;
+        _email.text = state.user.email;
         return Scaffold(
           appBar: appBar,
           body: Padding(
@@ -46,39 +48,43 @@ class _UserEditState extends State<UserEdit> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(child: Text('Редактирование профиля', style: h1)),
-                  Card(
-                    margin: EdgeInsets.only(top: 20),
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("ФИО", style: h2),
-                          vspacer,
-                          _textField('Введите имя', name),
-                          vspacer,
-                          _textField('Введите фамилию', surname),
-                          vspacer,
-                          _textField('Введите отчество', patronymic),
-                          vspacer,
-                          Text("Контактные данные", style: h2),
-                          vspacer,
-                          _textField('Введите емейл', email),
-                          vspacer,
-                          Text("Фотография", style: h2),
-                          vspacer,
-                          Image.asset('assets/blank_photo.png'),
-                          TextButton(
-                              child: Text('Добавить фотографию'),
-                              onPressed: () {}),
-                          ElevatedButton(
-                            child: Text('Сохранить изменения'),
-                            onPressed: _save,
-                          ),
-                        ],
+                  Form(
+                    key: _form,
+                    child: Card(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("ФИО", style: h2),
+                            vspacer,
+                            _textField('Введите имя', _name),
+                            vspacer,
+                            _textField('Введите фамилию', _surname),
+                            vspacer,
+                            _textField('Введите отчество', _patronymic),
+                            vspacer,
+                            Text("Контактные данные", style: h2),
+                            vspacer,
+                            _textField('Введите емейл', _email),
+                            vspacer,
+                            Text("Фотография", style: h2),
+                            vspacer,
+                            Image.asset('assets/blank_photo.png', scale: 1.5),
+                            TextButton(
+                                child: Text('Добавить фотографию'),
+                                onPressed: _addPhoto),
+                            ElevatedButton(
+                              child: Text('Сохранить изменения'),
+                              onPressed: _save,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  vspacer,
                 ],
               ),
             ),
@@ -91,23 +97,35 @@ class _UserEditState extends State<UserEdit> {
             SnackBar(content: Text(state.message)),
           );
         } else if (state.status == UserStatus.saved) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => UserView()),
+            (_) => false,
           );
         }
       },
     );
   }
 
+  void _addPhoto() async {
+    var result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      var file = File(result.files.first.path);
+      var data = await file.readAsBytes();
+      print(data.length);
+    }
+  }
+
   void _save() {
-    context.read<UserModel>().save(
-          User(
-            name: name.text,
-            patronymic: patronymic.text,
-            surname: surname.text,
-            email: email.text,
-          ),
-        );
+    if (_form.currentState.validate()) {
+      context.read<UserModel>().save(
+            User(
+              name: _name.text,
+              patronymic: _patronymic.text,
+              surname: _surname.text,
+              email: _email.text,
+            ),
+          );
+    }
   }
 }

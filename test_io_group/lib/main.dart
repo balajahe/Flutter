@@ -17,13 +17,12 @@ class MyApp extends StatelessWidget {
         title: 'test_io_group',
         theme: ThemeData(primarySwatch: Colors.yellow),
         home: BlocBuilder<UserModel, UserState>(builder: (context, state) {
-          print(state.status);
-          if (state.status == UserStatus.notExist)
-            return UserNotExist();
-          else if (state.status == UserStatus.exist)
-            return UserView();
-          else
+          if (state.status == UserStatus.loading)
             return Center(child: CircularProgressIndicator());
+          else if (state.status == UserStatus.notExist)
+            return UserNotExist();
+          else
+            return UserView();
         }),
       ),
     );
