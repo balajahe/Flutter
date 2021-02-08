@@ -25,7 +25,19 @@ class UserView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset('assets/blank_photo.png', scale: 1),
+                        Container(
+                          width: 200,
+                          height: 200,
+                          child: (state.user.photoOrigin != null)
+                              ? Image.memory(
+                                  state.user.photoOrigin,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  'assets/blank_photo.png',
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                         vspacer,
                         Text(
                           '${state.user.name} ${state.user.patronymic} ${state.user.surname}',

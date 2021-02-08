@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -30,6 +31,14 @@ class _UserEditState extends State<UserEdit> {
   final _patronymic = TextEditingController();
   final _surname = TextEditingController();
   final _email = TextEditingController();
+  Uint8List _photoOrigin;
+
+  @override
+  initState() {
+    super.initState();
+    var user = context.read<UserModel>().state.user;
+    _photoOrigin = user.photoOrigin;
+  }
 
   @override
   build(context) {
@@ -71,7 +80,19 @@ class _UserEditState extends State<UserEdit> {
                             vspacer,
                             Text("Фотография", style: h2),
                             vspacer,
-                            Image.asset('assets/blank_photo.png', scale: 1.5),
+                            Container(
+                              width: 150,
+                              height: 150,
+                              child: (_photoOrigin != null)
+                                  ? Image.memory(
+                                      _photoOrigin,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      'assets/blank_photo.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                             TextButton(
                                 child: Text('Добавить фотографию'),
                                 onPressed: _addPhoto),
@@ -111,8 +132,8 @@ class _UserEditState extends State<UserEdit> {
     var result = await FilePicker.platform.pickFiles();
     if (result != null) {
       var file = File(result.files.first.path);
-      var data = await file.readAsBytes();
-      print(data.length);
+      _photoOrigin = await file.readAsBytes();
+      setState(() {});
     }
   }
 
@@ -124,6 +145,7 @@ class _UserEditState extends State<UserEdit> {
               patronymic: _patronymic.text,
               surname: _surname.text,
               email: _email.text,
+              photoOrigin: _photoOrigin,
             ),
           );
     }
