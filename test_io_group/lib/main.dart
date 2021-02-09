@@ -15,7 +15,20 @@ class MyApp extends StatelessWidget {
       create: (context) => UserModel(),
       child: MaterialApp(
         title: 'test_io_group',
-        theme: ThemeData(primarySwatch: Colors.yellow),
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+          primaryColor: Colors.white,
+          canvasColor: Colors.blue[50],
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          )),
+          textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          )),
+        ),
         home: BlocBuilder<UserModel, UserState>(builder: (context, state) {
           if (state.status == UserStatus.loading)
             return Center(child: CircularProgressIndicator());

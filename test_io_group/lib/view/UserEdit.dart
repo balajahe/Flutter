@@ -3,7 +3,7 @@ import 'dart:html' as dom;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../settings.dart';
 import '../dao/User.dart';
@@ -116,9 +116,9 @@ class UserEdit extends StatelessWidget {
         }
       });
     } else {
-      var result = await FilePicker.platform.pickFiles();
-      if (result != null) {
-        var file = File(result.files.first.path);
+      var pfile = await ImagePicker().getImage(source: ImageSource.gallery);
+      if (pfile != null) {
+        var file = File(pfile.path);
         user.photoOrigin = await file.readAsBytes();
         model.editPhotoOrigin(user.photoOrigin);
       }
