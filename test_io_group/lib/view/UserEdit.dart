@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:html' as dom;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,45 +10,16 @@ import '../dao/User.dart';
 import '../model/UserModel.dart';
 import 'UserView.dart';
 
-Widget _textField(String label, TextEditingController controller) => Container(
-      height: 50,
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-
-class UserEdit extends StatefulWidget {
-  @override
-  createState() => _UserEditState();
-}
-
-class _UserEditState extends State<UserEdit> {
-  final _form = GlobalKey<FormState>();
-  final _name = TextEditingController();
-  final _patronymic = TextEditingController();
-  final _surname = TextEditingController();
-  final _email = TextEditingController();
-  Uint8List _photoOrigin;
-
-  @override
-  initState() {
-    super.initState();
-    var user = context.read<UserModel>().state.user;
-    _photoOrigin = user.photoOrigin;
-  }
-
+class UserEdit extends StatelessWidget {
   @override
   build(context) {
     return BlocConsumer<UserModel, UserState>(
       builder: (context, state) {
-        _name.text = state.user.name;
-        _patronymic.text = state.user.patronymic;
-        _surname.text = state.user.surname;
-        _email.text = state.user.email;
+        // _name.text = state.user.name;
+        // _patronymic.text = state.user.patronymic;
+        // _surname.text = state.user.surname;
+        // _email.text = state.user.email;
+        var model = context.read<UserModel>();
         return Scaffold(
           appBar: appBar,
           body: Padding(
@@ -57,51 +29,47 @@ class _UserEditState extends State<UserEdit> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(child: Text('Редактирование профиля', style: h1)),
-                  Form(
-                    key: _form,
-                    child: Card(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("ФИО", style: h2),
-                            vspacer,
-                            _textField('Введите имя', _name),
-                            vspacer,
-                            _textField('Введите фамилию', _surname),
-                            vspacer,
-                            _textField('Введите отчество', _patronymic),
-                            vspacer,
-                            Text("Контактные данные", style: h2),
-                            vspacer,
-                            _textField('Введите емейл', _email),
-                            vspacer,
-                            Text("Фотография", style: h2),
-                            vspacer,
-                            Container(
-                              width: 150,
-                              height: 150,
-                              child: (_photoOrigin != null)
-                                  ? Image.memory(
-                                      _photoOrigin,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      'assets/blank_photo.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            TextButton(
-                                child: Text('Добавить фотографию'),
-                                onPressed: _addPhoto),
-                            ElevatedButton(
+                  Card(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("ФИО", style: h2),
+                          vspacer,
+                          _textField(
+                              'Введите имя', state.user.name, model.editName),
+                          vspacer,
+                          _textField('Введите фамилию', state.user.surname,
+                              model.editSurname),
+                          vspacer,
+                          _textField('Введите отчество', state.user.patronymic,
+                              model.editPatronymic),
+                          vspacer,
+                          Text("Контактные данные", style: h2),
+                          vspacer,
+                          _textField('Введите емейл', state.user.email,
+                              model.editEmail),
+                          vspacer,
+                          Text("Фотография", style: h2),
+                          vspacer,
+                          Container(
+                            width: 150,
+                            height: 150,
+                            child: (state.user.photoOrigin != null)
+                                ? Image.memory(state.user.photoOrigin,
+                                    fit: BoxFit.cover)
+                                : Image.asset('assets/blank_photo.png',
+                                    fit: BoxFit.cover),
+                          ),
+                          TextButton(
+                              child: Text('Добавить фотографию'),
+                              onPressed: () => _addPhoto(model, state.user)),
+                          ElevatedButton(
                               child: Text('Сохранить изменения'),
-                              onPressed: _save,
-                            ),
-                          ],
-                        ),
+                              onPressed: () => model.save()),
+                        ],
                       ),
                     ),
                   ),
@@ -128,26 +96,45 @@ class _UserEditState extends State<UserEdit> {
     );
   }
 
-  void _addPhoto() async {
-    var result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      var file = File(result.files.first.path);
-      _photoOrigin = await file.readAsBytes();
-      setState(() {});
+  void _addPhoto(UserModel model, User user) async {
+    if (kIsWeb) {
+      var uploadInput = dom.FileUploadInputElement();
+      uploadInput.click();
+      uploadInput.onChange.listen((e) {
+        final files = uploadInput.files;
+        if (files.length == 1) {
+          final file = files[0];
+          var reader = dom.FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onLoadEnd.listen((e) {
+            user.photoOrigin = reader.result;
+            model.editPhotoOrigin(user.photoOrigin);
+          });
+          reader.onError.listen((e) {
+            print(e);
+          });
+        }
+      });
+    } else {
+      var result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        var file = File(result.files.first.path);
+        user.photoOrigin = await file.readAsBytes();
+        model.editPhotoOrigin(user.photoOrigin);
+      }
     }
   }
 
-  void _save() {
-    if (_form.currentState.validate()) {
-      context.read<UserModel>().save(
-            User(
-              name: _name.text,
-              patronymic: _patronymic.text,
-              surname: _surname.text,
-              email: _email.text,
-              photoOrigin: _photoOrigin,
-            ),
-          );
-    }
-  }
+  Widget _textField(String label, String value, Function(String) onChanged) =>
+      Container(
+        height: 50,
+        child: TextField(
+          controller: TextEditingController(text: value),
+          decoration: InputDecoration(
+            labelText: label,
+            border: OutlineInputBorder(),
+          ),
+          onChanged: onChanged,
+        ),
+      );
 }

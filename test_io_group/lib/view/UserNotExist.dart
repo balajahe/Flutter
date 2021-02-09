@@ -17,7 +17,7 @@ class UserNotExist extends StatelessWidget {
             Container(height: 10),
             ElevatedButton(
               child: Text('Создать профиль'),
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => UserEdit()),
               ),
