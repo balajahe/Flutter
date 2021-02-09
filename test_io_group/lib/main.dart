@@ -16,18 +16,22 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'test_io_group',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
-          primaryColor: Colors.white,
           canvasColor: Colors.blue[50],
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
           elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          )),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            ),
+          ),
           textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-          )),
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            ),
+          ),
         ),
         home: BlocBuilder<UserModel, UserState>(builder: (context, state) {
           if (state.status == UserStatus.loading)

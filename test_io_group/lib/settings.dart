@@ -7,9 +7,7 @@ final vspacer = SizedBox(height: 10);
 final hspacer = SizedBox(width: 15);
 
 final appBar = AppBar(
-  title: Row(children: [
-    Icon(Icons.school),
-    hspacer,
-    Text('Гимназио'),
-  ]),
+  backgroundColor: Colors.white,
+  leading: Icon(Icons.school, color: Colors.black),
+  title: Text('Гимназио', style: TextStyle(color: Colors.black)),
 );

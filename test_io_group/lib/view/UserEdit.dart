@@ -15,10 +15,6 @@ class UserEdit extends StatelessWidget {
   build(context) {
     return BlocConsumer<UserModel, UserState>(
       builder: (context, state) {
-        // _name.text = state.user.name;
-        // _patronymic.text = state.user.patronymic;
-        // _surname.text = state.user.surname;
-        // _email.text = state.user.email;
         var model = context.read<UserModel>();
         return Scaffold(
           appBar: appBar,
@@ -96,6 +92,17 @@ class UserEdit extends StatelessWidget {
     );
   }
 
+  Widget _textField(String label, String value, Function(String) onChanged) =>
+      Container(
+        height: 50,
+        child: TextField(
+          controller: TextEditingController(text: value),
+          decoration:
+              InputDecoration(labelText: label, border: OutlineInputBorder()),
+          onChanged: onChanged,
+        ),
+      );
+
   void _addPhoto(UserModel model, User user) async {
     if (kIsWeb) {
       var uploadInput = dom.FileUploadInputElement();
@@ -124,17 +131,4 @@ class UserEdit extends StatelessWidget {
       }
     }
   }
-
-  Widget _textField(String label, String value, Function(String) onChanged) =>
-      Container(
-        height: 50,
-        child: TextField(
-          controller: TextEditingController(text: value),
-          decoration: InputDecoration(
-            labelText: label,
-            border: OutlineInputBorder(),
-          ),
-          onChanged: onChanged,
-        ),
-      );
 }
