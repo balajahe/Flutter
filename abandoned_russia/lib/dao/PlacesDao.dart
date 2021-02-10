@@ -98,7 +98,7 @@ abstract class PlacesDao {
 
       // Полнотекстовый поиск по индексу
     } else if (searchString != null && searchString.length > 0) {
-      var ids = List<String>();
+      var ids = <String>[];
       var noMoreData = false;
       var afterCurrent =
           (after != null) ? Timestamp.fromDate(after) : Timestamp.now();
