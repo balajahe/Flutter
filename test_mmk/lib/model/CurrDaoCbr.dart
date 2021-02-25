@@ -12,7 +12,7 @@ final url = Uri.https('cbr.ru', '/scripts/XML_daily.asp');
 
 class CurrDaoCbr extends CurrDaoAbstract {
   Future<List<Curr>> getAll() async {
-    final codec = const Windows1251Codec(allowInvalid: true);
+    final codec = Windows1251Codec(allowInvalid: true);
     final res = XmlDocument.parse(codec.decode((await http.get(url)).bodyBytes))
         .findAllElements('Valute')
         .where((v) => currSelected.contains(v.getAttribute('ID')))
