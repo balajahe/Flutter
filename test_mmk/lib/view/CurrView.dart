@@ -11,12 +11,12 @@ class CurrView extends StatelessWidget {
       final dformat = DateFormat('dd.MM.y');
       return Scaffold(
         appBar: AppBar(
-          title: TextButton(
+          title: ElevatedButton(
             child: Text(
               (state.date != null)
                   ? dformat.format(state.date)
                   : 'Введите дату...',
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.white),
             ),
             onPressed: () async {
               final d = await showDatePicker(
@@ -24,6 +24,7 @@ class CurrView extends StatelessWidget {
                 initialDate: (state.date != null) ? state.date : DateTime.now(),
                 firstDate: DateTime.parse('1900-01-01'),
                 lastDate: DateTime.now(),
+                locale: Locale('ru', ''),
               );
               context.read<CurrModel>().refresh(d);
             },
