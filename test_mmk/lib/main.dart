@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   build(context) => BlocProvider(
         create: (context) => CurrModel(),
         child: MaterialApp(
-          title: 'test_unikoom_bloc',
+          title: 'test_mmk',
           theme: ThemeData(primarySwatch: Colors.green),
           home: CurrView(),
         ),
