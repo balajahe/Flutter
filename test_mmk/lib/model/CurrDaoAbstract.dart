@@ -3,5 +3,5 @@
 import 'Curr.dart';
 
 abstract class CurrDaoAbstract {
-  Future<List<Curr>> getAll();
+  Future<List<Curr>> getAll(DateTime date);
 }

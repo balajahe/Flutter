@@ -9,10 +9,11 @@ enum CurrStatus { loading, loaded, error }
 
 class CurrState {
   CurrStatus status;
-  String error;
+  DateTime date;
   List<Curr> data;
+  String error;
 
-  CurrState({this.status, this.error, this.data});
+  CurrState({this.status, this.date, this.data, this.error});
   CurrState.init() {
     status = CurrStatus.loading;
   }
@@ -20,15 +21,19 @@ class CurrState {
 
 class CurrModel extends Cubit<CurrState> {
   CurrModel() : super(CurrState.init()) {
-    init();
+    refresh(null);
   }
 
-  void init() async {
-    emit(CurrState.init());
+  void refresh(DateTime date) async {
+    emit(CurrState(
+      status: CurrStatus.loading,
+      date: date,
+    ));
     try {
       emit(CurrState(
         status: CurrStatus.loaded,
-        data: await currDaoInstance.getAll(),
+        date: date,
+        data: await currDaoInstance.getAll(date),
       ));
     } catch (e) {
       emit(CurrState(
