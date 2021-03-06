@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AppUser.dart';
 
-class AppUserSession extends Cubit<AppUser> {
+class AppUserModel extends Cubit<AppUser> {
   AppUser _user;
 
-  AppUserSession() : super(AppUser()) {
+  AppUserModel() : super(AppUser()) {
     _user = AppUser();
   }
 
@@ -23,7 +23,7 @@ class AppUserSession extends Cubit<AppUser> {
 
   void login() async {
     if (_user.authType == AuthType.registered) {
-      if (_user.login?.length > 0 && _user.password?.length > 0) {
+      if (_user.login.length * _user.password.length > 0) {
         _user.authStatus = AuthStatus.ok;
       } else {
         _user.authStatus = AuthStatus.error;

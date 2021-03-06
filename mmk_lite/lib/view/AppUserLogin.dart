@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/AppUser.dart';
-import '../model/AppUserSession.dart';
+import '../model/AppUserModel.dart';
 import 'IssueAdd.dart';
 import 'common.dart';
 
 class AppUserLogin extends StatelessWidget {
   @override
   build(context) {
-    return BlocConsumer<AppUserSession, AppUser>(
+    return BlocConsumer<AppUserModel, AppUser>(
       builder: (context, state) {
-        var model = context.read<AppUserSession>();
-        print(state.authStatus);
+        var model = context.read<AppUserModel>();
         return Scaffold(
           body: Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 100, bottom: 20),
@@ -23,15 +22,13 @@ class AppUserLogin extends StatelessWidget {
                       MmkLogo(),
                       Column(
                         children: [
-                          TextField(
-                            controller:
-                                TextEditingController(text: state.login),
-                            decoration: InputDecoration(labelText: 'Логин'),
+                          MmkTextField(
+                            text: state.login,
+                            label: 'Логин',
                             onChanged: (v) => model.set(login: v),
                           ),
-                          TextField(
-                            controller: TextEditingController(),
-                            decoration: InputDecoration(labelText: 'Пароль'),
+                          MmkTextField(
+                            label: 'Пароль',
                             onChanged: (v) => model.set(password: v),
                             obscureText: true,
                           ),
@@ -55,18 +52,14 @@ class AppUserLogin extends StatelessWidget {
                           MmkLogo(),
                           Column(
                             children: [
-                              TextField(
-                                controller:
-                                    TextEditingController(text: state.email),
-                                decoration:
-                                    InputDecoration(labelText: 'e-mail'),
+                              MmkTextField(
+                                text: state.email,
+                                label: 'e-mail',
                                 onChanged: (v) => model.set(email: v),
                               ),
-                              TextField(
-                                controller:
-                                    TextEditingController(text: state.phone),
-                                decoration: InputDecoration(
-                                    labelText: 'Номер телефона'),
+                              MmkTextField(
+                                text: state.phone,
+                                label: 'Номер телефона',
                                 onChanged: (v) => model.set(phone: v),
                               ),
                               Container(height: 30),
