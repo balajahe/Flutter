@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'DefectAdd.dart';
-
-class IssueAdd extends StatelessWidget {
+class DefectAdd extends StatelessWidget {
   @override
   build(context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.question_answer),
-        title: Text('Новое дело'),
+        title: Text('Дефект'),
         actions: [
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => DefectAdd())),
+            onPressed: () {},
           ),
           Container(width: 15),
         ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'model/AppUserModel.dart';
-import 'view/AppUserLogin.dart';
+import 'model/UserModel.dart';
+import 'view/UserLogin.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,13 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   build(context) {
     return BlocProvider(
-      create: (context) => AppUserModel(),
+      create: (context) => UserModel(),
       child: MaterialApp(
         title: 'MMK Lite',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: AppUserLogin(),
+        home: UserLogin(),
       ),
     );
   }
