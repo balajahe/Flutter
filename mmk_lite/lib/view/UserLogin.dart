@@ -17,12 +17,12 @@ class UserLogin extends StatelessWidget {
             children: [
               Padding(
                 padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 100, bottom: 20),
+                    EdgeInsets.only(left: 30, right: 30, top: 100, bottom: 30),
                 child: (state.authType == AuthType.registered)
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          MmkLiteLogo(),
+                          Logo(),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -50,7 +50,7 @@ class UserLogin extends StatelessWidget {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              MmkAnonAvatar(),
+                              AnonAvatar(),
                               TextButton(
                                 child: Text('Продолжить без авторизации'),
                                 onPressed: () => model.toUnregistered(),
@@ -63,11 +63,11 @@ class UserLogin extends StatelessWidget {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              MmkLiteLogo(),
+                              Logo(),
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  MmkAnonAvatar(),
+                                  AnonAvatar(),
                                   Container(height: 10),
                                   Text(
                                     'Для продолжения работы\nвведите e-mail и номер телефона\nдля связи',

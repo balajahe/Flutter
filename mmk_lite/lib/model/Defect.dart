@@ -8,5 +8,5 @@ class Defect {
   double marriageWeight;
   String settlement;
   String notes;
-  List<Uint8List> photos;
+  List<Uint8List> photos = [];
 }

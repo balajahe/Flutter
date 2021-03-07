@@ -1,5 +1,5 @@
 import 'Defect.dart';
 
 class Issue {
-  List<Defect> defects;
+  List<Defect> defects = [];
 }

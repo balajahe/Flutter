@@ -1,50 +1,28 @@
 import 'package:flutter/material.dart';
 
-import 'DefectAdd.dart';
+import 'IssueAdd.dart';
 
-class Home extends StatefulWidget {
-  @override
-  createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int tabSelected = 0;
-
+class Home extends StatelessWidget {
   @override
   build(context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.question_answer),
-        title: Text('Новое дело'),
-        actions: [
-          IconButton(
-            tooltip: 'Добавить дефект',
-            icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => DefectAdd())),
-          ),
-          Container(width: 15),
-        ],
-      ),
-      //body: ,
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            label: 'Новое дело',
-            icon: Icon(Icons.library_add),
-          ),
-          BottomNavigationBarItem(
-            label: 'Претензии',
-            icon: Icon(Icons.library_books),
-          ),
-          BottomNavigationBarItem(
-            label: 'Настройки',
-            icon: Icon(Icons.settings),
-          ),
-        ],
-        currentIndex: tabSelected,
-        onTap: (i) => setState(
-          () => tabSelected = i,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        body: TabBarView(
+          children: [
+            IssueAdd(),
+            Container(),
+            Container(),
+          ],
+        ),
+        bottomNavigationBar: TabBar(
+          unselectedLabelColor: Colors.grey,
+          labelColor: Colors.blue,
+          tabs: [
+            Tab(icon: Icon(Icons.create)),
+            Tab(icon: Icon(Icons.library_books)),
+            Tab(icon: Icon(Icons.settings)),
+          ],
         ),
       ),
     );

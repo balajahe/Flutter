@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'model/UserModel.dart';
+import 'model/IssueModel.dart';
 import 'model/DefectModel.dart';
+
 import 'view/UserLogin.dart';
 
 void main() {
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserModel()),
+        BlocProvider(create: (context) => IssueModel()),
         BlocProvider(create: (context) => DefectModel()),
       ],
       child: MaterialApp(
