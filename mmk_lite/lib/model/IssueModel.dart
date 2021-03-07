@@ -12,6 +12,11 @@ class IssueModel extends Cubit<Issue> {
 
   void add(Defect v) {
     _current.defects.add(v);
-    emit(_current);
+    emit(_current.clone());
+  }
+
+  void del(Defect v) {
+    _current.defects.remove(v);
+    emit(_current.clone());
   }
 }

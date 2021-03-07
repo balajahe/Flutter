@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
 
 class AnonAvatar extends StatelessWidget {
   @override
-  build(context) => Text('Очко-Шляпа');
+  build(context) => Text('Очки-Шляпа');
 }
 
 class Hpadding1 extends StatelessWidget {

@@ -18,10 +18,10 @@ class UserLogin extends StatelessWidget {
               Padding(
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 100, bottom: 30),
-                child: (state.authType == AuthType.registered)
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: (state.authType == AuthType.registered)
+                      ? [
                           Logo(),
                           Column(
                             mainAxisSize: MainAxisSize.min,
@@ -57,18 +57,15 @@ class UserLogin extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ],
-                      )
-                    : (state.authType == AuthType.unregistered)
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
+                          Container(),
+                        ]
+                      : (state.authType == AuthType.unregistered)
+                          ? [
                               Logo(),
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   AnonAvatar(),
-                                  Container(height: 10),
                                   Text(
                                     'Для продолжения работы\nвведите e-mail и номер телефона\nдля связи',
                                     textAlign: TextAlign.center,
@@ -78,7 +75,6 @@ class UserLogin extends StatelessWidget {
                                 ],
                               ),
                               Column(
-                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextField(
                                     controller: TextEditingController(
@@ -102,9 +98,9 @@ class UserLogin extends StatelessWidget {
                                 ],
                               ),
                               Container(),
-                            ],
-                          )
-                        : Container(),
+                            ]
+                          : [],
+                ),
               ),
               (state.authStatus == AuthStatus.wait)
                   ? Container(
