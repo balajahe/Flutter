@@ -54,13 +54,17 @@ class DefectAdd extends StatelessWidget {
             ),
           ),
           bottomSheet: Padding(
-            padding: EdgeInsets.only(left: 10, bottom: 5),
-            child: Text('Изображений: ${state.photos.length}'),
-          ),
-          floatingActionButton: FloatingActionButton(
-            tooltip: 'Сохранить',
-            child: Icon(Icons.save),
-            onPressed: () => _add(context, state, issueModel),
+            padding: EdgeInsets.only(left: 15, right: 20, bottom: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Изображений: ${state.photos.length}'),
+                TextButton(
+                  child: Text('Сохранить', style: TextStyle(fontSize: 16)),
+                  onPressed: () => _add(context, state, issueModel),
+                ),
+              ],
+            ),
           ),
         );
       },

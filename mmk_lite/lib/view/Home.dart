@@ -19,9 +19,18 @@ class Home extends StatelessWidget {
           unselectedLabelColor: Colors.grey,
           labelColor: Colors.blue,
           tabs: [
-            Tab(icon: Icon(Icons.create)),
-            Tab(icon: Icon(Icons.library_books)),
-            Tab(icon: Icon(Icons.settings)),
+            Tab(
+              child: Text('Новое дело', style: TextStyle(fontSize: 10)),
+              icon: Icon(Icons.create),
+            ),
+            Tab(
+              child: Text('Претензии', style: TextStyle(fontSize: 10)),
+              icon: Icon(Icons.library_books),
+            ),
+            Tab(
+              child: Text('Настройки', style: TextStyle(fontSize: 10)),
+              icon: Icon(Icons.settings),
+            ),
           ],
         ),
       ),
