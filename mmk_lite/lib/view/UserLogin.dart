@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/User.dart';
 import '../model/UserModel.dart';
-import 'lib/common.dart';
-import 'IssueAdd.dart';
+import 'mmk_widgets.dart';
+import 'Home.dart';
 
 class UserLogin extends StatelessWidget {
   @override
@@ -22,17 +22,21 @@ class UserLogin extends StatelessWidget {
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          MmkLogo(),
+                          MmkLiteLogo(),
                           Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              MmkTextField(
-                                text: state.login,
-                                label: 'Логин',
+                              TextField(
+                                controller:
+                                    TextEditingController(text: state.login),
+                                decoration: InputDecoration(labelText: 'Логин'),
                                 onChanged: (v) => model.set(login: v),
                               ),
-                              MmkTextField(
-                                text: state.password,
-                                label: 'Пароль',
+                              TextField(
+                                controller:
+                                    TextEditingController(text: state.password),
+                                decoration:
+                                    InputDecoration(labelText: 'Пароль'),
                                 onChanged: (v) => model.set(password: v),
                                 obscureText: true,
                               ),
@@ -43,9 +47,15 @@ class UserLogin extends StatelessWidget {
                               ),
                             ],
                           ),
-                          TextButton(
-                            child: Text('Продолжить без авторизации'),
-                            onPressed: () => model.toUnregistered(),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              MmkAnonAvatar(),
+                              TextButton(
+                                child: Text('Продолжить без авторизации'),
+                                onPressed: () => model.toUnregistered(),
+                              ),
+                            ],
                           ),
                         ],
                       )
@@ -53,17 +63,35 @@ class UserLogin extends StatelessWidget {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              MmkLogo(),
+                              MmkLiteLogo(),
                               Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  MmkTextField(
-                                    text: state.email,
-                                    label: 'e-mail',
+                                  MmkAnonAvatar(),
+                                  Container(height: 10),
+                                  Text(
+                                    'Для продолжения работы\nвведите e-mail и номер телефона\nдля связи',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: state.email),
+                                    decoration:
+                                        InputDecoration(labelText: 'e-mail'),
                                     onChanged: (v) => model.set(email: v),
                                   ),
-                                  MmkTextField(
-                                    text: state.phone,
-                                    label: 'Номер телефона',
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: state.phone),
+                                    decoration: InputDecoration(
+                                        labelText: 'Номер телефона'),
                                     onChanged: (v) => model.set(phone: v),
                                   ),
                                   Container(height: 30),
@@ -96,7 +124,7 @@ class UserLogin extends StatelessWidget {
         } else if (state.authStatus == AuthStatus.ok) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => IssueAdd()),
+            MaterialPageRoute(builder: (_) => Home()),
             (_) => false,
           );
         }

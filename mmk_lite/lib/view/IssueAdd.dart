@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'DefectAdd.dart';
 
-class IssueAdd extends StatelessWidget {
+class Issue extends StatelessWidget {
   @override
   build(context) {
     return Scaffold(
@@ -19,6 +19,7 @@ class IssueAdd extends StatelessWidget {
           Container(width: 15),
         ],
       ),
+      body: Center(child: Text('Нажмите "+" чтобы добавить дефект в дело')),
     );
   }
 }

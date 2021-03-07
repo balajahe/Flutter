@@ -18,6 +18,7 @@ class UserModel extends Cubit<User> {
 
   void toUnregistered() {
     _user.authType = AuthType.unregistered;
+    _user.authStatus = AuthStatus.none;
     _emit();
   }
 
@@ -25,19 +26,19 @@ class UserModel extends Cubit<User> {
     if (_user.authType == AuthType.registered) {
       if (_user.login.length * _user.password.length == 0) {
         _user.authStatus = AuthStatus.error;
-        _user.authStatusError = 'Введите логин и пароль!';
+        _user.authStatusError = 'Введите логин и пароль';
       } else {
         _wait();
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 2));
         _user.authStatus = AuthStatus.ok;
       }
     } else if (_user.authType == AuthType.unregistered) {
       if (_user.email.length * _user.phone.length == 0) {
         _user.authStatus = AuthStatus.error;
-        _user.authStatusError = 'Введите e-mail и номер телефона!';
+        _user.authStatusError = 'Введите e-mail и номер телефона';
       } else {
         _wait();
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 2));
         _user.authStatus = AuthStatus.ok;
       }
     }
