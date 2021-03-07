@@ -38,6 +38,16 @@ class Hpadding2 extends StatelessWidget {
       );
 }
 
+class Hr1 extends StatelessWidget {
+  @override
+  build(context) => Container(height: 1, color: Colors.grey);
+}
+
+class Hr2 extends StatelessWidget {
+  @override
+  build(context) => Container(height: 2, color: Colors.grey);
+}
+
 class MmkElevatedButton extends StatelessWidget {
   final Widget child;
   final Function onPressed;

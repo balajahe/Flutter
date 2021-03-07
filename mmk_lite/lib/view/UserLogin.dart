@@ -16,10 +16,9 @@ class UserLogin extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 100, bottom: 30),
+                padding: EdgeInsets.only(left: 30, right: 30),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: (state.authType == AuthType.registered)
                       ? [
                           Logo(),
