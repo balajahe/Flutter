@@ -80,7 +80,7 @@ class UserLogin extends StatelessWidget {
                                     controller: TextEditingController(text: state.phone),
                                     decoration: InputDecoration(labelText: 'Номер телефона'),
                                     onChanged: (v) => model.set(phone: v),
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.phone,
                                   ),
                                   Container(height: 30),
                                   MmkElevatedButton(

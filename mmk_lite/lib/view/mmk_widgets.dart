@@ -56,9 +56,9 @@ class Hr2 extends StatelessWidget {
   build(context) {
     return Column(
       children: [
-        Container(height: 3),
+        Container(height: 5),
         Container(height: 2, color: Colors.grey[300]),
-        Container(height: 2),
+        Container(height: 4),
       ],
     );
   }

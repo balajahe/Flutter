@@ -57,20 +57,6 @@ class DefectAdd extends StatelessWidget {
                     ),
                   ),
                 ]),
-                Stack(children: [
-                  TextField(
-                    controller: TextEditingController(text: state.position),
-                    decoration: InputDecoration(labelText: 'Позиция'),
-                    enabled: false,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(Icons.add, size: 35),
-                      onPressed: () {},
-                    ),
-                  ),
-                ]),
                 TextField(
                   controller: TextEditingController(text: state.productType),
                   decoration: InputDecoration(labelText: 'Вид продукции'),

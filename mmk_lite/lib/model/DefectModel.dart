@@ -17,6 +17,10 @@ class DefectModel extends Cubit<Defect> {
     _current.certificate = certificate ?? _current.certificate;
     _current.productType = productType ?? _current.productType;
     _current.notes = notes ?? _current.notes;
-    if (certificate != null) emit(_current.clone());
+    if (certificate != null) {
+      emit(_current.clone());
+    } else {
+      emit(_current);
+    }
   }
 }
