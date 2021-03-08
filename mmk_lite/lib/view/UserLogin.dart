@@ -9,9 +9,9 @@ import 'Home.dart';
 class UserLogin extends StatelessWidget {
   @override
   build(context) {
+    var model = context.read<UserModel>();
     return BlocConsumer<UserModel, User>(
       builder: (context, state) {
-        var model = context.read<UserModel>();
         return Scaffold(
           body: Stack(
             children: [
@@ -26,16 +26,13 @@ class UserLogin extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               TextField(
-                                controller:
-                                    TextEditingController(text: state.login),
+                                controller: TextEditingController(text: state.login),
                                 decoration: InputDecoration(labelText: 'Логин'),
                                 onChanged: (v) => model.set(login: v),
                               ),
                               TextField(
-                                controller:
-                                    TextEditingController(text: state.password),
-                                decoration:
-                                    InputDecoration(labelText: 'Пароль'),
+                                controller: TextEditingController(text: state.password),
+                                decoration: InputDecoration(labelText: 'Пароль'),
                                 onChanged: (v) => model.set(password: v),
                                 obscureText: true,
                               ),
@@ -56,7 +53,6 @@ class UserLogin extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Container(),
                         ]
                       : (state.authType == AuthType.unregistered)
                           ? [
@@ -66,28 +62,25 @@ class UserLogin extends StatelessWidget {
                                 children: [
                                   AnonAvatar(),
                                   Text(
-                                    'Для продолжения работы\nвведите e-mail и номер телефона\nдля связи',
+                                    'Для продолжения работы введите\ne-mail и номер телефона для связи',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 13, color: Colors.grey),
+                                    style: TextStyle(fontSize: 13, color: Colors.grey),
                                   ),
                                 ],
                               ),
                               Column(
                                 children: [
                                   TextField(
-                                    controller: TextEditingController(
-                                        text: state.email),
-                                    decoration:
-                                        InputDecoration(labelText: 'e-mail'),
+                                    controller: TextEditingController(text: state.email),
+                                    decoration: InputDecoration(labelText: 'e-mail'),
                                     onChanged: (v) => model.set(email: v),
+                                    keyboardType: TextInputType.emailAddress,
                                   ),
                                   TextField(
-                                    controller: TextEditingController(
-                                        text: state.phone),
-                                    decoration: InputDecoration(
-                                        labelText: 'Номер телефона'),
+                                    controller: TextEditingController(text: state.phone),
+                                    decoration: InputDecoration(labelText: 'Номер телефона'),
                                     onChanged: (v) => model.set(phone: v),
+                                    keyboardType: TextInputType.number,
                                   ),
                                   Container(height: 30),
                                   MmkElevatedButton(

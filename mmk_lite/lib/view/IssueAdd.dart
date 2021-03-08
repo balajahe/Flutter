@@ -20,23 +20,19 @@ class IssueAdd extends StatelessWidget {
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => DefectAdd())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAdd())),
           ),
           Container(width: 15),
         ],
       ),
       body: BlocBuilder<IssueModel, Issue>(
         builder: (context, state) {
-          return (state.defects.length == 0)
-              ? Center(
-                  child: Hpadding2(Text(
-                  'Нажмите "+" чтобы добавить дефект в дело',
-                  textAlign: TextAlign.center,
-                )))
-              : ListView(
-                  children:
-                      state.defects.map((v) => _DefectTile(v, model)).toList(),
+          return (state.defects.length > 0)
+              ? ListView(
+                  children: state.defects.map((v) => _DefectTile(v, model)).toList(),
+                )
+              : Center(
+                  child: Hpadding2(Text('Нажмите "+" чтобы добавить дефект в дело', textAlign: TextAlign.center)),
                 );
         },
       ),
@@ -57,28 +53,28 @@ class _DefectTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(height: 10),
+              Container(height: 7),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Вид продукции',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(defect.productType),
+                  Expanded(child: Text('Серт. №', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                  Expanded(child: Text(defect.certificate)),
                 ],
               ),
               Hr1(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Замечания',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(defect.notes),
+                  Expanded(child: Text('Вид продукции', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                  Expanded(child: Text(defect.productType)),
                 ],
               ),
+              Hr1(),
+              Row(
+                children: [
+                  Expanded(child: Text('Замечания', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                  Expanded(child: Text(defect.notes)),
+                ],
+              ),
+              //Container(height: 5),
               Hr2(),
             ],
           ),

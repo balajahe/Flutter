@@ -10,11 +10,13 @@ class DefectModel extends Cubit<Defect> {
   }
 
   void set({
+    String certificate,
     String productType,
     String notes,
   }) {
+    _current.certificate = certificate ?? _current.certificate;
     _current.productType = productType ?? _current.productType;
     _current.notes = notes ?? _current.notes;
-    emit(_current);
+    if (certificate != null) emit(_current.clone());
   }
 }

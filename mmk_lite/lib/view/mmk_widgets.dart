@@ -40,12 +40,28 @@ class Hpadding2 extends StatelessWidget {
 
 class Hr1 extends StatelessWidget {
   @override
-  build(context) => Container(height: 1, color: Colors.grey);
+  build(context) {
+    return Column(
+      children: [
+        Container(height: 3),
+        Container(height: 1, color: Colors.grey[100]),
+        Container(height: 2),
+      ],
+    );
+  }
 }
 
 class Hr2 extends StatelessWidget {
   @override
-  build(context) => Container(height: 2, color: Colors.grey);
+  build(context) {
+    return Column(
+      children: [
+        Container(height: 3),
+        Container(height: 2, color: Colors.grey[300]),
+        Container(height: 2),
+      ],
+    );
+  }
 }
 
 class MmkElevatedButton extends StatelessWidget {

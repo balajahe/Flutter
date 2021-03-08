@@ -5,6 +5,7 @@ import 'package:mmk_lite/view/mmk_widgets.dart';
 import '../model/Defect.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
+import 'CertificateLookup.dart';
 
 class DefectAdd extends StatelessWidget {
   @override
@@ -38,6 +39,38 @@ class DefectAdd extends StatelessWidget {
           body: Hpadding1(
             Column(
               children: [
+                Stack(children: [
+                  TextField(
+                    controller: TextEditingController(text: state.certificate),
+                    decoration: InputDecoration(labelText: 'Сертификат'),
+                    enabled: false,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: Icon(Icons.add, size: 35),
+                      onPressed: () async {
+                        defectModel.set(
+                            certificate:
+                                await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
+                      },
+                    ),
+                  ),
+                ]),
+                Stack(children: [
+                  TextField(
+                    controller: TextEditingController(text: state.position),
+                    decoration: InputDecoration(labelText: 'Позиция'),
+                    enabled: false,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: Icon(Icons.add, size: 35),
+                      onPressed: () {},
+                    ),
+                  ),
+                ]),
                 TextField(
                   controller: TextEditingController(text: state.productType),
                   decoration: InputDecoration(labelText: 'Вид продукции'),
@@ -74,6 +107,7 @@ class DefectAdd extends StatelessWidget {
 
   void _add(context, state, issueModel) {
     issueModel.add(Defect()
+      ..certificate = state.certificate
       ..productType = state.productType
       ..notes = state.notes);
 
