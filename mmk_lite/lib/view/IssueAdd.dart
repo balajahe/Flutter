@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mmk_lite/model/IssueModel.dart';
-import 'package:mmk_lite/view/mmk_widgets.dart';
+import 'package:mmk_lite/mmk_widgets.dart';
 
 import '../model/Issue.dart';
 import '../model/IssueModel.dart';
@@ -25,16 +25,19 @@ class IssueAdd extends StatelessWidget {
           Container(width: 15),
         ],
       ),
-      body: BlocBuilder<IssueModel, Issue>(
-        builder: (context, state) {
-          return (state.defects.length > 0)
-              ? ListView(
-                  children: state.defects.map((v) => _DefectTile(v, model)).toList(),
-                )
-              : Center(
-                  child: Hpadding2(Text('Нажмите "+" чтобы добавить дефект в дело', textAlign: TextAlign.center)),
-                );
-        },
+      body: Padding(
+        padding: EdgeInsets.only(left: 7),
+        child: BlocBuilder<IssueModel, Issue>(
+          builder: (context, state) {
+            return (state.defects.length > 0)
+                ? ListView(
+                    children: state.defects.map((v) => _DefectTile(v, model)).toList(),
+                  )
+                : Center(
+                    child: Hpadding2(Text('Нажмите "+" чтобы добавить дефект в дело', textAlign: TextAlign.center)),
+                  );
+          },
+        ),
       ),
     );
   }
@@ -53,7 +56,7 @@ class _DefectTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(height: 7),
+              Container(height: 5),
               Row(
                 children: [
                   Expanded(child: Text('Серт. №', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
@@ -74,7 +77,6 @@ class _DefectTile extends StatelessWidget {
                   Expanded(child: Text(defect.notes)),
                 ],
               ),
-              //Container(height: 5),
               Hr2(),
             ],
           ),
@@ -89,29 +91,20 @@ class _DefectTile extends StatelessWidget {
 }
 
 void _del(context, model, v) async {
-  //   showDialog<void>(
-  //   context: context,
-  //   builder: (BuildContext context) => AlertDialog(
-  //     title: Text('Удалить объект?'),
-  //     actions: <Widget>[
-  //       TextButton(
-  //           child: Text('Нет'), onPressed: () => Navigator.pop(context)),
-  //       TextButton(
-  //           child: Text('Да'),
-  //           onPressed: () async {
-  //             startWaiting(context);
-  //             try {
-  //               await context.read<Places>().del(_place);
-  //             } catch (e) {
-  //               await showError(context, e);
-  //             }
-  //             stopWaiting(context);
-  //             Navigator.pop(context);
-  //             Navigator.pop(context);
-  //           }),
-  //     ],
-  //   ),
-  // );
-
-  model.del(v);
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text('Удалить дефект?'),
+      actions: <Widget>[
+        TextButton(child: Text('Нет'), onPressed: () => Navigator.pop(context)),
+        TextButton(
+          child: Text('Да'),
+          onPressed: () {
+            model.del(v);
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    ),
+  );
 }

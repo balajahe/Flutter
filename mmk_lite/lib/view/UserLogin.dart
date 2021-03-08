@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/User.dart';
 import '../model/UserModel.dart';
-import 'mmk_widgets.dart';
+import '../mmk_widgets.dart';
 import 'Home.dart';
 
 class UserLogin extends StatelessWidget {
@@ -16,7 +16,7 @@ class UserLogin extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 30, right: 30),
+                padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: (state.authType == AuthType.registered)
@@ -53,6 +53,7 @@ class UserLogin extends StatelessWidget {
                               ),
                             ],
                           ),
+                          Container(),
                         ]
                       : (state.authType == AuthType.unregistered)
                           ? [

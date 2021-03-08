@@ -40,27 +40,48 @@ class Hpadding2 extends StatelessWidget {
 
 class Hr1 extends StatelessWidget {
   @override
-  build(context) {
-    return Column(
-      children: [
-        Container(height: 3),
-        Container(height: 1, color: Colors.grey[100]),
-        Container(height: 2),
-      ],
-    );
-  }
+  build(context) => Column(
+        children: [
+          Container(height: 3),
+          Container(height: 1, color: Colors.grey[200]),
+          Container(height: 2),
+        ],
+      );
 }
 
 class Hr2 extends StatelessWidget {
   @override
+  build(context) => Column(
+        children: [
+          Container(height: 5),
+          Container(height: 2, color: Colors.grey[300]),
+          Container(height: 4),
+        ],
+      );
+}
+
+class MmkLookupField extends StatelessWidget {
+  final String text;
+  final String label;
+  final Function onSelect;
+  MmkLookupField({this.text = '', this.label, this.onSelect});
+
+  @override
   build(context) {
-    return Column(
-      children: [
-        Container(height: 5),
-        Container(height: 2, color: Colors.grey[300]),
-        Container(height: 4),
-      ],
-    );
+    return Stack(children: [
+      TextField(
+        controller: TextEditingController(text: text),
+        decoration: InputDecoration(labelText: label),
+        enabled: false,
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: IconButton(
+          icon: Icon(Icons.add, size: 40),
+          onPressed: onSelect,
+        ),
+      ),
+    ]);
   }
 }
 

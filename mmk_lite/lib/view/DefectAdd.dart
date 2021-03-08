@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mmk_lite/view/mmk_widgets.dart';
 
 import '../model/Defect.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
+
+import '../mmk_widgets.dart';
 import 'CertificateLookup.dart';
 
 class DefectAdd extends StatelessWidget {
   @override
   build(context) {
+    var issueModel = context.read<IssueModel>();
     var defectModel = DefectModel();
     return BlocConsumer<DefectModel, Defect>(
       cubit: defectModel,
       builder: (context, state) {
-        var issueModel = context.read<IssueModel>();
         return Scaffold(
           appBar: AppBar(
             title: Text('Дефект'),
@@ -39,24 +40,20 @@ class DefectAdd extends StatelessWidget {
           body: Hpadding1(
             Column(
               children: [
-                Stack(children: [
-                  TextField(
-                    controller: TextEditingController(text: state.certificate),
-                    decoration: InputDecoration(labelText: 'Сертификат'),
-                    enabled: false,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(Icons.add, size: 35),
-                      onPressed: () async {
-                        defectModel.set(
-                            certificate:
-                                await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
-                      },
-                    ),
-                  ),
-                ]),
+                MmkLookupField(
+                  text: state.certificate,
+                  label: 'Сертификат',
+                  onSelect: () async {
+                    defectModel.set(
+                        certificate:
+                            await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
+                  },
+                ),
+                MmkLookupField(
+                  text: state.position,
+                  label: 'Позиция',
+                  onSelect: () async {},
+                ),
                 TextField(
                   controller: TextEditingController(text: state.productType),
                   decoration: InputDecoration(labelText: 'Вид продукции'),
@@ -80,7 +77,10 @@ class DefectAdd extends StatelessWidget {
                 Text('Изображений: ${state.photos.length}'),
                 TextButton(
                   child: Text('Сохранить', style: TextStyle(fontSize: 16)),
-                  onPressed: () => _add(context, state, issueModel),
+                  onPressed: () {
+                    issueModel.add(state);
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
@@ -89,14 +89,5 @@ class DefectAdd extends StatelessWidget {
       },
       listener: (context, state) {},
     );
-  }
-
-  void _add(context, state, issueModel) {
-    issueModel.add(Defect()
-      ..certificate = state.certificate
-      ..productType = state.productType
-      ..notes = state.notes);
-
-    Navigator.pop(context);
   }
 }
