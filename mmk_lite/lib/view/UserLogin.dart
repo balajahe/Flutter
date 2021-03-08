@@ -16,7 +16,7 @@ class UserLogin extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 30),
+                padding: EdgeInsets.only(left: 30, right: 30, top: 50, bottom: 100),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: (state.authType == AuthType.registered)
@@ -36,10 +36,13 @@ class UserLogin extends StatelessWidget {
                                 onChanged: (v) => model.set(password: v),
                                 obscureText: true,
                               ),
-                              Container(height: 30),
-                              MmkElevatedButton(
-                                child: Text('Авторизоваться'),
-                                onPressed: () => model.login(),
+                              Container(height: 25),
+                              Container(
+                                width: 200,
+                                child: ElevatedButton(
+                                  child: Text('Авторизоваться'),
+                                  onPressed: () => model.login(),
+                                ),
                               ),
                             ],
                           ),
@@ -83,10 +86,13 @@ class UserLogin extends StatelessWidget {
                                     onChanged: (v) => model.set(phone: v),
                                     keyboardType: TextInputType.phone,
                                   ),
-                                  Container(height: 30),
-                                  MmkElevatedButton(
-                                    child: Text('Продолжить'),
-                                    onPressed: () => model.login(),
+                                  Container(height: 25),
+                                  Container(
+                                    width: 200,
+                                    child: ElevatedButton(
+                                      child: Text('Продолжить'),
+                                      onPressed: () => model.login(),
+                                    ),
                                   ),
                                 ],
                               ),

@@ -5,6 +5,7 @@ class Logo extends StatelessWidget {
   @override
   build(conetxt) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.asset('assets/mmk_logo.png'),
           Container(width: 10),
@@ -38,7 +39,7 @@ class Hpadding2 extends StatelessWidget {
       );
 }
 
-class Hr1 extends StatelessWidget {
+class Hline1 extends StatelessWidget {
   @override
   build(context) => Column(
         children: [
@@ -49,7 +50,7 @@ class Hr1 extends StatelessWidget {
       );
 }
 
-class Hr2 extends StatelessWidget {
+class Hline2 extends StatelessWidget {
   @override
   build(context) => Column(
         children: [
@@ -60,45 +61,54 @@ class Hr2 extends StatelessWidget {
       );
 }
 
+class MmkFilterLield extends StatelessWidget {
+  final String hint;
+  final TextEditingController controller;
+  final Function(String) onChanged;
+  final Function(String) onSubmitted;
+
+  MmkFilterLield({this.hint, this.controller, this.onChanged, this.onSubmitted});
+
+  @override
+  build(context) => TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.white60),
+          border: InputBorder.none,
+        ),
+        style: TextStyle(color: Colors.white),
+        cursorColor: Colors.white,
+        cursorWidth: 2,
+        autofocus: true,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+      );
+}
+
 class MmkLookupField extends StatelessWidget {
   final String text;
   final String label;
   final Function onSelect;
+
   MmkLookupField({this.text = '', this.label, this.onSelect});
 
   @override
-  build(context) {
-    return Stack(children: [
-      TextField(
-        controller: TextEditingController(text: text),
-        decoration: InputDecoration(labelText: label),
-        enabled: false,
-      ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: IconButton(
-          icon: Icon(Icons.add, size: 40),
-          onPressed: onSelect,
+  build(context) => Stack(children: [
+        TextField(
+          controller: TextEditingController(text: text),
+          decoration: InputDecoration(labelText: label),
+          enabled: false,
         ),
-      ),
-    ]);
-  }
+        Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            icon: Icon(Icons.add, size: 40),
+            onPressed: onSelect,
+          ),
+        ),
+      ]);
 }
 
 Future<dynamic> lookup(BuildContext context, Widget form) =>
     Navigator.push(context, MaterialPageRoute(builder: (_) => form));
-
-class MmkElevatedButton extends StatelessWidget {
-  final Widget child;
-  final Function onPressed;
-  MmkElevatedButton({this.child, this.onPressed});
-
-  @override
-  build(context) => Container(
-        width: 200,
-        child: ElevatedButton(
-          child: child,
-          onPressed: onPressed,
-        ),
-      );
-}

@@ -79,7 +79,7 @@ class DefectAdd extends StatelessWidget {
             ),
           ),
           bottomSheet: Padding(
-            padding: EdgeInsets.only(left: 15, right: 20, bottom: 5),
+            padding: EdgeInsets.only(left: 15, right: 20, bottom: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

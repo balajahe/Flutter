@@ -11,12 +11,11 @@ class DefectTypeModel extends Cubit<DefectTypeState> {
   List<String> _all = [];
   String _filter = '';
 
-  DefectTypeModel() : super(DefectTypeState()) {
+  DefectTypeModel() : super(DefectTypeState()..waiting = true) {
     _load();
   }
 
   void _load() async {
-    emit(DefectTypeState()..waiting = true);
     await Future.delayed(Duration(seconds: 1));
     _all = List.from(['Ничего не получается', 'Фатальный недостаток', 'Просто дефект']);
     emit(DefectTypeState()..all = _all);
@@ -27,5 +26,9 @@ class DefectTypeModel extends Cubit<DefectTypeState> {
     emit(DefectTypeState()
       ..filter = _filter
       ..all = _all.where((v) => v.toLowerCase().contains(_filter = s.toLowerCase())).toList());
+  }
+
+  void clearFilter() {
+    if (_filter.length > 0) filter('');
   }
 }
