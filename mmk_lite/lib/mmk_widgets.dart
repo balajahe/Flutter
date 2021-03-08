@@ -85,6 +85,9 @@ class MmkLookupField extends StatelessWidget {
   }
 }
 
+Future<dynamic> lookup(BuildContext context, Widget form) =>
+    Navigator.push(context, MaterialPageRoute(builder: (_) => form));
+
 class MmkElevatedButton extends StatelessWidget {
   final Widget child;
   final Function onPressed;

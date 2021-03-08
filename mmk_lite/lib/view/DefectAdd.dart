@@ -7,6 +7,7 @@ import '../model/IssueModel.dart';
 
 import '../mmk_widgets.dart';
 import 'CertificateLookup.dart';
+import 'DefectTypeLookup.dart';
 
 class DefectAdd extends StatelessWidget {
   @override
@@ -58,6 +59,14 @@ class DefectAdd extends StatelessWidget {
                   controller: TextEditingController(text: state.productType),
                   decoration: InputDecoration(labelText: 'Вид продукции'),
                   onChanged: (v) => defectModel.set(productType: v),
+                ),
+                MmkLookupField(
+                  text: state.defect,
+                  label: 'Дефект',
+                  onSelect: () async {
+                    defectModel.set(
+                        defect: await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
+                  },
                 ),
                 TextField(
                   controller: TextEditingController(text: state.notes),

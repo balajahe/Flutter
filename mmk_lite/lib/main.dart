@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'model/UserModel.dart';
 import 'model/IssueModel.dart';
 import 'model/CertificateModel.dart';
+import 'model/DefectTypeModel.dart';
 
 import 'view/UserLogin.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => UserModel()),
         BlocProvider(create: (context) => IssueModel()),
         BlocProvider(create: (context) => CertificateModel()),
+        BlocProvider(create: (context) => DefectTypeModel()),
       ],
       child: MaterialApp(
         title: 'MMK Lite',

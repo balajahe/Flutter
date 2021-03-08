@@ -4,6 +4,7 @@ class Defect {
   String certificate = '';
   String position;
   String productType = '';
+  String defect = '';
   String notificationNum;
   double marriageWeight;
   String settlement;
@@ -14,6 +15,7 @@ class Defect {
     ..certificate = certificate
     ..position = position
     ..productType = productType
+    ..defect = defect
     ..notificationNum = notificationNum
     ..marriageWeight = marriageWeight
     ..settlement = settlement

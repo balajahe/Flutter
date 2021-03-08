@@ -26,7 +26,7 @@ class IssueAdd extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 7),
+        padding: EdgeInsets.only(left: 7, top: 3),
         child: BlocBuilder<IssueModel, Issue>(
           builder: (context, state) {
             return (state.defects.length > 0)
@@ -59,22 +59,22 @@ class _DefectTile extends StatelessWidget {
               Container(height: 5),
               Row(
                 children: [
-                  Expanded(child: Text('Серт. №', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                  Expanded(child: Text('Серт. №', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                   Expanded(child: Text(defect.certificate)),
                 ],
               ),
               Hr1(),
               Row(
                 children: [
-                  Expanded(child: Text('Вид продукции', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                  Expanded(child: Text('Вид продукции', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                   Expanded(child: Text(defect.productType)),
                 ],
               ),
               Hr1(),
               Row(
                 children: [
-                  Expanded(child: Text('Замечания', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
-                  Expanded(child: Text(defect.notes)),
+                  Expanded(child: Text('Дефект', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
+                  Expanded(child: Text(defect.defect)),
                 ],
               ),
               Hr2(),
