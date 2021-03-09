@@ -4,11 +4,9 @@ import 'User.dart';
 import '../mmk_tools.dart';
 
 class UserModel extends Cubit<User> {
-  User _current;
+  User _current = User();
 
-  UserModel() : super(User()) {
-    _current = User();
-  }
+  UserModel() : super(User());
 
   void set({String login, String password, String email, String phone}) {
     _current.login = login ?? _current.login;

@@ -8,6 +8,7 @@ class DefectState {
   bool waiting;
   bool saved;
   String error;
+
   DefectState(
     this.defect, {
     this.waiting = false,
@@ -17,12 +18,10 @@ class DefectState {
 }
 
 class DefectModel extends Cubit<DefectState> {
-  Defect _current;
+  Defect _current = Defect();
   DefectState _lastState;
 
-  DefectModel() : super(DefectState(Defect())) {
-    _current = Defect();
-  }
+  DefectModel() : super(DefectState(Defect()));
 
   void set({
     String certificate,

@@ -5,6 +5,7 @@ class DefectTypeState {
   String filter;
   bool waiting;
   String error;
+
   DefectTypeState(
     this.all, {
     this.filter = '',
