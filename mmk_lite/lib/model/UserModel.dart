@@ -29,7 +29,7 @@ class UserModel extends Cubit<User> {
         _current.authStatusError = 'Введите логин и пароль';
       } else {
         _wait();
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 1));
         _current.authStatus = AuthStatus.ok;
       }
     } else if (_current.authType == AuthType.unregistered) {
@@ -38,7 +38,7 @@ class UserModel extends Cubit<User> {
         _current.authStatusError = 'Введите e-mail и номер телефона';
       } else {
         _wait();
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 1));
         _current.authStatus = AuthStatus.ok;
       }
     }
@@ -48,7 +48,7 @@ class UserModel extends Cubit<User> {
   void _emit() => emit(_current.clone());
 
   void _wait() {
-    _current.authStatus = AuthStatus.wait;
+    _current.authStatus = AuthStatus.waiting;
     _emit();
   }
 }

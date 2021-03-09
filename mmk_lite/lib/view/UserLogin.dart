@@ -16,7 +16,7 @@ class UserLogin extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 30, right: 30, top: 50, bottom: 100),
+                padding: EdgeInsets.only(left: 30, right: 30, top: 45),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: (state.authType == AuthType.registered)
@@ -101,7 +101,7 @@ class UserLogin extends StatelessWidget {
                           : [],
                 ),
               ),
-              (state.authStatus == AuthStatus.wait)
+              (state.authStatus == AuthStatus.waiting)
                   ? Container(
                       color: Color.fromARGB(200, 60, 60, 60),
                       child: Center(child: CircularProgressIndicator()),
@@ -112,17 +112,16 @@ class UserLogin extends StatelessWidget {
         );
       },
       listener: (cuntext, state) {
-        if (state.authStatus == AuthStatus.error) {
+        if (state.authStatus == AuthStatus.error)
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.authStatusError)),
           );
-        } else if (state.authStatus == AuthStatus.ok) {
+        else if (state.authStatus == AuthStatus.ok)
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => Home()),
             (_) => false,
           );
-        }
       },
     );
   }

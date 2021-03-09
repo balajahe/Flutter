@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 enum AuthType { registered, unregistered }
 
-enum AuthStatus { none, wait, ok, error }
+enum AuthStatus { none, waiting, ok, error }
 
 class User {
   AuthType authType = AuthType.registered;

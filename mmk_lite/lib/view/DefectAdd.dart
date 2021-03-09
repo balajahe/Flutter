@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/Defect.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
@@ -14,7 +13,7 @@ class DefectAdd extends StatelessWidget {
   build(context) {
     var issueModel = context.read<IssueModel>();
     var defectModel = DefectModel();
-    return BlocConsumer<DefectModel, Defect>(
+    return BlocConsumer<DefectModel, DefectState>(
       cubit: defectModel,
       builder: (context, state) {
         return Scaffold(
@@ -42,7 +41,7 @@ class DefectAdd extends StatelessWidget {
             Column(
               children: [
                 MmkLookupField(
-                  text: state.certificate,
+                  text: state.defect.certificate,
                   label: 'Сертификат',
                   onSelect: () async {
                     defectModel.set(
@@ -50,30 +49,26 @@ class DefectAdd extends StatelessWidget {
                             await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
                   },
                 ),
-                MmkLookupField(
-                  text: state.position,
-                  label: 'Позиция',
-                  onSelect: () async {},
-                ),
                 TextField(
-                  controller: TextEditingController(text: state.productType),
+                  controller: TextEditingController(text: state.defect.productType),
                   decoration: InputDecoration(labelText: 'Вид продукции'),
                   onChanged: (v) => defectModel.set(productType: v),
                 ),
                 MmkLookupField(
-                  text: state.defect,
+                  text: state.defect.defectType,
                   label: 'Дефект',
                   onSelect: () async {
                     defectModel.set(
-                        defect: await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
+                        defectType:
+                            await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
                   },
                 ),
                 TextField(
-                  controller: TextEditingController(text: state.notes),
+                  controller: TextEditingController(text: state.defect.notes),
                   decoration: InputDecoration(labelText: 'Замечания'),
                   onChanged: (v) => defectModel.set(notes: v),
-                  minLines: 5,
-                  maxLines: 5,
+                  minLines: 3,
+                  maxLines: 6,
                 ),
               ],
             ),
@@ -83,20 +78,23 @@ class DefectAdd extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Изображений: ${state.photos.length}'),
+                Text('Изображений: ${state.defect.photos.length}'),
                 TextButton(
                   child: Text('Сохранить', style: TextStyle(fontSize: 16)),
-                  onPressed: () {
-                    issueModel.add(state);
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => defectModel.addToIssue(issueModel),
                 ),
               ],
             ),
           ),
         );
       },
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.error != '') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+        } else if (state.saved) {
+          Navigator.pop(context);
+        }
+      },
     );
   }
 }

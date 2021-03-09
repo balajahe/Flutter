@@ -91,7 +91,7 @@ class _DefectTile extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text(defect.defect),
+                    child: Text(defect.defectType),
                   ),
                 ],
               ),

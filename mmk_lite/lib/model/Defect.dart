@@ -2,12 +2,12 @@ import 'dart:typed_data';
 
 class Defect {
   String certificate = '';
-  String position;
+  String position = '';
   String productType = '';
-  String defect = '';
-  String notificationNum;
+  String defectType = '';
+  String notificationNum = '';
   double marriageWeight;
-  String settlement;
+  String settlement = '';
   String notes = '';
   List<Uint8List> photos = [];
 
@@ -15,7 +15,7 @@ class Defect {
     ..certificate = certificate
     ..position = position
     ..productType = productType
-    ..defect = defect
+    ..defectType = defectType
     ..notificationNum = notificationNum
     ..marriageWeight = marriageWeight
     ..settlement = settlement
