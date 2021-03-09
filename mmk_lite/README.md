@@ -50,9 +50,9 @@ build(context) {
 class DefectAdd extends StatelessWidget {
   @override
   build(context) {
-    var issueModel = context.read<IssueModel>();
+    var issueModel = context.read&lt;IssueModel&gt;();
     var defectModel = DefectModel();
-    return BlocConsumer<DefectModel, Defect>(
+    return BlocConsumer&lt;DefectModel, Defect&gt;(
       cubit: defectModel,
       builder: (context, state) {
         return Scaffold(...
