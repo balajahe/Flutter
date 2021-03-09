@@ -5,16 +5,22 @@ import 'IssueModel.dart';
 
 class DefectState {
   Defect defect;
-  bool waiting = false;
-  bool saved = false;
-  String error = '';
+  bool waiting;
+  bool saved;
+  String error;
+  DefectState(
+    this.defect, {
+    this.waiting = false,
+    this.saved = false,
+    this.error = '',
+  });
 }
 
 class DefectModel extends Cubit<DefectState> {
   Defect _current;
   DefectState _lastState;
 
-  DefectModel() : super(DefectState()..defect = Defect()) {
+  DefectModel() : super(DefectState(Defect())) {
     _current = Defect();
   }
 
@@ -32,23 +38,18 @@ class DefectModel extends Cubit<DefectState> {
     _current.notes = notes ?? _current.notes;
 
     if (certificate != null || position != null || defectType != null) {
-      _lastState = DefectState()..defect = _current;
-      emit(_lastState);
-    } else {
-      emit(_lastState);
+      _lastState = DefectState(_current); //обновляем форму
     }
+    emit(_lastState); //не обновляем форму
   }
 
-  void addToIssue(IssueModel issueModel) {
+  void addToIssue(IssueModel issueModel) async {
     if (_current.certificate.length * _current.productType.length * _current.defectType.length > 0) {
-      issueModel.add(_current);
-      emit(DefectState()
-        ..defect = _current
-        ..saved = true);
+      emit(DefectState(_current, waiting: true));
+      await issueModel.add(_current);
+      emit(DefectState(_current, saved: true));
     } else {
-      emit(DefectState()
-        ..defect = _current
-        ..error = 'Заполните все поля');
+      emit(DefectState(_current, error: 'Заполните все поля'));
     }
   }
 }

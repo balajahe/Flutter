@@ -61,6 +61,14 @@ class Hline2 extends StatelessWidget {
       );
 }
 
+class Waiting extends StatelessWidget {
+  @override
+  build(context) => Container(
+        color: Color.fromARGB(120, 60, 60, 60),
+        child: Center(child: CircularProgressIndicator()),
+      );
+}
+
 class MmkFilterLield extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
@@ -100,11 +108,14 @@ class MmkLookupField extends StatelessWidget {
           decoration: InputDecoration(labelText: label),
           enabled: false,
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            icon: Icon(Icons.add, size: 40),
-            onPressed: onSelect,
+        Padding(
+          padding: EdgeInsets.only(right: 5),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: Icon(Icons.add, size: 40),
+              onPressed: onSelect,
+            ),
           ),
         ),
       ]);

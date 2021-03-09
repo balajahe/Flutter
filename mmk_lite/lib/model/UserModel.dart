@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'User.dart';
+import '../mmk_tools.dart';
 
 class UserModel extends Cubit<User> {
   User _current;
@@ -33,9 +34,12 @@ class UserModel extends Cubit<User> {
         _current.authStatus = AuthStatus.ok;
       }
     } else if (_current.authType == AuthType.unregistered) {
-      if (_current.email.length * _current.phone.length == 0) {
+      _current.authStatusError = '';
+      if (!validateEmail(_current.email)) _current.authStatusError += 'Введите правильный e-mail\n';
+      if (!validatePhone(_current.phone)) _current.authStatusError += 'Введите правильный номер телефона\n';
+      if (_current.authStatusError.length > 0) {
         _current.authStatus = AuthStatus.error;
-        _current.authStatusError = 'Введите e-mail и номер телефона';
+        _current.authStatusError = _current.authStatusError.trimRight();
       } else {
         _wait();
         await Future.delayed(Duration(seconds: 1));

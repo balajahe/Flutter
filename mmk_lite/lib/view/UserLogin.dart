@@ -101,12 +101,7 @@ class UserLogin extends StatelessWidget {
                           : [],
                 ),
               ),
-              (state.authStatus == AuthStatus.waiting)
-                  ? Container(
-                      color: Color.fromARGB(200, 60, 60, 60),
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  : Container(),
+              (state.authStatus == AuthStatus.waiting) ? Waiting() : Container(),
             ],
           ),
         );

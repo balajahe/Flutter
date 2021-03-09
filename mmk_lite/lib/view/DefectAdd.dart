@@ -16,76 +16,81 @@ class DefectAdd extends StatelessWidget {
     return BlocConsumer<DefectModel, DefectState>(
       cubit: defectModel,
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Дефект'),
-            actions: [
-              IconButton(
-                tooltip: 'Сканировать штрихкод',
-                icon: Icon(Icons.qr_code_scanner),
-                onPressed: () {},
+        return Stack(
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                title: Text('Дефект'),
+                actions: [
+                  IconButton(
+                    tooltip: 'Сканировать штрихкод',
+                    icon: Icon(Icons.qr_code_scanner),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    tooltip: 'Добавить изображение',
+                    icon: Icon(Icons.photo_library),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    tooltip: 'Сфотографировать',
+                    icon: Icon(Icons.add_a_photo),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              IconButton(
-                tooltip: 'Добавить изображение',
-                icon: Icon(Icons.photo_library),
-                onPressed: () {},
+              body: Hpadding1(
+                Column(
+                  children: [
+                    MmkLookupField(
+                      text: state.defect.certificate,
+                      label: 'Сертификат',
+                      onSelect: () async {
+                        defectModel.set(
+                            certificate:
+                                await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
+                      },
+                    ),
+                    TextField(
+                      controller: TextEditingController(text: state.defect.productType),
+                      decoration: InputDecoration(labelText: 'Вид продукции'),
+                      onChanged: (v) => defectModel.set(productType: v),
+                    ),
+                    MmkLookupField(
+                      text: state.defect.defectType,
+                      label: 'Дефект',
+                      onSelect: () async {
+                        defectModel.set(
+                            defectType:
+                                await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
+                      },
+                    ),
+                    TextField(
+                      controller: TextEditingController(text: state.defect.notes),
+                      decoration: InputDecoration(labelText: 'Замечания'),
+                      onChanged: (v) => defectModel.set(notes: v),
+                      minLines: 3,
+                      maxLines: 6,
+                    ),
+                  ],
+                ),
               ),
-              IconButton(
-                tooltip: 'Сфотографировать',
-                icon: Icon(Icons.add_a_photo),
-                onPressed: () {},
+              bottomSheet: Padding(
+                padding: EdgeInsets.only(left: 15, right: 20, bottom: 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Изображений: ${state.defect.photos.length}'),
+                    TextButton(
+                      child: Text('Сохранить', style: TextStyle(fontSize: 16)),
+                      onPressed: () => defectModel.addToIssue(issueModel),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-          body: Hpadding1(
-            Column(
-              children: [
-                MmkLookupField(
-                  text: state.defect.certificate,
-                  label: 'Сертификат',
-                  onSelect: () async {
-                    defectModel.set(
-                        certificate:
-                            await Navigator.push(context, MaterialPageRoute(builder: (_) => CertificateLookup())));
-                  },
-                ),
-                TextField(
-                  controller: TextEditingController(text: state.defect.productType),
-                  decoration: InputDecoration(labelText: 'Вид продукции'),
-                  onChanged: (v) => defectModel.set(productType: v),
-                ),
-                MmkLookupField(
-                  text: state.defect.defectType,
-                  label: 'Дефект',
-                  onSelect: () async {
-                    defectModel.set(
-                        defectType:
-                            await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
-                  },
-                ),
-                TextField(
-                  controller: TextEditingController(text: state.defect.notes),
-                  decoration: InputDecoration(labelText: 'Замечания'),
-                  onChanged: (v) => defectModel.set(notes: v),
-                  minLines: 3,
-                  maxLines: 6,
-                ),
-              ],
             ),
-          ),
-          bottomSheet: Padding(
-            padding: EdgeInsets.only(left: 15, right: 20, bottom: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Изображений: ${state.defect.photos.length}'),
-                TextButton(
-                  child: Text('Сохранить', style: TextStyle(fontSize: 16)),
-                  onPressed: () => defectModel.addToIssue(issueModel),
-                ),
-              ],
-            ),
-          ),
+            (state.waiting) ? Waiting() : Container(),
+          ],
         );
       },
       listener: (context, state) {

@@ -10,7 +10,8 @@ class IssueModel extends Cubit<Issue> {
     _current = Issue();
   }
 
-  void add(Defect v) {
+  Future<void> add(Defect v) async {
+    await Future.delayed(Duration(seconds: 1));
     _current.defects.add(v);
     emit(_current.clone());
   }
