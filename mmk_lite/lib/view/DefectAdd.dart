@@ -29,7 +29,7 @@ class DefectAdd extends StatelessWidget {
                   ),
                   IconButton(
                     tooltip: 'Добавить изображение',
-                    icon: Icon(Icons.photo_library),
+                    icon: Icon(Icons.add_photo_alternate),
                     onPressed: () {},
                   ),
                   IconButton(
@@ -80,7 +80,16 @@ class DefectAdd extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Изображений: ${state.defect.photos.length}'),
+                    Row(
+                      children: [
+                        Text('Изображений: ${state.defect.photos.length}'),
+                        IconButton(
+                          tooltip: 'Перейти к изображениям',
+                          icon: Icon(Icons.photo_library),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
                     TextButton(
                       child: Text('Сохранить', style: TextStyle(fontSize: 16)),
                       onPressed: () => defectModel.addToIssue(issueModel),
