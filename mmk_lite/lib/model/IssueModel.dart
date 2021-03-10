@@ -4,11 +4,9 @@ import 'Issue.dart';
 import 'Defect.dart';
 
 class IssueModel extends Cubit<Issue> {
-  Issue _current;
+  Issue _current = Issue();
 
-  IssueModel() : super(Issue()) {
-    _current = Issue();
-  }
+  IssueModel() : super(Issue());
 
   Future<void> add(Defect v) async {
     await Future.delayed(Duration(seconds: 1));
