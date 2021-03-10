@@ -25,7 +25,7 @@ class UserModel extends Cubit<User> {
     if (_current.authType == AuthType.registered) {
       if (_current.login.length * _current.password.length == 0) {
         _current.authStatus = AuthStatus.error;
-        _current.authStatusError = 'Введите логин и пароль';
+        _current.authStatusError = 'Введите логин и пароль!';
       } else {
         _wait();
         await Future.delayed(Duration(seconds: 1));
@@ -33,8 +33,8 @@ class UserModel extends Cubit<User> {
       }
     } else if (_current.authType == AuthType.unregistered) {
       _current.authStatusError = '';
-      if (!validateEmail(_current.email)) _current.authStatusError += 'Введите правильный e-mail\n';
-      if (!validatePhone(_current.phone)) _current.authStatusError += 'Введите правильный номер телефона\n';
+      if (!validateEmail(_current.email)) _current.authStatusError += 'Введите правильный e-mail!\n';
+      if (!validatePhone(_current.phone)) _current.authStatusError += 'Введите правильный номер телефона!\n';
       if (_current.authStatusError.length > 0) {
         _current.authStatus = AuthStatus.error;
         _current.authStatusError = _current.authStatusError.trimRight();

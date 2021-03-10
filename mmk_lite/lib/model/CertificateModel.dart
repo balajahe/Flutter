@@ -1,11 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'AbstractState.dart';
 import 'Certificate.dart';
 
-class CertificateModel extends Cubit<List<Certificate>> {
-  List<Certificate> _all = [];
+class CertificateState extends AbstractState<List<Certificate>> {
+  CertificateState(List<Certificate> data) : super(data);
+}
 
-  CertificateModel() : super([]) {
+class CertificateModel extends Cubit<CertificateState> {
+  List<Certificate> _all = [];
+  String _filter = '';
+
+  CertificateModel() : super(CertificateState([])..waiting = true) {
     _load();
   }
 
@@ -25,6 +31,15 @@ class CertificateModel extends Cubit<List<Certificate>> {
         ..order = 'Заказ3'
         ..date = DateTime.now(),
     ];
-    emit(List.from(_all));
+    emit(CertificateState(_all));
+  }
+
+  void filter(String s) {
+    _filter = s.toLowerCase();
+    emit(CertificateState(_all.where((v) => v.code.toLowerCase().contains(_filter)).toList())..filter = _filter);
+  }
+
+  void clearFilter() {
+    if (_filter.length > 0) filter('');
   }
 }

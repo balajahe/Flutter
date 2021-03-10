@@ -9,6 +9,7 @@ class PositionState extends AbstractState<List<Position>> {
 
 class PositionModel extends Cubit<PositionState> {
   List<Position> _all = [];
+  String _filter = '';
 
   PositionModel() : super(PositionState([])..waiting = true) {
     _load();
@@ -40,7 +41,11 @@ class PositionModel extends Cubit<PositionState> {
   }
 
   void filter(String s) {
-    var ss = s.toLowerCase();
-    emit(PositionState(_all.where((v) => v.roll.toLowerCase().contains(ss)).toList()));
+    _filter = s.toLowerCase();
+    emit(PositionState(_all.where((v) => v.roll.toLowerCase().contains(_filter)).toList())..filter = _filter);
+  }
+
+  void clearFilter() {
+    if (_filter.length > 0) filter('');
   }
 }

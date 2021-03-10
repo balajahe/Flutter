@@ -8,7 +8,7 @@ class DefectTypeState extends AbstractState<List<String>> {
 
 class DefectTypeModel extends Cubit<DefectTypeState> {
   List<String> _all = [];
-  String _searchString = '';
+  String _filter = '';
 
   DefectTypeModel() : super(DefectTypeState([])..waiting = true) {
     _load();
@@ -21,12 +21,11 @@ class DefectTypeModel extends Cubit<DefectTypeState> {
   }
 
   void filter(String s) {
-    _searchString = s.toLowerCase();
-    emit(DefectTypeState(_all.where((v) => v.toLowerCase().contains(_searchString)).toList())
-      ..searchString = _searchString);
+    _filter = s.toLowerCase();
+    emit(DefectTypeState(_all.where((v) => v.toLowerCase().contains(_filter)).toList())..filter = _filter);
   }
 
   void clearFilter() {
-    if (_searchString.length > 0) filter('');
+    if (_filter.length > 0) filter('');
   }
 }

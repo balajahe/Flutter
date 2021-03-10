@@ -8,7 +8,7 @@ class DefectTypeLookup extends StatelessWidget {
   @override
   build(context) {
     var model = context.read<DefectTypeModel>();
-    model.filter('');
+    model.clearFilter();
     var searchController = TextEditingController();
     return BlocBuilder<DefectTypeModel, DefectTypeState>(builder: (context, state) {
       return Scaffold(

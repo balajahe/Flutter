@@ -3,7 +3,7 @@ class AbstractState<T> {
   bool waiting = false;
   bool done = false;
   String error = '';
-  String searchString = '';
+  String filter = '';
 
   AbstractState(this.data);
 }

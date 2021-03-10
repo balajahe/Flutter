@@ -8,7 +8,7 @@ class PositionLookup extends StatelessWidget {
   @override
   build(context) {
     var model = context.read<PositionModel>();
-    model.filter('');
+    model.clearFilter();
     var searchController = TextEditingController();
     return BlocBuilder<PositionModel, PositionState>(builder: (context, state) {
       return Scaffold(
@@ -25,7 +25,15 @@ class PositionLookup extends StatelessWidget {
                 itemBuilder: (context, i) {
                   var position = state.data[i];
                   return ListTile(
-                    title: Text(position.roll),
+                    title: Row(
+                      children: [
+                        Expanded(child: Text(position.num.toString()), flex: 1),
+                        Expanded(child: Text(position.roll), flex: 3),
+                        Expanded(child: Text(position.batch.toString()), flex: 2),
+                        Expanded(child: Text(position.dimensions), flex: 3),
+                        Expanded(child: Text(position.quantity.toString()), flex: 4),
+                      ],
+                    ),
                     onTap: () => Navigator.pop(context, position.roll),
                   );
                 },
