@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/DefectTypeModel.dart';
+import '../model/PositionModel.dart';
 import '../mmk_widgets.dart';
 
-class DefectTypeLookup extends StatelessWidget {
+class PositionLookup extends StatelessWidget {
   @override
   build(context) {
-    var model = context.read<DefectTypeModel>();
+    var model = context.read<PositionModel>();
     model.filter('');
     var searchController = TextEditingController();
-    return BlocBuilder<DefectTypeModel, DefectTypeState>(builder: (context, state) {
+    return BlocBuilder<PositionModel, PositionState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           title: MmkFilterLield(
-            hint: 'Найти дефект...',
+            hint: 'Найти позицию...',
             controller: searchController,
             onChanged: (v) => model.filter(v),
           ),
@@ -23,10 +23,10 @@ class DefectTypeLookup extends StatelessWidget {
             ? ListView.builder(
                 itemCount: state.data.length,
                 itemBuilder: (context, i) {
-                  var defect = state.data[i];
+                  var position = state.data[i];
                   return ListTile(
-                    title: Text(defect),
-                    onTap: () => Navigator.pop(context, defect),
+                    title: Text(position.roll),
+                    onTap: () => Navigator.pop(context, position.roll),
                   );
                 },
               )

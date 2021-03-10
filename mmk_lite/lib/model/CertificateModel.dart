@@ -4,6 +4,7 @@ import 'Certificate.dart';
 
 class CertificateModel extends Cubit<List<Certificate>> {
   List<Certificate> _all = [];
+
   CertificateModel() : super([]) {
     _load();
   }
