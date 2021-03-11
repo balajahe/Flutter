@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
+import 'DefectType.dart';
+
 class Defect {
   String certificate = '';
   String position = '';
   String productType = '';
-  String defectType = '';
+  DefectType defectType = DefectType();
   String notificationNum = '';
   double marriageWeight;
   String settlement = '';

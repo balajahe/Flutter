@@ -23,7 +23,7 @@ class UserModel extends Cubit<User> {
 
   void login() async {
     if (_current.authType == AuthType.registered) {
-      if (_current.login.length * _current.password.length == 0) {
+      if (_current.login.length * _current.password.length < 0) {
         _current.authStatus = AuthStatus.error;
         _current.authStatusError = 'Введите логин и пароль!';
       } else {

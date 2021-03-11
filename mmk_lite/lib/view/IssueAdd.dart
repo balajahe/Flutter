@@ -74,7 +74,7 @@ class _DefectTile extends StatelessWidget {
               Row(
                 children: [
                   Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
-                  Expanded(flex: 3, child: Text(defect.defectType)),
+                  Expanded(flex: 3, child: Text(defect.defectType.name)),
                 ],
               ),
               Hline2(),

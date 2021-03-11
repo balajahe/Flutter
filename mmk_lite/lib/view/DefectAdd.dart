@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mmk_lite/mmk_tools.dart';
 
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
@@ -23,21 +25,13 @@ class DefectAdd extends StatelessWidget {
               appBar: AppBar(
                 title: Text('Дефект'),
                 actions: [
+                  IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
                   IconButton(
-                    tooltip: 'Сканировать штрихкод',
-                    icon: Icon(Icons.qr_code_scanner),
-                    onPressed: () {},
-                  ),
+                      tooltip: 'Добавить изображение',
+                      icon: Icon(Icons.add_photo_alternate),
+                      onPressed: () => _pickImage(defectModel)),
                   IconButton(
-                    tooltip: 'Добавить изображение',
-                    icon: Icon(Icons.add_photo_alternate),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    tooltip: 'Сфотографировать',
-                    icon: Icon(Icons.add_a_photo),
-                    onPressed: () {},
-                  ),
+                      tooltip: 'Сфотографировать', icon: Icon(Icons.add_a_photo), onPressed: () => _takePhoto(context)),
                 ],
               ),
               body: Hpadding1(
@@ -61,13 +55,13 @@ class DefectAdd extends StatelessWidget {
                                 await Navigator.push(context, MaterialPageRoute(builder: (_) => PositionLookup())));
                       },
                     ),
-                    TextField(
-                      controller: TextEditingController(text: state.data.productType),
-                      decoration: InputDecoration(labelText: 'Вид продукции'),
+                    MmkTextField(
+                      text: state.data.productType,
+                      label: 'Вид продукции',
                       onChanged: (v) => defectModel.set(productType: v),
                     ),
                     MmkLookupField(
-                      text: state.data.defectType,
+                      text: state.data.defectType.name,
                       label: 'Дефект',
                       onSelect: () async {
                         defectModel.set(
@@ -75,9 +69,9 @@ class DefectAdd extends StatelessWidget {
                                 await Navigator.push(context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
                       },
                     ),
-                    TextField(
-                      controller: TextEditingController(text: state.data.notes),
-                      decoration: InputDecoration(labelText: 'Замечания'),
+                    MmkTextField(
+                      text: state.data.notes,
+                      label: 'Замечания',
                       onChanged: (v) => defectModel.set(notes: v),
                       minLines: 3,
                       maxLines: 6,
@@ -93,11 +87,13 @@ class DefectAdd extends StatelessWidget {
                     Row(
                       children: [
                         Text('Изображений: ${state.data.photos.length}'),
-                        IconButton(
-                          tooltip: 'Перейти к изображениям',
-                          icon: Icon(Icons.photo_library),
-                          onPressed: () {},
-                        ),
+                        (state.data.photos.length > 0)
+                            ? IconButton(
+                                tooltip: 'Перейти к изображениям',
+                                icon: Icon(Icons.photo_library),
+                                onPressed: () {},
+                              )
+                            : Text(''),
                       ],
                     ),
                     TextButton(
@@ -120,5 +116,21 @@ class DefectAdd extends StatelessWidget {
         }
       },
     );
+  }
+
+  void _pickImage(DefectModel defectModel) async {
+    var image = await pickImage();
+    if (image != null) {
+      defectModel.addImage(image);
+    }
+  }
+
+  void _takePhoto(context) {
+    if (kIsWeb) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'В web-версии фотосъемка не реализована!\nУстановите приложение из магазина, или нажмите кнопку выбора файла из галереи.'),
+      ));
+    }
   }
 }

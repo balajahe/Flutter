@@ -13,7 +13,7 @@ class DefectTypeLookup extends StatelessWidget {
     return BlocBuilder<DefectTypeModel, DefectTypeState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: MmkFilterLield(
+          title: MmkFilterField(
             hint: 'Найти дефект...',
             controller: searchController,
             onChanged: (v) => model.filter(v),
@@ -23,10 +23,10 @@ class DefectTypeLookup extends StatelessWidget {
             ? ListView.builder(
                 itemCount: state.data.length,
                 itemBuilder: (context, i) {
-                  var defect = state.data[i];
+                  var defectType = state.data[i];
                   return ListTile(
-                    title: Text(defect),
-                    onTap: () => Navigator.pop(context, defect),
+                    title: Text(defectType.name),
+                    onTap: () => Navigator.pop(context, defectType),
                   );
                 },
               )

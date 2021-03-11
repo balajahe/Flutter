@@ -53,28 +53,30 @@ class Waiting extends StatelessWidget {
       );
 }
 
-class MmkFilterLield extends StatelessWidget {
-  final String hint;
-  final TextEditingController controller;
+class MmkTextField extends StatelessWidget {
+  final String text;
+  final String label;
   final Function(String) onChanged;
-  final Function(String) onSubmitted;
+  final TextEditingController controller;
+  final int minLines;
+  final int maxLines;
 
-  MmkFilterLield({this.hint, this.controller, this.onChanged, this.onSubmitted});
+  MmkTextField({
+    this.text,
+    this.label,
+    this.onChanged,
+    this.controller,
+    this.minLines,
+    this.maxLines,
+  });
 
   @override
   build(context) => TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(color: Colors.white60),
-          border: InputBorder.none,
-        ),
-        style: TextStyle(color: Colors.white),
-        cursorColor: Colors.white,
-        cursorWidth: 2,
-        autofocus: true,
+        controller: (controller != null) ? controller : TextEditingController(text: text),
+        decoration: InputDecoration(labelText: label),
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        minLines: minLines,
+        maxLines: maxLines,
       );
 }
 
@@ -103,6 +105,33 @@ class MmkLookupField extends StatelessWidget {
           ),
         ),
       ]);
+}
+
+class MmkFilterField extends StatelessWidget {
+  final String text;
+
+  final String hint;
+  final Function(String) onChanged;
+  final Function(String) onSubmitted;
+  final TextEditingController controller;
+
+  MmkFilterField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
+
+  @override
+  build(context) => TextField(
+        controller: (controller != null) ? controller : TextEditingController(text: text),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.white60),
+          border: InputBorder.none,
+        ),
+        style: TextStyle(color: Colors.white),
+        cursorColor: Colors.white,
+        cursorWidth: 2,
+        autofocus: true,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+      );
 }
 
 class Logo extends StatelessWidget {

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mmk_lite/model/DefectType.dart';
 
 import 'AbstractState.dart';
 import 'Defect.dart';
@@ -18,7 +21,7 @@ class DefectModel extends Cubit<DefectState> {
     String certificate,
     String position,
     String productType,
-    String defectType,
+    DefectType defectType,
     String notes,
   }) {
     _current.certificate = certificate ?? _current.certificate;
@@ -33,8 +36,13 @@ class DefectModel extends Cubit<DefectState> {
     emit(_lastState); //не обновляем форму
   }
 
+  void addImage(Uint8List image) {
+    _current.photos.add(image);
+    emit(DefectState(_current));
+  }
+
   void addToIssue(IssueModel issueModel) async {
-    if (_current.certificate.length * _current.productType.length * _current.defectType.length > 0) {
+    if (_current.certificate.length * _current.productType.length * _current.defectType.name.length > 0) {
       emit(DefectState(_current)..waiting = true);
       await issueModel.add(_current);
       emit(DefectState(_current)..done = true);

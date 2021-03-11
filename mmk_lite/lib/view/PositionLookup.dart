@@ -13,7 +13,7 @@ class PositionLookup extends StatelessWidget {
     return BlocBuilder<PositionModel, PositionState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: MmkFilterLield(
+          title: MmkFilterField(
             hint: 'Найти позицию...',
             controller: searchController,
             onChanged: (v) => model.filter(v),
