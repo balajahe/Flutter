@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/PositionModel.dart';
-import '../mmk_widgets.dart';
+import '../tools/mmk_widgets.dart';
 
 class PositionLookup extends StatelessWidget {
   @override

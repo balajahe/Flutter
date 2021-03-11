@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mmk_lite/model/IssueModel.dart';
-import 'package:mmk_lite/mmk_widgets.dart';
+import 'package:mmk_lite/tools/mmk_widgets.dart';
 
 import '../model/Issue.dart';
 import '../model/IssueModel.dart';

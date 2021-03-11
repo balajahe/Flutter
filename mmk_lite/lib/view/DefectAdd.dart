@@ -1,12 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mmk_lite/mmk_tools.dart';
 
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
-import '../mmk_widgets.dart';
+import '../tools/mmk_widgets.dart';
+import '../tools/mmk_tools.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
@@ -25,13 +24,11 @@ class DefectAdd extends StatelessWidget {
               appBar: AppBar(
                 title: Text('Дефект'),
                 actions: [
-                  IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
+                  //IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
                   IconButton(
                       tooltip: 'Добавить изображение',
-                      icon: Icon(Icons.add_photo_alternate),
+                      icon: Icon(Icons.add_a_photo),
                       onPressed: () => _pickImage(defectModel)),
-                  IconButton(
-                      tooltip: 'Сфотографировать', icon: Icon(Icons.add_a_photo), onPressed: () => _takePhoto(context)),
                 ],
               ),
               body: Hpadding1(
@@ -125,12 +122,12 @@ class DefectAdd extends StatelessWidget {
     }
   }
 
-  void _takePhoto(context) {
-    if (kIsWeb) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'В web-версии фотосъемка не реализована!\nУстановите приложение из магазина, или нажмите кнопку выбора файла из галереи.'),
-      ));
-    }
-  }
+  // void _takePhoto(context) {
+  //   if (kIsWeb) {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //       content: Text(
+  //           'В web-версии фотосъемка не реализована!\nУстановите приложение из магазина, или нажмите кнопку выбора файла из галереи.'),
+  //     ));
+  //   }
+  // }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../model/CertificateModel.dart';
-import '../mmk_widgets.dart';
+import '../tools/mmk_widgets.dart';
 
 class CertificateLookup extends StatelessWidget {
   @override
