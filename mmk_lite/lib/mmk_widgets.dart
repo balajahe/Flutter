@@ -1,23 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Logo extends StatelessWidget {
-  @override
-  build(conetxt) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset('assets/mmk_logo.png'),
-          Container(width: 10),
-          Text('LITE', style: TextStyle(fontSize: 50, color: Colors.blue[900])),
-        ],
-      );
-}
-
-class AnonAvatar extends StatelessWidget {
-  @override
-  build(context) => Image.asset('assets/anon_avatar.png');
-}
+final gridHeaderStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
 
 class Hpadding1 extends StatelessWidget {
   final Widget child;
@@ -121,5 +105,20 @@ class MmkLookupField extends StatelessWidget {
       ]);
 }
 
-Future<dynamic> lookup(BuildContext context, Widget form) =>
-    Navigator.push(context, MaterialPageRoute(builder: (_) => form));
+class Logo extends StatelessWidget {
+  @override
+  build(conetxt) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset('assets/mmk_logo.png'),
+          Container(width: 10),
+          Text('LITE', style: TextStyle(fontSize: 50, color: Colors.blue[900])),
+        ],
+      );
+}
+
+class AnonAvatar extends StatelessWidget {
+  @override
+  build(context) => Image.asset('assets/anon_avatar.png');
+}

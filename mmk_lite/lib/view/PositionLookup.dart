@@ -25,13 +25,26 @@ class PositionLookup extends StatelessWidget {
                 itemBuilder: (context, i) {
                   var position = state.data[i];
                   return ListTile(
-                    title: Row(
+                    title: Column(
                       children: [
-                        Expanded(child: Text(position.num.toString()), flex: 1),
-                        Expanded(child: Text(position.roll), flex: 3),
-                        Expanded(child: Text(position.batch.toString()), flex: 2),
-                        Expanded(child: Text(position.dimensions), flex: 3),
-                        Expanded(child: Text(position.quantity.toString()), flex: 4),
+                        Row(
+                          children: [
+                            Expanded(child: Text('№', style: gridHeaderStyle), flex: 1),
+                            Expanded(child: Text('Рулон', style: gridHeaderStyle), flex: 3),
+                            Expanded(child: Text('Партия', style: gridHeaderStyle), flex: 2),
+                            Expanded(child: Text('Толщ.Шир.', style: gridHeaderStyle), flex: 3),
+                            Expanded(child: Text('Кол-во', style: gridHeaderStyle), flex: 4),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(child: Text(position.num.toString()), flex: 1),
+                            Expanded(child: Text(position.roll), flex: 3),
+                            Expanded(child: Text(position.batch.toString()), flex: 2),
+                            Expanded(child: Text(position.dimensions), flex: 3),
+                            Expanded(child: Text(position.quantity.toString()), flex: 4),
+                          ],
+                        ),
                       ],
                     ),
                     onTap: () => Navigator.pop(context, position.roll),

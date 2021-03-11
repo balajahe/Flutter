@@ -59,40 +59,22 @@ class _DefectTile extends StatelessWidget {
               Container(height: 5),
               Row(
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text('Серт. №', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Text(defect.certificate),
-                  ),
+                  Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
+                  Expanded(flex: 3, child: Text(defect.certificate)),
                 ],
               ),
               Hline1(),
               Row(
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text('Вид продукции', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Text(defect.productType),
-                  ),
+                  Expanded(flex: 2, child: Text('Вид продукции', style: gridHeaderStyle)),
+                  Expanded(flex: 3, child: Text(defect.productType)),
                 ],
               ),
               Hline1(),
               Row(
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text('Дефект', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Text(defect.defectType),
-                  ),
+                  Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
+                  Expanded(flex: 3, child: Text(defect.defectType)),
                 ],
               ),
               Hline2(),
