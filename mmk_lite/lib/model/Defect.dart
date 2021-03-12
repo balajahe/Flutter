@@ -11,7 +11,7 @@ class Defect {
   double marriageWeight;
   String settlement = '';
   String notes = '';
-  List<Uint8List> photos = [];
+  List<Uint8List> images = [];
 
   Defect clone() => Defect()
     ..certificate = certificate
@@ -22,5 +22,5 @@ class Defect {
     ..marriageWeight = marriageWeight
     ..settlement = settlement
     ..notes = notes
-    ..photos = List.from(photos);
+    ..images = List.from(images);
 }

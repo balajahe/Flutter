@@ -39,7 +39,7 @@ class DefectModel extends Cubit<DefectState> {
   }
 
   void addImage(Uint8List image) {
-    _current.photos.add(image);
+    _current.images.add(image);
     emit(DefectState(_current));
   }
 

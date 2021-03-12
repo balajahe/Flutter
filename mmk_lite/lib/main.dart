@@ -10,6 +10,7 @@ import 'model/DefectTypeModel.dart';
 import 'view/UserLogin.dart';
 
 void main() {
+  ErrorWidget.builder = (e) => Scaffold(body: SingleChildScrollView(child: SelectableText(e.toString())));
   runApp(MyApp());
 }
 
