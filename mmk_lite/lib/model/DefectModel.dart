@@ -22,12 +22,14 @@ class DefectModel extends Cubit<DefectState> {
     String position,
     String productType,
     DefectType defectType,
+    double marriageWeight,
     String notes,
   }) {
     _current.certificate = certificate ?? _current.certificate;
     _current.position = position ?? _current.position;
     _current.productType = productType ?? _current.productType;
     _current.defectType = defectType ?? _current.defectType;
+    _current.marriageWeight = marriageWeight ?? _current.marriageWeight;
     _current.notes = notes ?? _current.notes;
 
     if (certificate != null || position != null || defectType != null) {

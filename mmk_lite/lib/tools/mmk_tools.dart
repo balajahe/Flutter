@@ -1,4 +1,4 @@
-export 'camera_mobile.dart' if (dart.library.html) 'camera_web.dart';
+export 'camera_mobile.dart' if (dart.library.html) 'camera_web.dart' show pickImage;
 
 bool validatePhone(String v) {
   return RegExp(r'(^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$)').hasMatch(v);

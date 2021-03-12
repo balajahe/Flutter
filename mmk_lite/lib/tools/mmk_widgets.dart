@@ -58,6 +58,7 @@ class MmkTextField extends StatelessWidget {
   final String label;
   final Function(String) onChanged;
   final TextEditingController controller;
+  final TextInputType keyboardType;
   final int minLines;
   final int maxLines;
 
@@ -66,6 +67,7 @@ class MmkTextField extends StatelessWidget {
     this.label,
     this.onChanged,
     this.controller,
+    this.keyboardType,
     this.minLines,
     this.maxLines,
   });
@@ -75,6 +77,7 @@ class MmkTextField extends StatelessWidget {
         controller: (controller != null) ? controller : TextEditingController(text: text),
         decoration: InputDecoration(labelText: label),
         onChanged: onChanged,
+        keyboardType: keyboardType,
         minLines: minLines,
         maxLines: maxLines,
       );

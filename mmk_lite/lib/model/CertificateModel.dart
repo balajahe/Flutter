@@ -36,7 +36,9 @@ class CertificateModel extends Cubit<CertificateState> {
 
   void filter(String s) {
     _filter = s.toLowerCase();
-    emit(CertificateState(_all.where((v) => v.code.toLowerCase().contains(_filter)).toList())..filter = _filter);
+    emit(CertificateState(
+        _all.where((v) => v.code.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList())
+      ..filter = _filter);
   }
 
   void clearFilter() {

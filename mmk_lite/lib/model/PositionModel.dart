@@ -42,7 +42,14 @@ class PositionModel extends Cubit<PositionState> {
 
   void filter(String s) {
     _filter = s.toLowerCase();
-    emit(PositionState(_all.where((v) => v.roll.toLowerCase().contains(_filter)).toList())..filter = _filter);
+    emit(PositionState(_all
+        .where((v) =>
+            v.roll.toLowerCase().contains(_filter) ||
+            v.batch.toLowerCase().contains(_filter) ||
+            v.dimensions.toLowerCase().contains(_filter) ||
+            v.quantity.toString().contains(_filter))
+        .toList())
+      ..filter = _filter);
   }
 
   void clearFilter() {

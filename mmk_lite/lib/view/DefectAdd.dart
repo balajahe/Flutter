@@ -67,6 +67,12 @@ class DefectAdd extends StatelessWidget {
                       },
                     ),
                     MmkTextField(
+                      text: state.data.marriageWeight?.toString(),
+                      label: 'Вес брака, т',
+                      onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
+                      keyboardType: TextInputType.number,
+                    ),
+                    MmkTextField(
                       text: state.data.notes,
                       label: 'Замечания',
                       onChanged: (v) => defectModel.set(notes: v),
