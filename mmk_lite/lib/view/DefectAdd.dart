@@ -101,8 +101,10 @@ class DefectAdd extends StatelessWidget {
                                     onPressed: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (_) =>
-                                                BlocProvider.value(value: defectModel, child: DefectImages()))),
+                                            builder: (_) => BlocProvider.value(
+                                                  value: defectModel,
+                                                  child: DefectImages(),
+                                                ))),
                                   )
                                 : Text(''),
                           ],
