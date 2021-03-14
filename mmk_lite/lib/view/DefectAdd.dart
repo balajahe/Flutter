@@ -99,12 +99,11 @@ class DefectAdd extends StatelessWidget {
                                     tooltip: 'Перейти к изображениям',
                                     icon: Icon(Icons.photo_library),
                                     onPressed: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => BlocProvider.value(
-                                                  value: defectModel,
-                                                  child: DefectImages(),
-                                                ))),
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => BlocProvider.value(value: defectModel, child: DefectImages()),
+                                      ),
+                                    ),
                                   )
                                 : Text(''),
                           ],

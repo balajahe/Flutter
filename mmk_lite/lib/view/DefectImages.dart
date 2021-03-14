@@ -14,7 +14,7 @@ class DefectImages extends StatelessWidget {
             children: state.data.images
                 .map(
                   (v) => Padding(
-                    padding: EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
+                    padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 0),
                     child: Image.memory(v),
                   ),
                 )
