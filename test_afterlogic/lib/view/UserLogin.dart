@@ -59,7 +59,7 @@ class UserLogin extends StatelessWidget {
       listener: (cuntext, state) {
         if (state.error != '')
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
+            SnackBar(content: SelectableText(state.error)),
           );
         else if (state.done)
           Navigator.pushAndRemoveUntil(
