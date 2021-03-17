@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../controller/UserController.dart';
+import '../controller/SessionController.dart';
 import 'afterlogic_widgets.dart';
-import 'ContactListPerson.dart';
+import 'ContactList.dart';
 
-class UserLogin extends StatelessWidget {
+class SessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var controller = context.read<UserController>();
-    return BlocConsumer<UserController, UserState>(
+    var controller = context.read<SessionController>();
+    return BlocConsumer<SessionController, SessionState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -19,7 +19,11 @@ class UserLogin extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Contact Manager', style: TextStyle(fontSize: 20)),
+                    Text('Contact Manager',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        )),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -28,11 +32,13 @@ class UserLogin extends StatelessWidget {
                           decoration: InputDecoration(labelText: 'Host'),
                           onChanged: (v) => controller.set(host: v),
                         ),
+                        Container(height: 20),
                         TextField(
                           controller: TextEditingController(text: state.data.email),
                           decoration: InputDecoration(labelText: 'Email'),
                           onChanged: (v) => controller.set(email: v),
                         ),
+                        Container(height: 20),
                         TextField(
                           controller: TextEditingController(text: state.data.password),
                           decoration: InputDecoration(labelText: 'Password'),
@@ -43,6 +49,7 @@ class UserLogin extends StatelessWidget {
                     ),
                     Container(
                       width: 200,
+                      height: 35,
                       child: ElevatedButton(
                         child: Text('LOGIN'),
                         onPressed: () => controller.login(),
@@ -59,12 +66,12 @@ class UserLogin extends StatelessWidget {
       listener: (cuntext, state) {
         if (state.error != '')
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: SelectableText(state.error)),
+            SnackBar(content: SelectableText('Authentificate error!')),
           );
         else if (state.done)
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => ContactListPerson()),
+            MaterialPageRoute(builder: (_) => ContactList()),
             (_) => false,
           );
       },

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final gridHeaderStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
@@ -53,7 +52,7 @@ class Waiting extends StatelessWidget {
       );
 }
 
-class MmkTextField extends StatelessWidget {
+class StatelessTextField extends StatelessWidget {
   final String text;
   final String label;
   final Function(String) onChanged;
@@ -62,7 +61,7 @@ class MmkTextField extends StatelessWidget {
   final int minLines;
   final int maxLines;
 
-  MmkTextField({
+  StatelessTextField({
     this.text,
     this.label,
     this.onChanged,
@@ -83,12 +82,12 @@ class MmkTextField extends StatelessWidget {
       );
 }
 
-class MmkLookupField extends StatelessWidget {
+class StatelessLookupField extends StatelessWidget {
   final String text;
   final String label;
   final Function onSelect;
 
-  MmkLookupField({this.text = '', this.label, this.onSelect});
+  StatelessLookupField({this.text = '', this.label, this.onSelect});
 
   @override
   build(context) => Stack(children: [
@@ -110,7 +109,7 @@ class MmkLookupField extends StatelessWidget {
       ]);
 }
 
-class MmkFilterField extends StatelessWidget {
+class StatelessFilterField extends StatelessWidget {
   final String text;
 
   final String hint;
@@ -118,7 +117,7 @@ class MmkFilterField extends StatelessWidget {
   final Function(String) onSubmitted;
   final TextEditingController controller;
 
-  MmkFilterField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
+  StatelessFilterField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
 
   @override
   build(context) => TextField(
@@ -135,22 +134,4 @@ class MmkFilterField extends StatelessWidget {
         onChanged: onChanged,
         onSubmitted: onSubmitted,
       );
-}
-
-class Logo extends StatelessWidget {
-  @override
-  build(conetxt) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset('assets/mmk_logo.png'),
-          Container(width: 10),
-          Text('LITE', style: TextStyle(fontSize: 50, color: Colors.blue[900])),
-        ],
-      );
-}
-
-class AnonAvatar extends StatelessWidget {
-  @override
-  build(context) => Image.asset('assets/anon_avatar.png');
 }

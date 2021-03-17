@@ -1,17 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
-import '../entity/User.dart';
-import '../dao/UserDao.dart';
+import '../entity/Session.dart';
+import '../dao/SessionDao.dart';
 
-class UserState extends AbstractState<User> {
-  UserState(User data) : super(data);
+class SessionState extends AbstractState<Session> {
+  SessionState(Session data) : super(data);
 }
 
-class UserController extends Cubit<UserState> {
-  User _data = User();
+class SessionController extends Cubit<SessionState> {
+  Session _data = Session();
 
-  UserController() : super(UserState(User()));
+  SessionController() : super(SessionState(Session()));
+
+  Session get session => _data.clone();
 
   void set({String host, String email, String password}) {
     _data.host = host ?? _data.host;
@@ -21,15 +23,17 @@ class UserController extends Cubit<UserState> {
 
   void login() async {
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
-      emit(UserState(_data)..error = 'Fill in all the fields!');
+      emit(SessionState(_data)..error = 'Fill in all the fields!');
     } else if (!_validateEmail(_data.email)) {
-      emit(UserState(_data)..error = 'Email is incorrect!');
+      emit(SessionState(_data)..error = 'Email is incorrect!');
     } else {
       try {
-        _data = await UserDao().login(_data);
-        emit(UserState(_data)..done = true);
+        emit(SessionState(_data)..waiting = true);
+        _data = await SessionDao().login(_data);
+        _data.password = '';
+        emit(SessionState(_data)..done = true);
       } catch (e) {
-        emit(UserState(_data)..error = e.toString());
+        emit(SessionState(_data)..error = e.toString());
       }
     }
   }
