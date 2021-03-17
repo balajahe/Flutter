@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../controller/SessionController.dart';
-import 'afterlogic_widgets.dart';
+import '../model/SessionModel.dart';
+import 'common_widgets.dart';
 import 'ContactList.dart';
 
 class SessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var controller = context.read<SessionController>();
-    return BlocConsumer<SessionController, SessionState>(
+    var controller = context.read<SessionModel>();
+    return BlocConsumer<SessionModel, SessionState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 30, right: 30, top: 40),
+                padding: EdgeInsets.only(left: 30, right: 30, top: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

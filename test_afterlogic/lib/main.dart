@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'controller/SessionController.dart';
-import 'controller/ContactListController.dart';
+import 'model/SessionModel.dart';
+import 'model/ContactModel.dart';
 
 import 'view/SessionLogin.dart';
 
@@ -16,12 +16,8 @@ class MyApp extends StatelessWidget {
   build(context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => SessionController()),
-        BlocProvider(
-          create: (context) => ContactListController(
-            sessionController: context.read<SessionController>(),
-          ),
-        ),
+        BlocProvider(create: (context) => SessionModel()),
+        BlocProvider(create: (context) => ContactModel(context.read<SessionModel>())),
       ],
       child: MaterialApp(
         title: 'Afterlogic Test',

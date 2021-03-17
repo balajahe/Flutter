@@ -4,9 +4,17 @@ import 'package:http/http.dart' as http;
 import '../entity/Session.dart';
 
 class SessionDao {
+  Uri _uri;
+  String _authToken;
+
+  Uri get uri => _uri;
+  String get authToken => _authToken;
+
   Future<Session> login(Session session) async {
+    _uri = Uri.parse(session.host + '/?/Api/');
+
     var resp = await http.post(
-      Uri.parse(session.host + '/?/Api/'),
+      uri,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
@@ -18,8 +26,7 @@ class SessionDao {
     );
     print(resp.body);
 
-    var res = jsonDecode(resp.body);
-    session.authToken = res['Result']['AuthToken'];
+    _authToken = jsonDecode(resp.body)['Result']['AuthToken'];
 
     return session;
   }

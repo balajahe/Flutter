@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'AbstractState.dart';
 import '../entity/Session.dart';
@@ -8,12 +10,13 @@ class SessionState extends AbstractState<Session> {
   SessionState(Session data) : super(data);
 }
 
-class SessionController extends Cubit<SessionState> {
+class SessionModel extends Cubit<SessionState> {
   Session _data = Session();
+  SessionDao _dao;
 
-  SessionController() : super(SessionState(Session()));
+  SessionModel() : super(SessionState(Session()));
 
-  Session get session => _data.clone();
+  SessionDao get dao => _dao;
 
   void set({String host, String email, String password}) {
     _data.host = host ?? _data.host;
@@ -29,7 +32,8 @@ class SessionController extends Cubit<SessionState> {
     } else {
       try {
         emit(SessionState(_data)..waiting = true);
-        _data = await SessionDao().login(_data);
+        _dao = SessionDao();
+        _data = await _dao.login(_data);
         _data.password = '';
         emit(SessionState(_data)..done = true);
       } catch (e) {
