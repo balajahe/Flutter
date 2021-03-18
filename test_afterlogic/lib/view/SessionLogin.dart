@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/SessionModel.dart';
-import 'common_widgets.dart';
+import 'lib/common_widgets.dart';
 import 'ContactList.dart';
 
 class SessionLogin extends StatelessWidget {

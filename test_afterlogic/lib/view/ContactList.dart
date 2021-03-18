@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../entity/Contact.dart';
 import '../model/ContactModel.dart';
+import 'lib/LogoutButton.dart';
 import 'ContactView.dart';
-import 'SessionLogin.dart';
 
 class ContactList extends StatelessWidget {
   @override
@@ -20,16 +19,10 @@ class ContactList extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
+              tooltip: 'Refresh',
               onPressed: () => model.refresh(),
             ),
-            IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => SessionLogin()),
-                (_) => false,
-              ),
-            ),
+            LogoutButton(),
           ],
         ),
         drawer: Drawer(),
@@ -47,8 +40,8 @@ class ContactList extends StatelessWidget {
                   } else {
                     model.read(contact);
                     return ListTile(
-                      title: Text(contact.uuid),
-                      subtitle: Text(contact.etag),
+                      title: Text('...'),
+                      subtitle: Text(''),
                       onTap: () {},
                     );
                   }
@@ -58,6 +51,4 @@ class ContactList extends StatelessWidget {
       );
     });
   }
-
-  void _view(Contact contact) {}
 }

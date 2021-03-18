@@ -55,8 +55,12 @@ class ContactDao {
     print(resp.body);
     var res = jsonDecode(resp.body)['Result'][0];
     contact
-      ..email = res['ViewEmail']
-      ..name = res['FullName'];
+      ..email = res['PersonalEmail']
+      ..name = res['FullName']
+      ..phone = res['PersonalPhone']
+      ..address = res['PersonalAddress'].toString()
+      ..skype = res['Skype']
+      ..facebook = res['Facebook'];
     return contact;
   }
 
