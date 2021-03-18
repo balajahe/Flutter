@@ -4,9 +4,9 @@ import '../entity/Contact.dart';
 import '../entity/ContactStorage.dart';
 import 'SessionDao.dart';
 
-class ContactDao {
+class ContactDaoRemote {
   SessionDao _sessionDao;
-  ContactDao(this._sessionDao);
+  ContactDaoRemote(this._sessionDao);
 
   Future<List<ContactStorage>> getStorages() async {
     var res = await _sessionDao.post({
