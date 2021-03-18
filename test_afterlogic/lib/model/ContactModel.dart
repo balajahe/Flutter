@@ -42,10 +42,15 @@ class ContactModel extends Cubit<ContactState> {
     _storages.forEach((sr) {
       try {
         var sl = storagesLocal.firstWhere((sl) => sl.id == sr.id && sl.ctag == sr.ctag);
-        sr.contacts = sl.contacts;
-      } catch (e) {
-        print(e.toString());
-      }
+        sr.contacts.forEach((cr) {
+          try {
+            var cl = sl.contacts.firstWhere((cl) => cl.uuid == cr.uuid && cl.etag == cr.etag);
+            sr.contacts.add(cl);
+          } catch (_) {
+            sr.contacts.add(cr);
+          }
+        });
+      } catch (_) {}
     });
     await setStorage(_storages[0]);
     emit(ContactState(_storages, _storage, _storage.contacts));

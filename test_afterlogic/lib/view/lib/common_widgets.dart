@@ -1,49 +1,5 @@
 import 'package:flutter/material.dart';
 
-final gridHeaderStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
-
-class Hpadding1 extends StatelessWidget {
-  final Widget child;
-  Hpadding1(this.child);
-  @override
-  build(context) => Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: child,
-      );
-}
-
-class Hpadding2 extends StatelessWidget {
-  final Widget child;
-  Hpadding2(this.child);
-  @override
-  build(context) => Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
-        child: child,
-      );
-}
-
-class Hline1 extends StatelessWidget {
-  @override
-  build(context) => Column(
-        children: [
-          Container(height: 3),
-          Container(height: 1, color: Colors.grey[200]),
-          Container(height: 2),
-        ],
-      );
-}
-
-class Hline2 extends StatelessWidget {
-  @override
-  build(context) => Column(
-        children: [
-          Container(height: 5),
-          Container(height: 2, color: Colors.grey[300]),
-          Container(height: 4),
-        ],
-      );
-}
-
 class Waiting extends StatelessWidget {
   @override
   build(context) => Container(
@@ -133,5 +89,49 @@ class StatelessFilterField extends StatelessWidget {
         autofocus: true,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
+      );
+}
+
+final gridHeaderStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
+
+class Hpadding1 extends StatelessWidget {
+  final Widget child;
+  Hpadding1(this.child);
+  @override
+  build(context) => Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: child,
+      );
+}
+
+class Hpadding2 extends StatelessWidget {
+  final Widget child;
+  Hpadding2(this.child);
+  @override
+  build(context) => Padding(
+        padding: EdgeInsets.only(left: 16, right: 16),
+        child: child,
+      );
+}
+
+class Hline1 extends StatelessWidget {
+  @override
+  build(context) => Column(
+        children: [
+          Container(height: 3),
+          Container(height: 1, color: Colors.grey[200]),
+          Container(height: 2),
+        ],
+      );
+}
+
+class Hline2 extends StatelessWidget {
+  @override
+  build(context) => Column(
+        children: [
+          Container(height: 5),
+          Container(height: 2, color: Colors.grey[300]),
+          Container(height: 4),
+        ],
       );
 }
