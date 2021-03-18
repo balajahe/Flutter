@@ -24,7 +24,7 @@ class UserModel extends Cubit<UserState> {
 
   void login() async {
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
-      emit(UserState(_data)..error = 'Fill in all the fields!');
+      emit(UserState(_data)..error = 'Fill in all fields!');
     } else if (!_validateEmail(_data.email)) {
       emit(UserState(_data)..error = 'Email is incorrect!');
     } else {

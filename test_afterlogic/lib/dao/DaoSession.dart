@@ -1,20 +1,25 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/User.dart';
 
 class DaoSession {
   Uri _uri;
   String _authToken = '';
+  SharedPreferences _localStorage;
 
-  Future<void> login(User session) async {
-    _uri = Uri.parse(session.host + '/?/Api/');
+  SharedPreferences get localStorage => _localStorage;
+
+  Future<void> login(User user) async {
+    _uri = Uri.parse(user.host + '/?/Api/');
     var res = await post({
       'Module': 'Core',
       'Method': 'Login',
-      'Parameters': jsonEncode({'Login': session.email, 'Password': session.password}),
+      'Parameters': jsonEncode({'Login': user.email, 'Password': user.password}),
     });
     _authToken = res['AuthToken'];
+    _localStorage = await SharedPreferences.getInstance();
   }
 
   Future<dynamic> post(Object req) async {
@@ -23,7 +28,7 @@ class DaoSession {
     if (_authToken.length > 0) headers['Authorization'] = 'Bearer ' + _authToken;
 
     var resp = await http.post(_uri, headers: headers, body: req);
-    print(resp.body);
+    print('\n$resp.body');
     return jsonDecode(resp.body)['Result'];
   }
 }
