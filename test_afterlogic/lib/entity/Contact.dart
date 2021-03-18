@@ -1,7 +1,4 @@
-enum ContactType { personal, team }
-
 class Contact {
-  ContactType type;
   String uuid = '';
   String etag = '';
   String email = '';

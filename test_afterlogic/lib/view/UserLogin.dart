@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/SessionModel.dart';
+import '../model/UserModel.dart';
 import 'lib/common_widgets.dart';
 import 'ContactList.dart';
 
 class SessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var controller = context.read<SessionModel>();
-    return BlocConsumer<SessionModel, SessionState>(
+    var controller = context.read<UserModel>();
+    return BlocConsumer<UserModel, UserState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -66,7 +66,7 @@ class SessionLogin extends StatelessWidget {
       listener: (cuntext, state) {
         if (state.error != '')
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: SelectableText('Authentificate error!')),
+            SnackBar(content: Text(state.error)),
           );
         else if (state.done)
           Navigator.pushAndRemoveUntil(

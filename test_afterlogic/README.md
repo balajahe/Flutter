@@ -1,16 +1,19 @@
-# test_afterlogic
+Термины обсуждаемы, но сейчас структура папок такая:
 
-A new Flutter project.
+- entity - чистые дата-объекты;
+- dao - работа с удаленными и локальными хранилищами;
+- model - вью-модель пользовательского интерфейса, принимает события, эмитирует экземпляры стейта;
+- view - лишенные состояния виджеты пользовательского интерфейса;
 
-## Getting Started
+Почему такие названия - в редакторе кода папки упорядочены по алфавиту, и последовательность dao - entity - model - view точно соответствует цепочке зависимостей для слоев архитектуры. Доменная модель не выделена, считаем что для корпоративного фронтенда она в основном на сервере.
 
-This project is a starting point for a Flutter application.
+Управление состоянием - flutter_bloc (Cubit). Абстрактный стейт - это обертка над данными, содержащая флаги.
 
-A few resources to get you started if this is your first Flutter project:
+Локальное хранилище - shared_preferences в сериализованном json. Не лучшее решение, но для теста норм.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Контакты загружаем по одному через ListView.builder, что медленней чем диапазоном (API позволяет диапазон), зато приложение получается более отзывчивым, ведь загружаются только те контакты, которые показываются на экране. Это нехорошо для клиентского полнотекстового поиска, но для теста норм.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Обработка ошибок не реализована, поиск и сортировка контактов не реализованы, но для теста и так слишком много работы.
+
+PS
+Код несовершенен, паттерны кривые, но это первое что пришло в голову. В версии 2.0 все будет сделано лучше.

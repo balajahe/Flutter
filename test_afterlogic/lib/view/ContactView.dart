@@ -51,7 +51,7 @@ class _Item extends StatelessWidget {
               ),
               Expanded(
                 flex: 3,
-                child: Text(text),
+                child: SelectableText(text),
               ),
             ],
           ),

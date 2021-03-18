@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../model/ContactModel.dart';
 import 'lib/LogoutButton.dart';
+import 'lib/StorageDrawer.dart';
 import 'ContactView.dart';
 
 class ContactList extends StatelessWidget {
@@ -14,7 +15,7 @@ class ContactList extends StatelessWidget {
         appBar: AppBar(
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Contacts'),
-            Text('personal', style: TextStyle(fontSize: 11)),
+            Text(state.data.storage.id, style: TextStyle(fontSize: 11)),
           ]),
           actions: [
             IconButton(
@@ -25,12 +26,12 @@ class ContactList extends StatelessWidget {
             LogoutButton(),
           ],
         ),
-        drawer: Drawer(),
+        drawer: StorageDrawer(),
         body: (!state.waiting)
             ? ListView.builder(
-                itemCount: state.data.length,
+                itemCount: state.data.contacts.length,
                 itemBuilder: (context, i) {
-                  var contact = state.data[i];
+                  var contact = state.data.contacts[i];
                   if (contact.email.length > 0) {
                     return ListTile(
                       title: Text(contact.name),
@@ -38,7 +39,7 @@ class ContactList extends StatelessWidget {
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ContactView(contact))),
                     );
                   } else {
-                    model.read(contact);
+                    model.getOne(contact);
                     return ListTile(
                       title: Text('...'),
                       subtitle: Text(''),

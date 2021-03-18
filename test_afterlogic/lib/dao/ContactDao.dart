@@ -1,71 +1,57 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import '../entity/Contact.dart';
-import 'SessionDao.dart';
+import '../entity/ContactStorage.dart';
+import 'DaoSession.dart';
 
 class ContactDao {
-  SessionDao _sessionDao;
-  ContactDao(this._sessionDao);
+  DaoSession _daoSession;
+  ContactDao(this._daoSession);
 
-  Future<List<Contact>> getAll() async {
-    var resp = await http.post(
-      _sessionDao.uri,
-      headers: _headers,
-      body: {
-        'Module': 'Contacts',
-        'Method': 'GetContactStorages',
-      },
-    );
-    print(resp.body);
-
-    var res = jsonDecode(resp.body);
-    var stor = res['Result'][0]['Id'];
-    print(stor);
-
-    resp = await http.post(
-      _sessionDao.uri,
-      headers: _headers,
-      body: {
-        'Module': 'Contacts',
-        'Method': 'GetContactsInfo',
-        'Parameters': '{"Storage": "${stor}"}',
-      },
-    );
-    print(resp.body);
-    res = jsonDecode(resp.body)['Result']['Info'];
+  Future<List<ContactStorage>> getStorages() async {
+    var res = await _daoSession.post({
+      'Module': 'Contacts',
+      'Method': 'GetContactStorages',
+    });
     return res
+        .map<ContactStorage>((v) => ContactStorage()
+          ..id = v['Id']
+          ..ctag = v['CTag'].toString())
+        .toList();
+  }
+
+  Future<void> getContacts(ContactStorage storage) async {
+    var res = await _daoSession.post({
+      'Module': 'Contacts',
+      'Method': 'GetContactsInfo',
+      'Parameters': jsonEncode({'Storage': storage.id}),
+    });
+    storage.contacts = res['Info']
         .map<Contact>((v) => Contact()
-          ..type = ContactType.personal
           ..uuid = v['UUID']
           ..etag = v['ETag'])
         .toList();
   }
 
-  Future<Contact> read(Contact contact) async {
-    var resp = await http.post(
-      _sessionDao.uri,
-      headers: _headers,
-      body: {
-        'Module': 'Contacts',
-        'Method': 'GetContactsByUids',
-        'Parameters': '{"Storage": "personal", "Uids":["${contact.uuid}"]}',
-      },
-    );
-    print(resp.body);
-    var res = jsonDecode(resp.body)['Result'][0];
+  Future<Contact> getOne(ContactStorage storage, Contact contact) async {
+    var res = await _daoSession.post({
+      'Module': 'Contacts',
+      'Method': 'GetContactsByUids',
+      'Parameters': jsonEncode({
+        'Storage': storage.id,
+        'Uids': [contact.uuid]
+      }),
+    });
+    var c = res[0];
     contact
-      ..email = res['PersonalEmail']
-      ..name = res['FullName']
-      ..phone = res['PersonalPhone']
-      ..address = res['PersonalAddress'].toString()
-      ..skype = res['Skype']
-      ..facebook = res['Facebook'];
+      ..uuid = c['UUID']
+      ..etag = c['ETag']
+      ..email = c['PersonalEmail']
+      ..name = c['FullName']
+      ..phone = c['PersonalPhone']
+      ..address = c['PersonalAddress']
+      ..skype = c['Skype']
+      ..facebook = c['Facebook'];
     return contact;
   }
-
-  Map<String, String> get _headers => {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Authorization': 'Bearer ' + _sessionDao.authToken,
-      };
 }

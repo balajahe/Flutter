@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'model/SessionModel.dart';
+import 'model/UserModel.dart';
 import 'model/ContactModel.dart';
-
-import 'view/SessionLogin.dart';
+import 'view/UserLogin.dart';
 
 void main() {
   ErrorWidget.builder = (e) => Scaffold(body: SingleChildScrollView(child: SelectableText(e.toString())));
@@ -16,13 +15,13 @@ class MyApp extends StatelessWidget {
   build(context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => SessionModel()),
-        BlocProvider(create: (context) => ContactModel(context.read<SessionModel>())),
+        BlocProvider(create: (context) => UserModel()),
+        BlocProvider(create: (context) => ContactModel(context.read<UserModel>().daoSession)),
       ],
       child: MaterialApp(
         title: 'Afterlogic Test',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.grey,
         ),
         home: SessionLogin(),
       ),
