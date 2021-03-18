@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import '../entity/Contact.dart';
 import '../entity/ContactStorage.dart';
-import 'DaoSession.dart';
+import 'SessionDao.dart';
 
 class ContactDao {
-  DaoSession _daoSession;
-  ContactDao(this._daoSession);
+  SessionDao _sessionDao;
+  ContactDao(this._sessionDao);
 
   Future<List<ContactStorage>> getStorages() async {
-    var res = await _daoSession.post({
+    var res = await _sessionDao.post({
       'Module': 'Contacts',
       'Method': 'GetContactStorages',
     });
@@ -21,7 +21,7 @@ class ContactDao {
   }
 
   Future<void> getContacts(ContactStorage storage) async {
-    var res = await _daoSession.post({
+    var res = await _sessionDao.post({
       'Module': 'Contacts',
       'Method': 'GetContactsInfo',
       'Parameters': jsonEncode({'Storage': storage.id}),
@@ -33,8 +33,8 @@ class ContactDao {
         .toList();
   }
 
-  Future<Contact> getOne(ContactStorage storage, Contact contact) async {
-    var res = await _daoSession.post({
+  Future<void> loadContact(ContactStorage storage, Contact contact) async {
+    var res = await _sessionDao.post({
       'Module': 'Contacts',
       'Method': 'GetContactsByUids',
       'Parameters': jsonEncode({
@@ -52,6 +52,5 @@ class ContactDao {
       ..address = c['PersonalAddress']
       ..skype = c['Skype']
       ..facebook = c['Facebook'];
-    return contact;
   }
 }

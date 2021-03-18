@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/User.dart';
 
-class DaoSession {
+class SessionDao {
   Uri _uri;
   String _authToken = '';
   SharedPreferences _localStorage;
@@ -28,7 +28,7 @@ class DaoSession {
     if (_authToken.length > 0) headers['Authorization'] = 'Bearer ' + _authToken;
 
     var resp = await http.post(_uri, headers: headers, body: req);
-    print('\n$resp.body');
+    print('\n${resp.body}');
     return jsonDecode(resp.body)['Result'];
   }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/UserModel.dart';
+import '../model/SessionModel.dart';
 import 'lib/common_widgets.dart';
 import 'ContactList.dart';
 
 class SessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var controller = context.read<UserModel>();
-    return BlocConsumer<UserModel, UserState>(
+    var model = context.read<SessionModel>();
+    return BlocConsumer<SessionModel, SessionState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -30,19 +30,19 @@ class SessionLogin extends StatelessWidget {
                         TextField(
                           controller: TextEditingController(text: state.data.host),
                           decoration: InputDecoration(labelText: 'Host'),
-                          onChanged: (v) => controller.set(host: v),
+                          onChanged: (v) => model.set(host: v),
                         ),
                         Container(height: 20),
                         TextField(
                           controller: TextEditingController(text: state.data.email),
                           decoration: InputDecoration(labelText: 'Email'),
-                          onChanged: (v) => controller.set(email: v),
+                          onChanged: (v) => model.set(email: v),
                         ),
                         Container(height: 20),
                         TextField(
                           controller: TextEditingController(text: state.data.password),
                           decoration: InputDecoration(labelText: 'Password'),
-                          onChanged: (v) => controller.set(password: v),
+                          onChanged: (v) => model.set(password: v),
                           obscureText: true,
                         ),
                       ],
@@ -52,7 +52,7 @@ class SessionLogin extends StatelessWidget {
                       height: 35,
                       child: ElevatedButton(
                         child: Text('LOGIN'),
-                        onPressed: () => controller.login(),
+                        onPressed: () => model.login(),
                       ),
                     ),
                   ],

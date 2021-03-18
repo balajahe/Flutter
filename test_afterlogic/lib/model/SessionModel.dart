@@ -2,19 +2,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
 import '../entity/User.dart';
-import '../dao/DaoSession.dart';
+import '../dao/SessionDao.dart';
 
-class UserState extends AbstractState<User> {
-  UserState(User data) : super(data);
+class SessionState extends AbstractState<User> {
+  SessionState(User data) : super(data);
 }
 
-class UserModel extends Cubit<UserState> {
+class SessionModel extends Cubit<SessionState> {
   User _data = User();
-  DaoSession _daoSession;
+  SessionDao _sessionDao;
 
-  UserModel() : super(UserState(User()));
+  SessionModel() : super(SessionState(User()));
 
-  DaoSession get daoSession => _daoSession;
+  SessionDao get daoSession => _sessionDao;
 
   void set({String host, String email, String password}) {
     _data.host = host ?? _data.host;
@@ -24,19 +24,19 @@ class UserModel extends Cubit<UserState> {
 
   void login() async {
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
-      emit(UserState(_data)..error = 'Fill in all fields!');
+      emit(SessionState(_data)..error = 'Fill in all fields!');
     } else if (!_validateEmail(_data.email)) {
-      emit(UserState(_data)..error = 'Email is incorrect!');
+      emit(SessionState(_data)..error = 'Email is incorrect!');
     } else {
       try {
-        emit(UserState(_data)..waiting = true);
-        _daoSession = DaoSession();
-        await _daoSession.login(_data);
+        emit(SessionState(_data)..waiting = true);
+        _sessionDao = SessionDao();
+        await _sessionDao.login(_data);
         _data.password = '';
-        emit(UserState(_data)..done = true);
+        emit(SessionState(_data)..done = true);
       } catch (e) {
         print(e.toString());
-        emit(UserState(_data)..error = 'Authentification error!');
+        emit(SessionState(_data)..error = 'Authentification error!');
       }
     }
   }

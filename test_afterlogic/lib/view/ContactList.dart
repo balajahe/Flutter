@@ -20,8 +20,8 @@ class ContactList extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
-              tooltip: 'Refresh',
-              onPressed: () => model.refresh(),
+              tooltip: 'Refresh All',
+              onPressed: () => model.refreshAll(),
             ),
             LogoutButton(),
           ],
@@ -39,7 +39,7 @@ class ContactList extends StatelessWidget {
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ContactView(contact))),
                     );
                   } else {
-                    model.getOne(contact);
+                    model.loadContact(contact);
                     return ListTile(
                       title: Text('...'),
                       subtitle: Text(''),

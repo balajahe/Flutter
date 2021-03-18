@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'AbstractState.dart';
 import '../entity/Contact.dart';
 import '../entity/ContactStorage.dart';
-import '../dao/DaoSession.dart';
+import '../dao/SessionDao.dart';
 import '../dao/ContactDao.dart';
 
 class ContactStateData {
@@ -25,35 +25,36 @@ class ContactState extends AbstractState<ContactStateData> {
 class ContactModel extends Cubit<ContactState> {
   List<ContactStorage> _storages = [];
   ContactStorage _storage;
-  DaoSession _daoSession;
+  SessionDao _sessionDao;
   ContactDao _dao;
 
-  ContactModel(this._daoSession) : super(ContactState([], ContactStorage(), [])..waiting = true) {
-    _dao = ContactDao(_daoSession);
+  ContactModel(this._sessionDao) : super(ContactState([], ContactStorage(), [])..waiting = true) {
+    _dao = ContactDao(_sessionDao);
     _load();
   }
 
-  void _load() async {
+  Future<void> _load() async {
     _storages = await _dao.getStorages();
-    _storage = _storages[0];
-    await refresh();
+    await setStorage(_storages[0]);
     emit(ContactState(_storages, _storage, _storage.contacts));
   }
 
-  void setStorage(ContactStorage storage) {
+  Future<void> setStorage(ContactStorage storage) async {
     _storage = storage;
-    refresh();
-  }
-
-  Future<void> refresh() async {
     emit(ContactState(_storages, _storage, [])..waiting = true);
     await _dao.getContacts(_storage);
     emit(ContactState(_storages, _storage, _storage.contacts));
   }
 
-  void getOne(Contact contact) async {
-    var i = _storage.contacts.indexOf(contact);
-    _storage.contacts[i] = await _dao.getOne(_storage, contact);
+  Future<void> refreshAll() async {
+    _storages = [];
+    _storage = ContactStorage();
+    emit(ContactState(_storages, _storage, [])..waiting = true);
+    await _load();
+  }
+
+  void loadContact(Contact contact) async {
+    await _dao.loadContact(_storage, contact);
     emit(ContactState(_storages, _storage, _storage.contacts));
   }
 }
