@@ -26,6 +26,7 @@ class ContactState extends AbstractState<ContactStateData> {
 
 class ContactModel extends Cubit<ContactState> {
   List<ContactStorage> _storages = [];
+  List<ContactStorage> _storagesLocal = [];
   ContactStorage _currentStorage;
   SessionDao _sessionDao;
   ContactDaoLocal _daoLocal;
@@ -40,34 +41,34 @@ class ContactModel extends Cubit<ContactState> {
 
   Future<void> _load() async {
     _localSavingTimer?.cancel();
-    var storagesLocal = await _daoLocal.load();
     _storages = await _daoRemote.getStorages();
-    _storages.forEach((storage) async {
-      // try {
-      //   var sl = storagesLocal.firstWhere((sl) => sl.id == storage.id && sl.ctag == storage.ctag);
-      //   var newContacts = <Contact>[];
-      //   await _daoRemote.getContacts(storage);
-      //   storage.contacts.forEach((contact) {
-      //     try {
-      //       var cl = sl.contacts.firstWhere((cl) => cl.uuid == contact.uuid && cl.etag == contact.etag);
-      //       newContacts.add(cl);
-      //     } catch (e) {
-      //       newContacts.add(contact);
-      //     }
-      //   });
-      //   storage.contacts = newContacts;
-      // } catch (e) {
-      await _daoRemote.getContacts(storage);
-//      }
-    });
-
+    _storagesLocal = await _daoLocal.load();
     await setStorage(_storages[0]);
-
     _localSavingTimer = Timer.periodic(Duration(seconds: 5), (_) => _daoLocal.save(_storages));
   }
 
   Future<void> setStorage(ContactStorage storage) async {
     _currentStorage = storage;
+    emit(ContactState([], ContactStorage(), [])..waiting = true);
+    try {
+      var sl = _storagesLocal.firstWhere((sl) => sl.id == _currentStorage.id && sl.ctag == _currentStorage.ctag);
+      _currentStorage.contacts = sl.contacts;
+    } catch (e) {
+      print('STORAGE INVALIDATE - ${_currentStorage.id}');
+      await _daoRemote.getContacts(_currentStorage);
+      var newContacts = <Contact>[];
+      _currentStorage.contacts.forEach((cr) {
+        try {
+          var cl = _currentStorage.contacts.firstWhere((cl) => cl.uuid == cr.uuid && cl.etag == cr.etag);
+          newContacts.add(cl);
+        } catch (e) {
+          print('CONTACT INVALIDATE - ${cr.email}');
+          newContacts.add(cr);
+        }
+      });
+      _currentStorage.contacts = newContacts;
+    }
+
     emit(ContactState(_storages, _currentStorage, _currentStorage.contacts));
   }
 
