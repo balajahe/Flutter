@@ -13,7 +13,12 @@ class StorageDrawer extends StatelessWidget {
             children: state.data.storages
                 .map(
                   (v) => ListTile(
-                    title: Text(v.id.toUpperCase()),
+                    title: Text(
+                      v.id.toUpperCase(),
+                      style: TextStyle(
+                        fontWeight: (v == state.data.currentStorage) ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
                     onTap: () {
                       context.read<ContactModel>().setStorage(v);
                       Navigator.pop(context);

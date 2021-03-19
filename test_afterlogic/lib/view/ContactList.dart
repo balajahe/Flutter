@@ -15,13 +15,18 @@ class ContactList extends StatelessWidget {
         appBar: AppBar(
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Contacts'),
-            Text(state.data.storage.id, style: TextStyle(fontSize: 11)),
+            Text(state.data.currentStorage.id, style: TextStyle(fontSize: 11)),
           ]),
           actions: [
             IconButton(
               icon: Icon(Icons.refresh),
-              tooltip: 'Refresh All',
-              onPressed: () => model.refreshAll(),
+              tooltip: 'Refresh',
+              onPressed: () => model.refresh(),
+            ),
+            IconButton(
+              icon: Icon(Icons.clear),
+              tooltip: 'Clear Cache',
+              onPressed: () => model.reload(),
             ),
             LogoutButton(),
           ],
@@ -29,9 +34,9 @@ class ContactList extends StatelessWidget {
         drawer: StorageDrawer(),
         body: (!state.waiting)
             ? ListView.builder(
-                itemCount: state.data.contacts.length,
+                itemCount: state.data.selectedContacts.length,
                 itemBuilder: (context, i) {
-                  var contact = state.data.contacts[i];
+                  var contact = state.data.selectedContacts[i];
                   if (contact.email.length > 0) {
                     return ListTile(
                       title: Text(contact.name),

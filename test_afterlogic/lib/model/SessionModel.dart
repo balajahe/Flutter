@@ -22,7 +22,8 @@ class SessionModel extends Cubit<SessionState> {
     _data.password = password ?? _data.password;
   }
 
-  void login() async {
+  Future<void> login() async {
+    _sessionDao = SessionDao();
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
       emit(SessionState(_data)..error = 'Fill in all fields!');
     } else if (!_validateEmail(_data.email)) {
@@ -30,7 +31,6 @@ class SessionModel extends Cubit<SessionState> {
     } else {
       try {
         emit(SessionState(_data)..waiting = true);
-        _sessionDao = SessionDao();
         await _sessionDao.login(_data);
         _data.password = '';
         emit(SessionState(_data)..done = true);
@@ -39,6 +39,11 @@ class SessionModel extends Cubit<SessionState> {
         emit(SessionState(_data)..error = 'Authentification error!');
       }
     }
+  }
+
+  Future<void> logout() async {
+    _data = User();
+    emit(SessionState(_data));
   }
 
   bool _validateEmail(String v) {

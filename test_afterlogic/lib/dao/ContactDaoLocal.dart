@@ -36,6 +36,7 @@ class ContactDaoLocal {
     if (json == null) {
       return [];
     } else {
+      print('\n$json');
       return jsonDecode(json)
           .map<ContactStorage>((s) => ContactStorage()
             ..id = s['id']
@@ -53,5 +54,10 @@ class ContactDaoLocal {
                 .toList())
           .toList();
     }
+  }
+
+  Future<void> clear() async {
+    var res = await _sessionDao.localStorage.remove('allData');
+    if (!res) throw 'Local storage clearing error!';
   }
 }

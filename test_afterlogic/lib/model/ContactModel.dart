@@ -10,26 +10,27 @@ import '../dao/ContactDaoRemote.dart';
 
 class ContactStateData {
   List<ContactStorage> storages = [];
-  ContactStorage storage = ContactStorage();
-  List<Contact> contacts = [];
+  ContactStorage currentStorage = ContactStorage();
+  List<Contact> selectedContacts = [];
 
-  ContactStateData(this.storages, this.storage, this.contacts);
+  ContactStateData(this.storages, this.currentStorage, this.selectedContacts);
 }
 
 class ContactState extends AbstractState<ContactStateData> {
   ContactState(
     List<ContactStorage> storages,
-    ContactStorage storage,
-    List<Contact> contacts,
-  ) : super(ContactStateData(storages, storage, contacts));
+    ContactStorage currentStorage,
+    List<Contact> selectedContacts,
+  ) : super(ContactStateData(storages, currentStorage, selectedContacts));
 }
 
 class ContactModel extends Cubit<ContactState> {
   List<ContactStorage> _storages = [];
-  ContactStorage _storage;
+  ContactStorage _currentStorage;
   SessionDao _sessionDao;
   ContactDaoLocal _daoLocal;
   ContactDaoRemote _daoRemote;
+  Timer _localSavingTimer;
 
   ContactModel(this._sessionDao) : super(ContactState([], ContactStorage(), [])..waiting = true) {
     _daoLocal = ContactDaoLocal(_sessionDao);
@@ -38,46 +39,53 @@ class ContactModel extends Cubit<ContactState> {
   }
 
   Future<void> _load() async {
+    _localSavingTimer?.cancel();
     var storagesLocal = await _daoLocal.load();
     _storages = await _daoRemote.getStorages();
-    _storages.forEach((sr) {
-      try {
-        var sl = storagesLocal.firstWhere((sl) => sl.id == sr.id && sl.ctag == sr.ctag);
-        sr.contacts.forEach((cr) {
-          try {
-            var cl = sl.contacts.firstWhere((cl) => cl.uuid == cr.uuid && cl.etag == cr.etag);
-            sr.contacts.add(cl);
-          } catch (_) {
-            sr.contacts.add(cr);
-          }
-        });
-      } catch (_) {}
+    _storages.forEach((storage) async {
+      // try {
+      //   var sl = storagesLocal.firstWhere((sl) => sl.id == storage.id && sl.ctag == storage.ctag);
+      //   var newContacts = <Contact>[];
+      //   await _daoRemote.getContacts(storage);
+      //   storage.contacts.forEach((contact) {
+      //     try {
+      //       var cl = sl.contacts.firstWhere((cl) => cl.uuid == contact.uuid && cl.etag == contact.etag);
+      //       newContacts.add(cl);
+      //     } catch (e) {
+      //       newContacts.add(contact);
+      //     }
+      //   });
+      //   storage.contacts = newContacts;
+      // } catch (e) {
+      await _daoRemote.getContacts(storage);
+//      }
     });
 
     await setStorage(_storages[0]);
-    emit(ContactState(_storages, _storage, _storage.contacts));
 
-    Timer.periodic(Duration(seconds: 5), (_) => _daoLocal.save(_storages));
+    _localSavingTimer = Timer.periodic(Duration(seconds: 5), (_) => _daoLocal.save(_storages));
   }
 
   Future<void> setStorage(ContactStorage storage) async {
-    _storage = storage;
-    if (_storage.contacts.length == 0) {
-      emit(ContactState(_storages, _storage, [])..waiting = true);
-      await _daoRemote.getContacts(_storage);
-    }
-    emit(ContactState(_storages, _storage, _storage.contacts));
+    _currentStorage = storage;
+    emit(ContactState(_storages, _currentStorage, _currentStorage.contacts));
   }
 
-  void refreshAll() {
-    _storages = [];
-    _storage = ContactStorage();
-    emit(ContactState(_storages, _storage, [])..waiting = true);
-    _load();
+  Future<void> loadContact(Contact contact) async {
+    await _daoRemote.loadContact(_currentStorage, contact);
+    emit(ContactState(_storages, _currentStorage, _currentStorage.contacts));
   }
 
-  void loadContact(Contact contact) async {
-    await _daoRemote.loadContact(_storage, contact);
-    emit(ContactState(_storages, _storage, _storage.contacts));
+  Future<void> refresh() async {
+    _localSavingTimer?.cancel();
+    emit(ContactState([], ContactStorage(), [])..waiting = true);
+    await _load();
+  }
+
+  Future<void> reload() async {
+    _localSavingTimer?.cancel();
+    emit(ContactState([], ContactStorage(), [])..waiting = true);
+    await _daoLocal.clear();
+    await refresh();
   }
 }
