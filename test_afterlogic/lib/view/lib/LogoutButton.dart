@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../UserLogin.dart';
+import '../SessionLogin.dart';
 
 class LogoutButton extends StatelessWidget {
   @override

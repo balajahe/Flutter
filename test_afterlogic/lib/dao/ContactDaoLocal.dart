@@ -37,11 +37,11 @@ class ContactDaoLocal {
       return [];
     } else {
       return jsonDecode(json)
-          .map((s) => ContactStorage()
+          .map<ContactStorage>((s) => ContactStorage()
             ..id = s['id']
             ..ctag = s['ctag']
             ..contacts = s['contacts']
-                .map((c) => Contact()
+                .map<Contact>((c) => Contact()
                   ..uuid = c['uuid']
                   ..etag = c['etag']
                   ..email = c['email']

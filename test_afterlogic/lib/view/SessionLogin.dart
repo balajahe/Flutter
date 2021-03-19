@@ -32,13 +32,13 @@ class SessionLogin extends StatelessWidget {
                           decoration: InputDecoration(labelText: 'Host'),
                           onChanged: (v) => model.set(host: v),
                         ),
-                        Container(height: 20),
+                        Container(height: 15),
                         TextField(
                           controller: TextEditingController(text: state.data.email),
                           decoration: InputDecoration(labelText: 'Email'),
                           onChanged: (v) => model.set(email: v),
                         ),
-                        Container(height: 20),
+                        Container(height: 15),
                         TextField(
                           controller: TextEditingController(text: state.data.password),
                           decoration: InputDecoration(labelText: 'Password'),

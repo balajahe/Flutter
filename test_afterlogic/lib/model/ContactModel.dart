@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
@@ -37,8 +38,8 @@ class ContactModel extends Cubit<ContactState> {
   }
 
   Future<void> _load() async {
-    _storages = await _daoRemote.getStorages();
     var storagesLocal = await _daoLocal.load();
+    _storages = await _daoRemote.getStorages();
     _storages.forEach((sr) {
       try {
         var sl = storagesLocal.firstWhere((sl) => sl.id == sr.id && sl.ctag == sr.ctag);
@@ -52,8 +53,11 @@ class ContactModel extends Cubit<ContactState> {
         });
       } catch (_) {}
     });
+
     await setStorage(_storages[0]);
     emit(ContactState(_storages, _storage, _storage.contacts));
+
+    Timer.periodic(Duration(seconds: 5), (_) => _daoLocal.save(_storages));
   }
 
   Future<void> setStorage(ContactStorage storage) async {
@@ -65,11 +69,11 @@ class ContactModel extends Cubit<ContactState> {
     emit(ContactState(_storages, _storage, _storage.contacts));
   }
 
-  Future<void> refreshAll() async {
+  void refreshAll() {
     _storages = [];
     _storage = ContactStorage();
     emit(ContactState(_storages, _storage, [])..waiting = true);
-    await _load();
+    _load();
   }
 
   void loadContact(Contact contact) async {
