@@ -42,7 +42,6 @@ class ContactModel extends Cubit<ContactState> {
   Future<void> _load() async {
     _localSavingTimer?.cancel();
     _storages = await _daoRemote.getStorages();
-    _storagesLocal = await _daoLocal.load();
     await setStorage(_storages[0]);
     _localSavingTimer = Timer.periodic(Duration(seconds: 3), (_) => _daoLocal.save(_storages));
   }
@@ -51,6 +50,7 @@ class ContactModel extends Cubit<ContactState> {
     _currentStorage = storage;
     emit(ContactState([], ContactStorage(), [])..waiting = true);
 
+    _storagesLocal = await _daoLocal.load();
     try {
       var sl = _storagesLocal.firstWhere((sl) => sl.id == _currentStorage.id && sl.ctag == _currentStorage.ctag);
       _currentStorage.contacts = sl.contacts;
