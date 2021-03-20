@@ -28,14 +28,14 @@ class ContactModel extends Cubit<ContactState> {
   List<ContactStorage> _storages = [];
   List<ContactStorage> _storagesLocal = [];
   ContactStorage _currentStorage;
-  SessionDao _sessionDao;
+  SessionDao _daoSession;
   ContactDaoLocal _daoLocal;
   ContactDaoRemote _daoRemote;
   Timer _localSavingTimer;
 
-  ContactModel(this._sessionDao) : super(ContactState([], ContactStorage(), [])..waiting = true) {
-    _daoLocal = ContactDaoLocal(_sessionDao);
-    _daoRemote = ContactDaoRemote(_sessionDao);
+  ContactModel(this._daoSession) : super(ContactState([], ContactStorage(), [])..waiting = true) {
+    _daoLocal = ContactDaoLocal(_daoSession);
+    _daoRemote = ContactDaoRemote(_daoSession);
     _load();
   }
 

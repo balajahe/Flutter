@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => SessionModel()),
-        BlocProvider(create: (context) => ContactModel(context.read<SessionModel>().daoSession)),
+        BlocProvider(create: (context) => ContactModel(context.read<SessionModel>().dao)),
       ],
       child: MaterialApp(
         title: 'Afterlogic Test',

@@ -10,11 +10,13 @@ class SessionState extends AbstractState<User> {
 
 class SessionModel extends Cubit<SessionState> {
   User _data = User();
-  SessionDao _sessionDao;
+  SessionDao _dao;
 
-  SessionModel() : super(SessionState(User()));
+  SessionModel() : super(SessionState(User())) {
+    _dao = SessionDao();
+  }
 
-  SessionDao get daoSession => _sessionDao;
+  SessionDao get dao => _dao;
 
   void set({String host, String email, String password}) {
     _data.host = host ?? _data.host;
@@ -23,7 +25,6 @@ class SessionModel extends Cubit<SessionState> {
   }
 
   Future<void> login() async {
-    _sessionDao = SessionDao();
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
       emit(SessionState(_data)..error = 'Fill in all fields!');
     } else if (!_validateEmail(_data.email)) {
@@ -31,7 +32,7 @@ class SessionModel extends Cubit<SessionState> {
     } else {
       try {
         emit(SessionState(_data)..waiting = true);
-        await _sessionDao.login(_data);
+        await _dao.login(_data);
         _data.password = '';
         emit(SessionState(_data)..done = true);
       } catch (e) {
