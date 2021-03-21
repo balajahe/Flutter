@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'User.dart';
+import '../entity/User.dart';
 import '../tools/mmk_tools.dart';
 
 class UserModel extends Cubit<User> {

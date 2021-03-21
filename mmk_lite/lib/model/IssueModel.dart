@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'Issue.dart';
-import 'Defect.dart';
+import '../entity/Issue.dart';
+import '../entity/Defect.dart';
 
 class IssueModel extends Cubit<Issue> {
   Issue _current = Issue();

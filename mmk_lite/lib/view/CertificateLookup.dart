@@ -26,10 +26,10 @@ class CertificateLookup extends StatelessWidget {
                 itemBuilder: (context, i) {
                   var certificate = state.data[i];
                   return ListTile(
-                    title: Text(certificate.code),
+                    title: Text(certificate.id),
                     subtitle: Text(certificate.order),
                     trailing: Text(DateFormat('dd.MM.y').format(certificate.date)),
-                    onTap: () => Navigator.pop(context, certificate.code),
+                    onTap: () => Navigator.pop(context, certificate.id),
                   );
                 },
               )

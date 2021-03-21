@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
-import 'DefectType.dart';
+import '../entity/DefectType.dart';
 import '../dao/DefectTypeDao.dart';
 
-class DefectTypeState extends AbstractState<List<DefectType>> {
-  DefectTypeState(List<DefectType> data) : super(data);
+class DefectTypeState extends AbstractState {
+  List<DefectType> data;
+  DefectTypeState(this.data);
 }
 
 class DefectTypeModel extends Cubit<DefectTypeState> {

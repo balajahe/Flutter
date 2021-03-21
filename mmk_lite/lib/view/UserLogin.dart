@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/User.dart';
+import '../entity/User.dart';
 import '../model/UserModel.dart';
 import '../tools/mmk_widgets.dart';
 import 'Home.dart';

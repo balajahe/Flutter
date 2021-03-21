@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
-import 'Certificate.dart';
+import '../entity/Certificate.dart';
 
-class CertificateState extends AbstractState<List<Certificate>> {
-  CertificateState(List<Certificate> data) : super(data);
+class CertificateState extends AbstractState {
+  List<Certificate> data;
+  CertificateState(this.data);
 }
 
 class CertificateModel extends Cubit<CertificateState> {
@@ -19,15 +20,15 @@ class CertificateModel extends Cubit<CertificateState> {
     await Future.delayed(Duration(seconds: 1));
     _all = [
       Certificate()
-        ..code = 'Сертификат1'
+        ..id = 'Сертификат1'
         ..order = 'Заказ1'
         ..date = DateTime.now(),
       Certificate()
-        ..code = 'Сертификат2'
+        ..id = 'Сертификат2'
         ..order = 'Заказ2'
         ..date = DateTime.now(),
       Certificate()
-        ..code = 'Сертификат3'
+        ..id = 'Сертификат3'
         ..order = 'Заказ3'
         ..date = DateTime.now(),
     ];
@@ -37,7 +38,7 @@ class CertificateModel extends Cubit<CertificateState> {
   void filter(String s) {
     _filter = s.toLowerCase();
     emit(CertificateState(
-        _all.where((v) => v.code.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList())
+        _all.where((v) => v.id.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList())
       ..filter = _filter);
   }
 

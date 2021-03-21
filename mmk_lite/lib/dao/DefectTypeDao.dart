@@ -1,4 +1,4 @@
-import '../model/DefectType.dart';
+import '../entity/DefectType.dart';
 
 const json = [
   {"ID": "1", "NAME_NSI": "плена", "LANG": "ru"},
@@ -16,7 +16,7 @@ class DefectTypeDao {
     await Future.delayed(Duration(seconds: 1));
     return json
         .map((v) => DefectType()
-          ..id = int.parse(v['ID'])
+          ..id = v['ID']
           ..name = v['NAME_NSI'])
         .toList();
   }

@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
-import 'Position.dart';
+import '../entity/Position.dart';
 
-class PositionState extends AbstractState<List<Position>> {
-  PositionState(List<Position> data) : super(data);
+class PositionState extends AbstractState {
+  List<Position> data;
+  PositionState(this.data);
 }
 
 class PositionModel extends Cubit<PositionState> {

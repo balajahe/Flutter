@@ -1,14 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mmk_lite/model/DefectType.dart';
+import 'package:mmk_lite/entity/DefectType.dart';
 
 import 'AbstractState.dart';
-import 'Defect.dart';
+import '../entity/Defect.dart';
 import 'IssueModel.dart';
 
-class DefectState extends AbstractState<Defect> {
-  DefectState(Defect data) : super(data);
+class DefectState extends AbstractState {
+  Defect data;
+  DefectState(this.data);
 }
 
 class DefectModel extends Cubit<DefectState> {
@@ -49,7 +50,7 @@ class DefectModel extends Cubit<DefectState> {
       await issueModel.add(_current);
       emit(DefectState(_current)..done = true);
     } else {
-      emit(DefectState(_current)..error = 'Заполните все поля!');
+      emit(DefectState(_current)..userError = 'Заполните все поля!');
     }
   }
 }

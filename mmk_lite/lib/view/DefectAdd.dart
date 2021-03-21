@@ -122,8 +122,8 @@ class DefectAdd extends StatelessWidget {
           );
         },
         listener: (context, state) {
-          if (state.error != '') {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+          if (state.userError != '') {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.userError)));
           } else if (state.done) {
             Navigator.pop(context);
           }

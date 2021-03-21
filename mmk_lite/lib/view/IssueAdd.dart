@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mmk_lite/model/IssueModel.dart';
 import 'package:mmk_lite/tools/mmk_widgets.dart';
 
-import '../model/Issue.dart';
+import '../entity/Issue.dart';
 import '../model/IssueModel.dart';
-import '../model/Defect.dart';
+import '../entity/Defect.dart';
 import 'DefectAdd.dart';
 
 class IssueAdd extends StatelessWidget {

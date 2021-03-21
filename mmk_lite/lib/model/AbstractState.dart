@@ -1,9 +1,7 @@
-class AbstractState<T> {
-  T data;
+abstract class AbstractState {
   bool waiting = false;
   bool done = false;
-  String error = '';
+  String userError = '';
+  String fatalError = '';
   String filter = '';
-
-  AbstractState(this.data);
 }
