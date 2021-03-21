@@ -3,5 +3,4 @@ abstract class AbstractState {
   bool done = false;
   String userError = '';
   String fatalError = '';
-  String filter = '';
 }

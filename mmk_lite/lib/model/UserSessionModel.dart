@@ -15,6 +15,8 @@ class UserSessionModel extends Cubit<UserSessionState> {
 
   UserSessionModel() : super(UserSessionState(UserSession()));
 
+  UserSessionDao get dao => _dao;
+
   void set({String login, String password, String email, String phone}) {
     _data.login = login ?? _data.login;
     _data.password = password ?? _data.password;

@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserSessionModel()),
+        BlocProvider(create: (context) => DefectTypeModel(context.read<UserSessionModel>())),
         BlocProvider(create: (context) => IssueModel()),
         BlocProvider(create: (context) => CertificateModel()),
         BlocProvider(create: (context) => PositionModel()),
-        BlocProvider(create: (context) => DefectTypeModel()),
       ],
       child: MaterialApp(
         title: 'MMK Lite',

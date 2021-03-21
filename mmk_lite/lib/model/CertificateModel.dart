@@ -9,8 +9,7 @@ class CertificateState extends AbstractState {
 }
 
 class CertificateModel extends Cubit<CertificateState> {
-  List<Certificate> _all = [];
-  String _filter = '';
+  List<Certificate> _data = [];
 
   CertificateModel() : super(CertificateState([])..waiting = true) {
     _load();
@@ -18,7 +17,7 @@ class CertificateModel extends Cubit<CertificateState> {
 
   void _load() async {
     await Future.delayed(Duration(seconds: 1));
-    _all = [
+    _data = [
       Certificate()
         ..id = 'Сертификат1'
         ..order = 'Заказ1'
@@ -32,17 +31,16 @@ class CertificateModel extends Cubit<CertificateState> {
         ..order = 'Заказ3'
         ..date = DateTime.now(),
     ];
-    emit(CertificateState(_all));
+    emit(CertificateState(_data));
   }
 
   void filter(String s) {
-    _filter = s.toLowerCase();
+    var _filter = s.toLowerCase();
     emit(CertificateState(
-        _all.where((v) => v.id.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList())
-      ..filter = _filter);
+        _data.where((v) => v.id.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList()));
   }
 
   void clearFilter() {
-    if (_filter.length > 0) filter('');
+    if (_data.length > 0) filter('');
   }
 }

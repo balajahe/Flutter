@@ -9,7 +9,7 @@ class PositionState extends AbstractState {
 }
 
 class PositionModel extends Cubit<PositionState> {
-  List<Position> _all = [];
+  List<Position> _data = [];
   String _filter = '';
 
   PositionModel() : super(PositionState([])..waiting = true) {
@@ -18,7 +18,7 @@ class PositionModel extends Cubit<PositionState> {
 
   void _load() async {
     await Future.delayed(Duration(seconds: 1));
-    _all = [
+    _data = [
       Position()
         ..num = 1
         ..roll = 'рулон1'
@@ -38,22 +38,21 @@ class PositionModel extends Cubit<PositionState> {
         ..dimensions = '8x15'
         ..quantity = 0.123,
     ];
-    emit(PositionState(_all));
+    emit(PositionState(_data));
   }
 
   void filter(String s) {
     _filter = s.toLowerCase();
-    emit(PositionState(_all
+    emit(PositionState(_data
         .where((v) =>
             v.roll.toLowerCase().contains(_filter) ||
             v.batch.toLowerCase().contains(_filter) ||
             v.dimensions.toLowerCase().contains(_filter) ||
             v.quantity.toString().contains(_filter))
-        .toList())
-      ..filter = _filter);
+        .toList()));
   }
 
   void clearFilter() {
-    if (_filter.length > 0) filter('');
+    if (_data.length > 0) filter('');
   }
 }

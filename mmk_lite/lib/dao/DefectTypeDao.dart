@@ -1,3 +1,4 @@
+import 'UserSessionDao.dart';
 import '../entity/DefectType.dart';
 
 const json = [
@@ -12,6 +13,9 @@ const json = [
 ];
 
 class DefectTypeDao {
+  UserSessionDao _userSessionDao;
+  DefectTypeDao(this._userSessionDao);
+
   Future<List<DefectType>> getAll() async {
     await Future.delayed(Duration(seconds: 1));
     return json

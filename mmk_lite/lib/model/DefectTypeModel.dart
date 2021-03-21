@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
+import 'UserSessionModel.dart';
 import '../entity/DefectType.dart';
 import '../dao/DefectTypeDao.dart';
 
@@ -10,24 +11,26 @@ class DefectTypeState extends AbstractState {
 }
 
 class DefectTypeModel extends Cubit<DefectTypeState> {
-  List<DefectType> _all = [];
-  String _filter = '';
+  List<DefectType> _data = [];
+  UserSessionModel _userSessionModel;
+  DefectTypeDao _dao;
 
-  DefectTypeModel() : super(DefectTypeState([])..waiting = true) {
+  DefectTypeModel(this._userSessionModel) : super(DefectTypeState([])..waiting = true) {
+    _dao = DefectTypeDao(_userSessionModel.dao);
     _load();
   }
 
   void _load() async {
-    _all = await DefectTypeDao().getAll();
-    emit(DefectTypeState(_all));
+    _data = await _dao.getAll();
+    emit(DefectTypeState(_data));
   }
 
   void filter(String s) {
-    _filter = s.toLowerCase();
-    emit(DefectTypeState(_all.where((v) => v.name.toLowerCase().contains(_filter)).toList())..filter = _filter);
+    var _filter = s.toLowerCase();
+    emit(DefectTypeState(_data.where((v) => v.name.toLowerCase().contains(_filter)).toList()));
   }
 
   void clearFilter() {
-    if (_filter.length > 0) filter('');
+    if (_data.length > 0) filter('');
   }
 }
