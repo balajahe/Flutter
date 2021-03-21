@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../entity/User.dart';
-import '../model/UserModel.dart';
+import '../entity/UserSession.dart';
+import '../model/UserSessionModel.dart';
 import '../tools/mmk_widgets.dart';
 import 'Home.dart';
 
-class UserLogin extends StatelessWidget {
+class UserSessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var model = context.read<UserModel>();
-    return BlocConsumer<UserModel, User>(
+    var model = context.read<UserSessionModel>();
+    return BlocConsumer<UserSessionModel, UserSessionState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(
@@ -19,19 +19,19 @@ class UserLogin extends StatelessWidget {
                 padding: EdgeInsets.only(left: 30, right: 30, top: 40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: (state.authType == AuthType.registered)
+                  children: (state.data.authType == AuthType.registered)
                       ? [
                           Logo(),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               TextField(
-                                controller: TextEditingController(text: state.login),
+                                controller: TextEditingController(text: state.data.login),
                                 decoration: InputDecoration(labelText: 'Логин'),
                                 onChanged: (v) => model.set(login: v),
                               ),
                               TextField(
-                                controller: TextEditingController(text: state.password),
+                                controller: TextEditingController(text: state.data.password),
                                 decoration: InputDecoration(labelText: 'Пароль'),
                                 onChanged: (v) => model.set(password: v),
                                 obscureText: true,
@@ -58,7 +58,7 @@ class UserLogin extends StatelessWidget {
                           ),
                           Container(),
                         ]
-                      : (state.authType == AuthType.unregistered)
+                      : (state.data.authType == AuthType.unregistered)
                           ? [
                               Logo(),
                               Column(
@@ -75,13 +75,13 @@ class UserLogin extends StatelessWidget {
                               Column(
                                 children: [
                                   TextField(
-                                    controller: TextEditingController(text: state.email),
+                                    controller: TextEditingController(text: state.data.email),
                                     decoration: InputDecoration(labelText: 'e-mail'),
                                     onChanged: (v) => model.set(email: v),
                                     keyboardType: TextInputType.emailAddress,
                                   ),
                                   TextField(
-                                    controller: TextEditingController(text: state.phone),
+                                    controller: TextEditingController(text: state.data.phone),
                                     decoration: InputDecoration(labelText: 'Номер телефона'),
                                     onChanged: (v) => model.set(phone: v),
                                     keyboardType: TextInputType.phone,
@@ -101,17 +101,17 @@ class UserLogin extends StatelessWidget {
                           : [],
                 ),
               ),
-              (state.authStatus == AuthStatus.waiting) ? Waiting() : Container(),
+              (state.waiting) ? Waiting() : Container(),
             ],
           ),
         );
       },
       listener: (cuntext, state) {
-        if (state.authStatus == AuthStatus.error)
+        if (state.userError != '')
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.authStatusError)),
+            SnackBar(content: Text(state.userError)),
           );
-        else if (state.authStatus == AuthStatus.ok)
+        else if (state.done)
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => Home()),

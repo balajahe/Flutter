@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'model/UserModel.dart';
+import 'model/UserSessionModel.dart';
 import 'model/IssueModel.dart';
 import 'model/CertificateModel.dart';
 import 'model/PositionModel.dart';
 import 'model/DefectTypeModel.dart';
 
-import 'view/UserLogin.dart';
+import 'view/UserSessionLogin.dart';
 
 void main() {
   ErrorWidget.builder = (e) => Scaffold(body: SingleChildScrollView(child: SelectableText(e.toString())));
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   build(context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => UserModel()),
+        BlocProvider(create: (context) => UserSessionModel()),
         BlocProvider(create: (context) => IssueModel()),
         BlocProvider(create: (context) => CertificateModel()),
         BlocProvider(create: (context) => PositionModel()),
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: UserLogin(),
+        home: UserSessionLogin(),
       ),
     );
   }
