@@ -5,7 +5,7 @@ import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
 import '../tools/mmk_widgets.dart';
-import '../tools/mmk_tools.dart';
+import '../tools/camera.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';

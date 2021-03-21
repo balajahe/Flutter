@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../entity/UserSession.dart';
 import '../dao/UserSessionDao.dart';
 import 'AbstractState.dart';
-import '../tools/mmk_tools.dart';
 
 class UserSessionState extends AbstractState {
   UserSession data;
@@ -34,20 +33,30 @@ class UserSessionModel extends Cubit<UserSessionState> {
         emit(UserSessionState(_data)..userError = 'Введите логин и пароль!');
       } else {
         emit(UserSessionState(_data)..waiting = true);
-        await Future.delayed(Duration(seconds: 1));
+        await _dao.login(_data);
         emit(UserSessionState(_data)..done = true);
       }
     } else if (_data.authType == AuthType.unregistered) {
       var userError = '';
-      if (!validateEmail(_data.email)) userError += 'Введите правильный e-mail!\n';
-      if (!validatePhone(_data.phone)) userError += 'Введите правильный номер телефона!\n';
+      if (!_validateEmail(_data.email)) userError += 'Введите правильный e-mail!\n';
+      if (!_validatePhone(_data.phone)) userError += 'Введите правильный номер телефона!\n';
       if (userError.length > 0) {
         emit(UserSessionState(_data)..userError = userError.trimRight());
       } else {
         emit(UserSessionState(_data)..waiting = true);
-        await Future.delayed(Duration(seconds: 1));
+        await _dao.login(_data);
         emit(UserSessionState(_data)..done = true);
       }
     }
+  }
+
+  bool _validatePhone(String v) {
+    return RegExp(r'(^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$)').hasMatch(v);
+  }
+
+  bool _validateEmail(String v) {
+    return RegExp(
+            r"(^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$)")
+        .hasMatch(v);
   }
 }
