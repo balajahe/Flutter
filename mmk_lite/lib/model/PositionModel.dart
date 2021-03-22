@@ -8,7 +8,7 @@ class PositionModel extends AbstractRefModel<Position> {
   PositionModel(BuildContext context)
       : super(
           context,
-          daoCreate: (_) => CertificateDao(_),
+          daoCreate: (_) => PositionDao(_),
         );
 
   void filter(String s) {

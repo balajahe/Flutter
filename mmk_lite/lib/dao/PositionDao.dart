@@ -2,8 +2,8 @@ import '../entity/Position.dart';
 import 'AbstractRefDao.dart';
 import 'UserSessionDao.dart';
 
-class CertificateDao extends AbstractRefDao {
-  CertificateDao(UserSessionDao userSessionDao) : super(userSessionDao);
+class PositionDao extends AbstractRefDao {
+  PositionDao(UserSessionDao userSessionDao) : super(userSessionDao);
 
   Future<List<Position>> getAll() async {
     await Future.delayed(Duration(seconds: 1));

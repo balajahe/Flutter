@@ -29,7 +29,7 @@ class DefectAdd extends StatelessWidget {
                   appBar: AppBar(
                     title: Text('Дефект'),
                     actions: [
-                      //IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
+                      IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
                       IconButton(
                           tooltip: 'Добавить изображение',
                           icon: Icon(Icons.add_a_photo),
