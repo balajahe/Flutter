@@ -1,7 +1,8 @@
-import 'UserSessionDao.dart';
 import '../entity/DefectType.dart';
+import 'AbstractRefDao.dart';
+import 'UserSessionDao.dart';
 
-const json = [
+const _json = [
   {"ID": "1", "NAME_NSI": "плена", "LANG": "ru"},
   {"ID": "2", "NAME_NSI": "плена прокатная", "LANG": "ru"},
   {"ID": "3", "NAME_NSI": "геометрия", "LANG": "ru"},
@@ -12,13 +13,12 @@ const json = [
   {"ID": "8", "NAME_NSI": "полосы-линии скольжения", "LANG": "ru"},
 ];
 
-class DefectTypeDao {
-  UserSessionDao _userSessionDao;
-  DefectTypeDao(this._userSessionDao);
+class DefectTypeDao extends AbstractRefDao {
+  DefectTypeDao(UserSessionDao userSessionDao) : super(userSessionDao);
 
   Future<List<DefectType>> getAll() async {
     await Future.delayed(Duration(seconds: 1));
-    return json
+    return _json
         .map((v) => DefectType()
           ..id = v['ID']
           ..name = v['NAME_NSI'])

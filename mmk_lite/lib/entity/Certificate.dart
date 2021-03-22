@@ -1,6 +1,6 @@
-import 'AbstractReference.dart';
+import 'AbstractRef.dart';
 
-class Certificate extends AbstractReference {
+class Certificate extends AbstractRef {
   String order;
   DateTime date;
 }

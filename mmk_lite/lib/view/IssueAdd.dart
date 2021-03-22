@@ -14,9 +14,13 @@ class IssueAdd extends StatelessWidget {
     var model = context.read<IssueModel>();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.text_snippet),
-        title: Text('Новое дело'),
+        title: Text('Новая претензия'),
         actions: [
+          IconButton(
+            tooltip: 'Отправить претензию',
+            icon: Icon(Icons.send),
+            onPressed: () {},
+          ),
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
@@ -60,7 +64,7 @@ class _DefectTile extends StatelessWidget {
               Row(
                 children: [
                   Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
-                  Expanded(flex: 3, child: Text(defect.certificate)),
+                  Expanded(flex: 3, child: Text(defect.certificate.name)),
                 ],
               ),
               Hline1(),

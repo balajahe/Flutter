@@ -1,3 +1,3 @@
-import 'AbstractReference.dart';
+import 'AbstractRef.dart';
 
-class Arrangement extends AbstractReference {}
+class Arrangement extends AbstractRef {}

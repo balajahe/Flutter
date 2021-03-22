@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
+  http:
   intl:
   image_picker:
 

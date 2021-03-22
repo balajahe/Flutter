@@ -6,6 +6,7 @@ import 'model/IssueModel.dart';
 import 'model/CertificateModel.dart';
 import 'model/PositionModel.dart';
 import 'model/DefectTypeModel.dart';
+import 'model/ArrangementModel.dart';
 
 import 'view/UserSessionLogin.dart';
 
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserSessionModel()),
-        BlocProvider(create: (context) => DefectTypeModel(context.read<UserSessionModel>())),
+        BlocProvider(create: (context) => CertificateModel(context)),
+        BlocProvider(create: (context) => DefectTypeModel(context)),
+        BlocProvider(create: (context) => ArrangementModel(context)),
+        BlocProvider(create: (context) => PositionModel(context)),
         BlocProvider(create: (context) => IssueModel()),
-        BlocProvider(create: (context) => CertificateModel()),
-        BlocProvider(create: (context) => PositionModel()),
       ],
       child: MaterialApp(
         title: 'MMK Lite',

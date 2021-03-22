@@ -1,3 +1,3 @@
-import 'AbstractReference.dart';
+import 'AbstractRef.dart';
 
-class DefectType extends AbstractReference {}
+class DefectType extends AbstractRef {}

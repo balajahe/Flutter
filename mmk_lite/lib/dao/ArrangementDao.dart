@@ -1,6 +1,8 @@
-import '../entity/DefectType.dart';
+import '../entity/Arrangement.dart';
+import 'AbstractRefDao.dart';
+import 'UserSessionDao.dart';
 
-const json = [
+const _json = [
   {
     "ID": "213",
     "ARRANGEMENT": "Возможно использование без выставления претензии, требуется разработка корректирующих мероприятий",
@@ -8,11 +10,13 @@ const json = [
   },
 ];
 
-class ArrangementDao {
-  Future<List<DefectType>> getAll() async {
+class ArrangementDao extends AbstractRefDao {
+  ArrangementDao(UserSessionDao userSessionDao) : super(userSessionDao);
+
+  Future<List<Arrangement>> getAll() async {
     await Future.delayed(Duration(seconds: 1));
-    return json
-        .map((v) => DefectType()
+    return _json
+        .map((v) => Arrangement()
           ..id = v['ID']
           ..name = v['ARRANGEMENT'])
         .toList();

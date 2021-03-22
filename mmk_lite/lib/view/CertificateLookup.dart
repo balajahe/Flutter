@@ -1,40 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../entity/Certificate.dart';
 import '../model/CertificateModel.dart';
-import '../tools/mmk_widgets.dart';
+import '../view/AbstractRefLookup.dart';
 
-class CertificateLookup extends StatelessWidget {
+class CertificateLookup extends AbstractRefLookup<Certificate, CertificateModel> {
   @override
-  build(context) {
-    var model = context.read<CertificateModel>();
-    model.clearFilter();
-    var searchController = TextEditingController();
-    return BlocBuilder<CertificateModel, CertificateState>(builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          title: MmkFilterField(
-            hint: 'Найти сертификат...',
-            controller: searchController,
-            onChanged: (v) => model.filter(v),
-          ),
-        ),
-        body: (!state.waiting)
-            ? ListView.builder(
-                itemCount: state.data.length,
-                itemBuilder: (context, i) {
-                  var certificate = state.data[i];
-                  return ListTile(
-                    title: Text(certificate.id),
-                    subtitle: Text(certificate.order),
-                    trailing: Text(DateFormat('dd.MM.y').format(certificate.date)),
-                    onTap: () => Navigator.pop(context, certificate.id),
-                  );
-                },
-              )
-            : Center(child: CircularProgressIndicator()),
+  final hint = 'Найти сертификат...';
+
+  @override
+  listTile(context, item) => ListTile(
+        title: Text(item.name),
+        subtitle: Text(item.order),
+        trailing: Text(DateFormat('dd.MM.y').format(item.date)),
+        onTap: () => Navigator.pop(context, item),
       );
-    });
-  }
 }

@@ -9,6 +9,7 @@ import '../tools/camera.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
+import 'ArrangementLookup.dart';
 import 'DefectImages.dart';
 
 class DefectAdd extends StatelessWidget {
@@ -39,43 +40,56 @@ class DefectAdd extends StatelessWidget {
                     Column(
                       children: [
                         MmkLookupField(
-                          text: state.data.certificate,
-                          label: 'Сертификат',
-                          onSelect: () async {
-                            defectModel.set(
-                                certificate: await Navigator.push(
-                                    context, MaterialPageRoute(builder: (_) => CertificateLookup())));
-                          },
-                        ),
+                            text: state.data.certificate.name,
+                            label: 'Сертификат',
+                            onSelect: () async {
+                              defectModel.set(
+                                  certificate: await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => CertificateLookup()),
+                              ));
+                            }),
                         MmkLookupField(
-                          text: state.data.position,
-                          label: 'Позиция',
-                          onSelect: () async {
-                            defectModel.set(
-                                position:
-                                    await Navigator.push(context, MaterialPageRoute(builder: (_) => PositionLookup())));
-                          },
-                        ),
+                            text: state.data.position.name,
+                            label: 'Позиция',
+                            onSelect: () async {
+                              defectModel.set(
+                                  position: await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => PositionLookup()),
+                              ));
+                            }),
                         MmkTextField(
                           text: state.data.productType,
                           label: 'Вид продукции',
                           onChanged: (v) => defectModel.set(productType: v),
                         ),
                         MmkLookupField(
-                          text: state.data.defectType.name,
-                          label: 'Дефект',
-                          onSelect: () async {
-                            defectModel.set(
-                                defectType: await Navigator.push(
-                                    context, MaterialPageRoute(builder: (_) => DefectTypeLookup())));
-                          },
-                        ),
+                            text: state.data.defectType.name,
+                            label: 'Дефект',
+                            onSelect: () async {
+                              defectModel.set(
+                                  defectType: await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => DefectTypeLookup()),
+                              ));
+                            }),
                         MmkTextField(
                           text: state.data.marriageWeight?.toString(),
                           label: 'Вес брака, т',
                           onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
                           keyboardType: TextInputType.number,
                         ),
+                        MmkLookupField(
+                            text: state.data.arrangement.name,
+                            label: 'Урегулирование',
+                            onSelect: () async {
+                              defectModel.set(
+                                  arrangement: await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => ArrangementLookup()),
+                              ));
+                            }),
                         MmkTextField(
                           text: state.data.notes,
                           label: 'Замечания',

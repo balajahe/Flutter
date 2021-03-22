@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
           labelColor: Colors.blue,
           tabs: [
             Tab(
-              child: Text('Новое дело', style: TextStyle(fontSize: 11)),
+              child: Text('Новая претензия', style: TextStyle(fontSize: 11)),
               icon: Icon(Icons.create),
             ),
             Tab(
