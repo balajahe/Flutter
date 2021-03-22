@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../entity/Position.dart';
 import '../model/PositionModel.dart';
 import '../view/AbstractRefLookup.dart';
-import '../tools/mmk_widgets.dart';
+import '../tools/common_widgets.dart';
 
 class PositionLookup extends AbstractRefLookup<Position, PositionModel> {
   @override

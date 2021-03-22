@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
-import '../tools/mmk_widgets.dart';
+import '../tools/common_widgets.dart';
 import '../tools/camera.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mmk_lite/model/IssueModel.dart';
-import 'package:mmk_lite/tools/mmk_widgets.dart';
 
 import '../entity/Issue.dart';
-import '../model/IssueModel.dart';
 import '../entity/Defect.dart';
-import 'DefectAdd.dart';
+import '../model/IssueModel.dart';
+import '../view/DefectAdd.dart';
+import '../tools/common_widgets.dart';
 
 class IssueAdd extends StatelessWidget {
   @override
@@ -14,7 +13,7 @@ class IssueAdd extends StatelessWidget {
     var model = context.read<IssueModel>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Новая претензия'),
+        title: Text('Претензия'),
         actions: [
           IconButton(
             tooltip: 'Отправить претензию',
@@ -38,7 +37,8 @@ class IssueAdd extends StatelessWidget {
                     children: state.defects.map((v) => _DefectTile(v, model)).toList(),
                   )
                 : Center(
-                    child: Hpadding2(Text('Нажмите "+" чтобы добавить дефект в дело', textAlign: TextAlign.center)),
+                    child:
+                        Hpadding2(Text('Нажмите "+" чтобы добавить дефект в претензию', textAlign: TextAlign.center)),
                   );
           },
         ),

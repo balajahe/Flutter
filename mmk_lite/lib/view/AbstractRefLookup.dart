@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/AbstractRef.dart';
 import '../model/AbstractRefModel.dart';
-import '../tools/mmk_widgets.dart';
+import '../tools/common_widgets.dart';
 
 class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefModel> extends StatelessWidget {
   final String hint = 'Найти чего нибудь...';
@@ -28,12 +28,15 @@ class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefMod
           ),
         ),
         body: (!state.waiting)
-            ? ListView.builder(
-                itemCount: state.data.length,
-                itemBuilder: (context, i) {
-                  var item = state.data[i];
-                  return listTile(context, item);
-                },
+            ? Padding(
+                padding: EdgeInsets.only(top: 7),
+                child: ListView.builder(
+                  itemCount: state.data.length,
+                  itemBuilder: (context, i) {
+                    var item = state.data[i];
+                    return listTile(context, item);
+                  },
+                ),
               )
             : Center(child: CircularProgressIndicator()),
       );
