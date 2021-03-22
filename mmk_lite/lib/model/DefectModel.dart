@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mmk_lite/entity/Certificate.dart';
-import 'package:mmk_lite/entity/Position.dart';
 
 import '../entity/Defect.dart';
+import '../entity/Certificate.dart';
+import '../entity/Position.dart';
 import '../entity/DefectType.dart';
 import '../entity/Arrangement.dart';
 import 'AbstractState.dart';

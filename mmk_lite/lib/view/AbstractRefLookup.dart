@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/AbstractRef.dart';
 import '../model/AbstractRefModel.dart';
-import '../tools/common_widgets.dart';
+import 'lib/common_widgets.dart';
 
 class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefModel> extends StatelessWidget {
   final String hint = 'Найти чего нибудь...';
 
   Widget listTile(BuildContext context, TData item) => ListTile(
         title: Text(item.name),
+        visualDensity: VisualDensity.compact,
         onTap: () => Navigator.pop(context, item),
       );
 
@@ -29,7 +30,7 @@ class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefMod
         ),
         body: (!state.waiting)
             ? Padding(
-                padding: EdgeInsets.only(top: 7),
+                padding: EdgeInsets.only(top: 0),
                 child: ListView.builder(
                   itemCount: state.data.length,
                   itemBuilder: (context, i) {

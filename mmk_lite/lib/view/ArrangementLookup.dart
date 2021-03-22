@@ -9,8 +9,11 @@ class ArrangementLookup extends AbstractRefLookup<Arrangement, ArrangementModel>
   final hint = 'Найти урегулирование...';
 
   @override
-  listTile(context, item) => ListTile(
-        subtitle: Text(item.name),
-        onTap: () => Navigator.pop(context, item),
+  listTile(context, item) => Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: ListTile(
+          subtitle: Text(item.name),
+          onTap: () => Navigator.pop(context, item),
+        ),
       );
 }

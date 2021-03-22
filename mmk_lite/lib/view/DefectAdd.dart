@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
-import '../tools/common_widgets.dart';
-import '../tools/camera.dart';
+import 'lib/common_widgets.dart';
+import '../common/camera.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
@@ -37,67 +37,70 @@ class DefectAdd extends StatelessWidget {
                     ],
                   ),
                   body: Hpadding1(
-                    Column(
-                      children: [
-                        MmkLookupField(
-                            text: state.data.certificate.name,
-                            label: 'Сертификат',
-                            onSelect: () async {
-                              defectModel.set(
-                                  certificate: await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => CertificateLookup()),
-                              ));
-                            }),
-                        MmkLookupField(
-                            text: state.data.position.name,
-                            label: 'Позиция',
-                            onSelect: () async {
-                              defectModel.set(
-                                  position: await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => PositionLookup()),
-                              ));
-                            }),
-                        MmkTextField(
-                          text: state.data.productType,
-                          label: 'Вид продукции',
-                          onChanged: (v) => defectModel.set(productType: v),
-                        ),
-                        MmkLookupField(
-                            text: state.data.defectType.name,
-                            label: 'Дефект',
-                            onSelect: () async {
-                              defectModel.set(
-                                  defectType: await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => DefectTypeLookup()),
-                              ));
-                            }),
-                        MmkTextField(
-                          text: state.data.marriageWeight?.toString(),
-                          label: 'Вес брака, т',
-                          onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
-                          keyboardType: TextInputType.number,
-                        ),
-                        MmkLookupField(
-                            text: state.data.arrangement.name,
-                            label: 'Урегулирование',
-                            onSelect: () async {
-                              defectModel.set(
-                                  arrangement: await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => ArrangementLookup()),
-                              ));
-                            }),
-                        MmkTextField(
-                          text: state.data.notes,
-                          label: 'Замечания',
-                          onChanged: (v) => defectModel.set(notes: v),
-                          minLines: 3,
-                          maxLines: 6,
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          MmkLookupField(
+                              text: state.data.certificate.name,
+                              label: 'Сертификат',
+                              onSelect: () async {
+                                defectModel.set(
+                                    certificate: await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => CertificateLookup()),
+                                ));
+                              }),
+                          MmkLookupField(
+                              text: state.data.position.name,
+                              label: 'Позиция',
+                              onSelect: () async {
+                                defectModel.set(
+                                    position: await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => PositionLookup()),
+                                ));
+                              }),
+                          MmkTextField(
+                            text: state.data.productType,
+                            label: 'Вид продукции',
+                            onChanged: (v) => defectModel.set(productType: v),
+                          ),
+                          MmkLookupField(
+                              text: state.data.defectType.name,
+                              label: 'Дефект',
+                              onSelect: () async {
+                                defectModel.set(
+                                    defectType: await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => DefectTypeLookup()),
+                                ));
+                              }),
+                          MmkTextField(
+                            text: state.data.marriageWeight?.toString(),
+                            label: 'Вес брака, т',
+                            onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
+                            keyboardType: TextInputType.number,
+                          ),
+                          MmkLookupField(
+                              text: state.data.arrangement.name,
+                              label: 'Урегулирование',
+                              onSelect: () async {
+                                defectModel.set(
+                                    arrangement: await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => ArrangementLookup()),
+                                ));
+                              }),
+                          MmkTextField(
+                            text: state.data.notes,
+                            label: 'Замечания',
+                            onChanged: (v) => defectModel.set(notes: v),
+                            minLines: 3,
+                            maxLines: 6,
+                          ),
+                          Container(height: 40),
+                        ],
+                      ),
                     ),
                   ),
                   bottomSheet: Padding(

@@ -2,20 +2,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Issue.dart';
 import '../entity/Defect.dart';
+import 'AbstractState.dart';
 
-class IssueModel extends Cubit<Issue> {
-  Issue _current = Issue();
+class IssueState extends AbstractState {
+  Issue data;
+  IssueState(this.data);
+}
 
-  IssueModel() : super(Issue());
+class IssueModel extends Cubit<IssueState> {
+  Issue _data = Issue();
+
+  IssueModel() : super(IssueState(Issue()));
 
   Future<void> add(Defect v) async {
     await Future.delayed(Duration(seconds: 1));
-    _current.defects.add(v);
-    emit(_current.clone());
+    _data.defects.add(v);
+    emit(IssueState(_data));
   }
 
   void del(Defect v) {
-    _current.defects.remove(v);
-    emit(_current.clone());
+    _data.defects.remove(v);
+    emit(IssueState(_data));
   }
 }

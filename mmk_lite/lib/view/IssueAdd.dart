@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../entity/Issue.dart';
 import '../entity/Defect.dart';
 import '../model/IssueModel.dart';
 import '../view/DefectAdd.dart';
-import '../tools/common_widgets.dart';
+import 'lib/common_widgets.dart';
 
 class IssueAdd extends StatelessWidget {
   @override
@@ -13,7 +12,7 @@ class IssueAdd extends StatelessWidget {
     var model = context.read<IssueModel>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Претензия'),
+        title: Text('Новая претензия'),
         actions: [
           IconButton(
             tooltip: 'Отправить претензию',
@@ -30,11 +29,11 @@ class IssueAdd extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 7, top: 3),
-        child: BlocBuilder<IssueModel, Issue>(
+        child: BlocBuilder<IssueModel, IssueState>(
           builder: (context, state) {
-            return (state.defects.length > 0)
+            return (state.data.defects.length > 0)
                 ? ListView(
-                    children: state.defects.map((v) => _DefectTile(v, model)).toList(),
+                    children: state.data.defects.map((v) => _DefectTile(v, model)).toList(),
                   )
                 : Center(
                     child:
