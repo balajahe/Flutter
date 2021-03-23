@@ -14,6 +14,7 @@ class CertificateLookup extends AbstractRefLookup<Certificate, CertificateModel>
         title: Text(item.name),
         subtitle: Text(item.order),
         trailing: Text(DateFormat('dd.MM.y').format(item.date)),
+        visualDensity: VisualDensity.compact,
         onTap: () => Navigator.pop(context, item),
       );
 }

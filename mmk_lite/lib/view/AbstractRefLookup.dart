@@ -19,10 +19,10 @@ class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefMod
     var model = context.read<TModel>();
     model.clearFilter();
     var searchController = TextEditingController();
-    return BlocBuilder<TModel, AbstractRefState>(builder: (context, state) {
+    return BlocBuilder<TModel, RefState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: MmkFilterField(
+          title: SearchField(
             hint: hint,
             controller: searchController,
             onChanged: (v) => model.filter(v),

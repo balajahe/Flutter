@@ -5,7 +5,7 @@ import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
 import 'lib/common_widgets.dart';
-import '../common/camera.dart';
+import 'lib/camera.dart';
 import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
@@ -40,7 +40,7 @@ class DefectAdd extends StatelessWidget {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          MmkLookupField(
+                          LookupField(
                               text: state.data.certificate.name,
                               label: 'Сертификат',
                               onSelect: () async {
@@ -50,7 +50,7 @@ class DefectAdd extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => CertificateLookup()),
                                 ));
                               }),
-                          MmkLookupField(
+                          LookupField(
                               text: state.data.position.name,
                               label: 'Позиция',
                               onSelect: () async {
@@ -60,12 +60,12 @@ class DefectAdd extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => PositionLookup()),
                                 ));
                               }),
-                          MmkTextField(
+                          StatelessTextField(
                             text: state.data.productType,
                             label: 'Вид продукции',
                             onChanged: (v) => defectModel.set(productType: v),
                           ),
-                          MmkLookupField(
+                          LookupField(
                               text: state.data.defectType.name,
                               label: 'Дефект',
                               onSelect: () async {
@@ -75,13 +75,14 @@ class DefectAdd extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => DefectTypeLookup()),
                                 ));
                               }),
-                          MmkTextField(
+                          StatelessTextField(
                             text: state.data.marriageWeight?.toString(),
                             label: 'Вес брака, т',
                             onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
                             keyboardType: TextInputType.number,
+                            selectOnFocus: true,
                           ),
-                          MmkLookupField(
+                          LookupField(
                               text: state.data.arrangement.name,
                               label: 'Урегулирование',
                               onSelect: () async {
@@ -91,14 +92,14 @@ class DefectAdd extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => ArrangementLookup()),
                                 ));
                               }),
-                          MmkTextField(
+                          StatelessTextField(
                             text: state.data.notes,
                             label: 'Замечания',
                             onChanged: (v) => defectModel.set(notes: v),
                             minLines: 3,
                             maxLines: 6,
                           ),
-                          Container(height: 40),
+                          Container(height: 45),
                         ],
                       ),
                     ),

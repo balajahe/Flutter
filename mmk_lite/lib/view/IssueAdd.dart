@@ -53,42 +53,45 @@ class _DefectTile extends StatelessWidget {
 
   @override
   build(context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(height: 5),
-              Row(
-                children: [
-                  Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
-                  Expanded(flex: 3, child: Text(defect.certificate.name)),
-                ],
-              ),
-              Hline1(),
-              Row(
-                children: [
-                  Expanded(flex: 2, child: Text('Вид продукции', style: gridHeaderStyle)),
-                  Expanded(flex: 3, child: Text(defect.productType)),
-                ],
-              ),
-              Hline1(),
-              Row(
-                children: [
-                  Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
-                  Expanded(flex: 3, child: Text(defect.defectType.name)),
-                ],
-              ),
-              Hline2(),
-            ],
+    return InkWell(
+      onTap: () {},
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(height: 5),
+                Row(
+                  children: [
+                    Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
+                    Expanded(flex: 3, child: Text(defect.certificate.name)),
+                  ],
+                ),
+                Hline1(),
+                Row(
+                  children: [
+                    Expanded(flex: 2, child: Text('Вид продукции', style: gridHeaderStyle)),
+                    Expanded(flex: 3, child: Text(defect.productType)),
+                  ],
+                ),
+                Hline1(),
+                Row(
+                  children: [
+                    Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
+                    Expanded(flex: 3, child: Text(defect.defectType.name)),
+                  ],
+                ),
+                Hline2(),
+              ],
+            ),
           ),
-        ),
-        IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () => _del(context, issueModel, defect),
-        ),
-      ],
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _del(context, issueModel, defect),
+          ),
+        ],
+      ),
     );
   }
 }

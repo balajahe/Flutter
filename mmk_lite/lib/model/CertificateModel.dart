@@ -14,11 +14,7 @@ class CertificateModel extends AbstractRefModel<Certificate> {
   @override
   void filter(String s) {
     var _filter = s.toLowerCase();
-    emit(AbstractRefState(data
-        .where((v) =>
-            v.id.toLowerCase().contains(_filter) ||
-            v.name.toLowerCase().contains(_filter) ||
-            v.order.toLowerCase().contains(_filter))
-        .toList()));
+    emit(RefState(
+        data.where((v) => v.name.toLowerCase().contains(_filter) || v.order.toLowerCase().contains(_filter)).toList()));
   }
 }

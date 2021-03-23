@@ -11,9 +11,10 @@ class PositionModel extends AbstractRefModel<Position> {
           daoCreate: (_) => PositionDao(_),
         );
 
+  @override
   void filter(String s) {
     var filter = s.toLowerCase();
-    emit(AbstractRefState(data
+    emit(RefState(data
         .where((v) =>
             v.roll.toLowerCase().contains(filter) ||
             v.batch.toLowerCase().contains(filter) ||

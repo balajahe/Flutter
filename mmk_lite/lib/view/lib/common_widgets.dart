@@ -53,7 +53,7 @@ class Waiting extends StatelessWidget {
       );
 }
 
-class MmkTextField extends StatelessWidget {
+class StatelessTextField extends StatelessWidget {
   final String text;
   final String label;
   final Function(String) onChanged;
@@ -61,8 +61,9 @@ class MmkTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final int minLines;
   final int maxLines;
+  final bool selectOnFocus;
 
-  MmkTextField({
+  StatelessTextField({
     this.text,
     this.label,
     this.onChanged,
@@ -70,25 +71,32 @@ class MmkTextField extends StatelessWidget {
     this.keyboardType,
     this.minLines,
     this.maxLines,
+    this.selectOnFocus = false,
   });
 
   @override
-  build(context) => TextField(
-        controller: (controller != null) ? controller : TextEditingController(text: text),
-        decoration: InputDecoration(labelText: label),
-        onChanged: onChanged,
-        keyboardType: keyboardType,
-        minLines: minLines,
-        maxLines: maxLines,
-      );
+  build(context) {
+    var ctrl = (controller != null) ? controller : TextEditingController(text: text);
+    return TextField(
+      controller: ctrl,
+      decoration: InputDecoration(labelText: label),
+      onChanged: onChanged,
+      keyboardType: keyboardType,
+      minLines: minLines,
+      maxLines: maxLines,
+      onTap: selectOnFocus
+          ? () => ctrl.selection = TextSelection(baseOffset: 0, extentOffset: ctrl.value.text.length)
+          : null,
+    );
+  }
 }
 
-class MmkLookupField extends StatelessWidget {
+class LookupField extends StatelessWidget {
   final String text;
   final String label;
   final Function onSelect;
 
-  MmkLookupField({this.text = '', this.label, this.onSelect});
+  LookupField({this.text = '', this.label, this.onSelect});
 
   @override
   build(context) => Stack(children: [
@@ -110,7 +118,7 @@ class MmkLookupField extends StatelessWidget {
       ]);
 }
 
-class MmkFilterField extends StatelessWidget {
+class SearchField extends StatelessWidget {
   final String text;
 
   final String hint;
@@ -118,7 +126,7 @@ class MmkFilterField extends StatelessWidget {
   final Function(String) onSubmitted;
   final TextEditingController controller;
 
-  MmkFilterField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
+  SearchField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
 
   @override
   build(context) => TextField(

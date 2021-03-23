@@ -7,12 +7,12 @@ import '../entity/AbstractRef.dart';
 import '../dao/AbstractRefDao.dart';
 import '../dao/UserSessionDao.dart';
 
-class AbstractRefState<T1 extends AbstractRef> extends AbstractState {
+class RefState<T1 extends AbstractRef> extends AbstractState {
   List<T1> data;
-  AbstractRefState(this.data);
+  RefState(this.data);
 }
 
-abstract class AbstractRefModel<T1 extends AbstractRef> extends Cubit<AbstractRefState<T1>> {
+abstract class AbstractRefModel<T1 extends AbstractRef> extends Cubit<RefState<T1>> {
   BuildContext context;
   AbstractRefDao Function(UserSessionDao) daoCreate;
   @protected
@@ -20,7 +20,7 @@ abstract class AbstractRefModel<T1 extends AbstractRef> extends Cubit<AbstractRe
   UserSessionModel _userSessionModel;
   AbstractRefDao _dao;
 
-  AbstractRefModel(this.context, {this.daoCreate}) : super(AbstractRefState([])..waiting = true) {
+  AbstractRefModel(this.context, {this.daoCreate}) : super(RefState([])..waiting = true) {
     data = [];
     _userSessionModel = context.read<UserSessionModel>();
     _dao = daoCreate(_userSessionModel.dao);
@@ -29,13 +29,12 @@ abstract class AbstractRefModel<T1 extends AbstractRef> extends Cubit<AbstractRe
 
   void _load() async {
     data = await _dao.getAll();
-    emit(AbstractRefState(data));
+    emit(RefState(data));
   }
 
   void filter(String s) {
     var _filter = s.toLowerCase();
-    emit(AbstractRefState(
-        data.where((v) => v.id.toLowerCase().contains(_filter) || v.name.toLowerCase().contains(_filter)).toList()));
+    emit(RefState(data.where((v) => v.name.toLowerCase().contains(_filter)).toList()));
   }
 
   void clearFilter() {
