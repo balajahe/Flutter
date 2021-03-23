@@ -1,5 +1,6 @@
-import '../entity/UserSession.dart';
 import 'package:http/http.dart';
+
+import '../entity/UserSession.dart';
 
 const _url = 'http://module.hq.corp.mmk.chel.su:9090/api/';
 

@@ -8,6 +8,6 @@ class UserSession {
   String password = '';
   String email = '';
   String phone = '';
-  String name;
-  Uint8List avatar;
+  String name = '';
+  Uint8List avatar = Uint8List(0);
 }

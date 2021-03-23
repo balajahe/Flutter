@@ -99,7 +99,7 @@ class DefectAdd extends StatelessWidget {
                             minLines: 3,
                             maxLines: 6,
                           ),
-                          Container(height: 45),
+                          Container(height: 50),
                         ],
                       ),
                     ),

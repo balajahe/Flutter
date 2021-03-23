@@ -6,12 +6,13 @@ import '../model/AbstractRefModel.dart';
 import 'lib/common_widgets.dart';
 
 class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefModel> extends StatelessWidget {
+  @protected
   final String hint = 'Найти чего нибудь...';
 
-  Widget listTile(BuildContext context, TData item) => ListTile(
-        title: Text(item.name),
+  Widget listTile(BuildContext context, TData data) => ListTile(
+        title: Text(data.name),
         visualDensity: VisualDensity.compact,
-        onTap: () => Navigator.pop(context, item),
+        onTap: () => Navigator.pop(context, data),
       );
 
   @override

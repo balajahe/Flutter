@@ -10,7 +10,7 @@ class PositionLookup extends AbstractRefLookup<Position, PositionModel> {
   final hint = 'Найти позицию...';
 
   @override
-  listTile(context, item) => ListTile(
+  listTile(context, data) => ListTile(
         title: Padding(
           padding: EdgeInsets.only(top: 10),
           child: Column(
@@ -26,16 +26,16 @@ class PositionLookup extends AbstractRefLookup<Position, PositionModel> {
               ),
               Row(
                 children: [
-                  Expanded(child: Text(item.num.toString()), flex: 1),
-                  Expanded(child: Text(item.roll), flex: 3),
-                  Expanded(child: Text(item.batch.toString()), flex: 2),
-                  Expanded(child: Text(item.dimensions), flex: 3),
-                  Expanded(child: Text(item.quantity.toString()), flex: 4),
+                  Expanded(child: Text(data.num.toString()), flex: 1),
+                  Expanded(child: Text(data.roll), flex: 3),
+                  Expanded(child: Text(data.batch.toString()), flex: 2),
+                  Expanded(child: Text(data.dimensions), flex: 3),
+                  Expanded(child: Text(data.quantity.toString()), flex: 4),
                 ],
               ),
             ],
           ),
         ),
-        onTap: () => Navigator.pop(context, item),
+        onTap: () => Navigator.pop(context, data),
       );
 }

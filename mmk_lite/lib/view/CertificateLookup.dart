@@ -10,11 +10,11 @@ class CertificateLookup extends AbstractRefLookup<Certificate, CertificateModel>
   final hint = 'Найти сертификат...';
 
   @override
-  listTile(context, item) => ListTile(
-        title: Text(item.name),
-        subtitle: Text(item.order),
-        trailing: Text(DateFormat('dd.MM.y').format(item.date)),
+  listTile(context, data) => ListTile(
+        title: Text(data.name),
+        subtitle: Text(data.order),
+        trailing: Text(DateFormat('dd.MM.y').format(data.date)),
         visualDensity: VisualDensity.compact,
-        onTap: () => Navigator.pop(context, item),
+        onTap: () => Navigator.pop(context, data),
       );
 }

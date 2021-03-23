@@ -106,12 +106,17 @@ class LookupField extends StatelessWidget {
           enabled: false,
         ),
         Padding(
-          padding: EdgeInsets.only(right: 5),
+          padding: EdgeInsets.only(top: 5),
           child: Align(
             alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.add, size: 40),
-              onPressed: onSelect,
+            child: Container(
+              width: 30,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: IconButton(
+                icon: Icon(Icons.add, size: 35),
+                padding: EdgeInsets.all(0),
+                onPressed: onSelect,
+              ),
             ),
           ),
         ),
