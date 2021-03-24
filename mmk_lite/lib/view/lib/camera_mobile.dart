@@ -9,27 +9,48 @@ Future<Uint8List> pickImage(BuildContext context) async {
       .showSnackBar(SnackBar(
           content: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.camera),
-            onPressed: () {
-              imageSource = ImageSource.camera;
-              Navigator.pop(context);
-            },
+          Expanded(
+            child: Container(
+              height: 70,
+              child: Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.camera, color: Colors.white),
+                    onPressed: () {
+                      imageSource = ImageSource.camera;
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text('Камера'),
+                ],
+              ),
+            ),
           ),
-          IconButton(
-            icon: Icon(Icons.image_search),
-            onPressed: () {
-              imageSource = ImageSource.gallery;
-              Navigator.pop(context);
-            },
+          Expanded(
+            child: Container(
+              height: 70,
+              child: Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.image_search, color: Colors.white),
+                    onPressed: () {
+                      imageSource = ImageSource.gallery;
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text('Галлерея'),
+                ],
+              ),
+            ),
           ),
         ],
       )))
       .closed;
-  var pfile = await ImagePicker().getImage(source: imageSource);
-  if (pfile != null) {
-    return await File(pfile.path).readAsBytes();
-  } else {
-    return null;
+  if (imageSource != null) {
+    var pfile = await ImagePicker().getImage(source: imageSource);
+    if (pfile != null) {
+      return await File(pfile.path).readAsBytes();
+    }
   }
+  return null;
 }

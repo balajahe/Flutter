@@ -23,8 +23,7 @@ class IssueAdd extends StatelessWidget {
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
-            onPressed: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add, null))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add))),
           ),
           Container(width: 15),
         ],

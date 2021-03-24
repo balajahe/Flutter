@@ -4,7 +4,7 @@ import 'dart:html' as dom;
 
 Future<Uint8List> pickImage(BuildContext context) async {
   var uploadInput = dom.FileUploadInputElement();
-  uploadInput.accept = 'image/*';
+  //uploadInput.accept = 'image/*';
   uploadInput.click();
   await uploadInput.onChange.first;
 

@@ -15,7 +15,7 @@ import 'DefectImages.dart';
 class DefectAddEdit extends StatelessWidget {
   final AddEditMode _mode;
   final Defect _oldData;
-  DefectAddEdit(this._mode, this._oldData);
+  DefectAddEdit(this._mode, [this._oldData]);
 
   @override
   build(context) {

@@ -27,6 +27,7 @@ dependencies:
   http:
   intl:
   image_picker:
+  hive:
 
 
   # The following adds the Cupertino Icons font to your application.
