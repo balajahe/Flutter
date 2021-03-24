@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../entity/Defect.dart';
 import '../model/DefectModel.dart';
 import '../model/IssueModel.dart';
 
@@ -12,11 +13,14 @@ import 'DefectTypeLookup.dart';
 import 'ArrangementLookup.dart';
 import 'DefectImages.dart';
 
-class DefectAdd extends StatelessWidget {
+class DefectAddEdit extends StatelessWidget {
+  final Defect _defect;
+  DefectAddEdit(this._defect);
+
   @override
   build(context) {
     return BlocProvider(
-      create: (_) => DefectModel(),
+      create: (_) => DefectModel(_defect),
       child: BlocConsumer<DefectModel, DefectState>(
         builder: (context, state) {
           var issueModel = context.read<IssueModel>();
@@ -40,7 +44,7 @@ class DefectAdd extends StatelessWidget {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          LookupField(
+                          LookupTextField(
                               text: state.data.certificate.name,
                               label: 'Сертификат',
                               onSelect: () async {
@@ -50,7 +54,7 @@ class DefectAdd extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => CertificateLookup()),
                                 ));
                               }),
-                          LookupField(
+                          LookupTextField(
                               text: state.data.position.name,
                               label: 'Позиция',
                               onSelect: () async {
@@ -65,7 +69,7 @@ class DefectAdd extends StatelessWidget {
                             label: 'Вид продукции',
                             onChanged: (v) => defectModel.set(productType: v),
                           ),
-                          LookupField(
+                          LookupTextField(
                               text: state.data.defectType.name,
                               label: 'Дефект',
                               onSelect: () async {
@@ -82,7 +86,7 @@ class DefectAdd extends StatelessWidget {
                             keyboardType: TextInputType.number,
                             selectOnFocus: true,
                           ),
-                          LookupField(
+                          LookupTextField(
                               text: state.data.arrangement.name,
                               label: 'Урегулирование',
                               onSelect: () async {
@@ -96,10 +100,10 @@ class DefectAdd extends StatelessWidget {
                             text: state.data.notes,
                             label: 'Замечания',
                             onChanged: (v) => defectModel.set(notes: v),
-                            minLines: 3,
-                            maxLines: 6,
+                            minLines: 2,
+                            maxLines: 5,
                           ),
-                          Container(height: 50),
+                          Container(height: 55),
                         ],
                       ),
                     ),

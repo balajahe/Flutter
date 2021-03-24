@@ -15,10 +15,10 @@ class DefectState extends AbstractState {
 }
 
 class DefectModel extends Cubit<DefectState> {
-  Defect _data = Defect();
+  Defect _data;
   DefectState _lastState;
 
-  DefectModel() : super(DefectState(Defect()));
+  DefectModel(this._data) : super(DefectState(_data));
 
   void set({
     Certificate certificate,

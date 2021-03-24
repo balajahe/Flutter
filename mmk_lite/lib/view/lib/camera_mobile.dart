@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 Future<Uint8List> pickImage() async {
-  var pfile = await ImagePicker().getImage(source: ImageSource.gallery);
+  var pfile = await ImagePicker().getImage(source: ImageSource.camera);
   if (pfile != null) {
     var file = File(pfile.path);
     return await file.readAsBytes();

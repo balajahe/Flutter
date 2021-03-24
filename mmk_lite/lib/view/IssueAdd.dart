@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
 import '../model/IssueModel.dart';
-import '../view/DefectAdd.dart';
+import 'DefectAddEdit.dart';
 import 'lib/common_widgets.dart';
 
 class IssueAdd extends StatelessWidget {
@@ -22,7 +22,7 @@ class IssueAdd extends StatelessWidget {
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAdd())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(Defect()))),
           ),
           Container(width: 15),
         ],
@@ -47,14 +47,14 @@ class IssueAdd extends StatelessWidget {
 }
 
 class _DefectTile extends StatelessWidget {
-  final Defect defect;
-  final IssueModel issueModel;
-  _DefectTile(this.defect, this.issueModel);
+  final Defect _defect;
+  final IssueModel _issueModel;
+  _DefectTile(this._defect, this._issueModel);
 
   @override
   build(context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(_defect))),
       child: Row(
         children: [
           Expanded(
@@ -65,21 +65,21 @@ class _DefectTile extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(defect.certificate.name)),
+                    Expanded(flex: 3, child: Text(_defect.certificate.name)),
                   ],
                 ),
                 Hline1(),
                 Row(
                   children: [
                     Expanded(flex: 2, child: Text('Вид продукции', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(defect.productType)),
+                    Expanded(flex: 3, child: Text(_defect.productType)),
                   ],
                 ),
                 Hline1(),
                 Row(
                   children: [
                     Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(defect.defectType.name)),
+                    Expanded(flex: 3, child: Text(_defect.defectType.name)),
                   ],
                 ),
                 Hline2(),
@@ -88,7 +88,7 @@ class _DefectTile extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () => _del(context, issueModel, defect),
+            onPressed: () => _del(context, _issueModel, _defect),
           ),
         ],
       ),

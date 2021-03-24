@@ -9,9 +9,10 @@ import 'model/DefectTypeModel.dart';
 import 'model/ArrangementModel.dart';
 
 import 'view/UserSessionLogin.dart';
+import 'view/lib/common_widgets.dart';
 
 void main() {
-  ErrorWidget.builder = (e) => Scaffold(body: SingleChildScrollView(child: SelectableText(e.toString())));
+  ErrorWidget.builder = (e) => ErrorScreen(e);
   runApp(MyApp());
 }
 

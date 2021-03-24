@@ -23,7 +23,7 @@ class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefMod
     return BlocBuilder<TModel, RefState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: SearchField(
+          title: SearchTextField(
             hint: hint,
             controller: searchController,
             onChanged: (v) => model.filter(v),

@@ -53,6 +53,13 @@ class Waiting extends StatelessWidget {
       );
 }
 
+class ErrorScreen extends StatelessWidget {
+  final dynamic error;
+  ErrorScreen(this.error);
+  @override
+  build(context) => Scaffold(body: SingleChildScrollView(child: SelectableText(error.toString())));
+}
+
 class StatelessTextField extends StatelessWidget {
   final String text;
   final String label;
@@ -91,12 +98,12 @@ class StatelessTextField extends StatelessWidget {
   }
 }
 
-class LookupField extends StatelessWidget {
+class LookupTextField extends StatelessWidget {
   final String text;
   final String label;
   final Function onSelect;
 
-  LookupField({this.text = '', this.label, this.onSelect});
+  LookupTextField({this.text = '', this.label, this.onSelect});
 
   @override
   build(context) => Stack(children: [
@@ -110,7 +117,7 @@ class LookupField extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: Container(
-              width: 30,
+              width: 35,
               color: Theme.of(context).scaffoldBackgroundColor,
               child: IconButton(
                 icon: Icon(Icons.add, size: 35),
@@ -123,7 +130,7 @@ class LookupField extends StatelessWidget {
       ]);
 }
 
-class SearchField extends StatelessWidget {
+class SearchTextField extends StatelessWidget {
   final String text;
 
   final String hint;
@@ -131,7 +138,7 @@ class SearchField extends StatelessWidget {
   final Function(String) onSubmitted;
   final TextEditingController controller;
 
-  SearchField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
+  SearchTextField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
 
   @override
   build(context) => TextField(
