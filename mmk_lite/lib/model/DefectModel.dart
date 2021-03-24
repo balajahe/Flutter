@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
@@ -14,11 +15,18 @@ class DefectState extends AbstractState {
   DefectState(this.data);
 }
 
-class DefectModel extends Cubit<DefectState> {
-  Defect _data;
-  DefectState _lastState;
+enum AddEditMode { add, edit }
 
-  DefectModel(this._data) : super(DefectState(_data));
+class DefectModel extends Cubit<DefectState> {
+  final BuildContext _context;
+  final AddEditMode _mode;
+  final Defect _oldData;
+  Defect _data;
+
+  DefectModel(this._context, this._mode, this._oldData) : super(DefectState(Defect())) {
+    _data = (_mode == AddEditMode.add) ? Defect() : _oldData.clone();
+    emit(DefectState(_data));
+  }
 
   void set({
     Certificate certificate,
@@ -38,9 +46,8 @@ class DefectModel extends Cubit<DefectState> {
     _data.notes = notes ?? _data.notes;
 
     if (certificate != null || position != null || defectType != null || arrangement != null) {
-      _lastState = DefectState(_data); //обновляем форму
+      emit(DefectState(_data));
     }
-    emit(_lastState); //не обновляем форму
   }
 
   void addImage(Uint8List image) {
@@ -48,18 +55,24 @@ class DefectModel extends Cubit<DefectState> {
     emit(DefectState(_data));
   }
 
-  void addToIssue(IssueModel issueModel) async {
+  Future<void> save() async {
+    var issueModel = _context.read<IssueModel>();
     if (_data.certificate.id.length *
             _data.position.id.length *
             _data.productType.length *
             _data.defectType.id.length *
-            _data.arrangement.id.length >
+            _data.arrangement.id.length ==
         0) {
-      emit(DefectState(_data)..waiting = true);
-      await issueModel.add(_data);
-      emit(DefectState(_data)..done = true);
-    } else {
       emit(DefectState(_data)..userError = 'Заполните все поля!');
+    } else {
+      emit(DefectState(_data)..waiting = true);
+      if (_mode == AddEditMode.add) {
+        await issueModel.add(_data);
+        emit(DefectState(_data)..done = true);
+      } else if (_mode == AddEditMode.edit) {
+        await issueModel.replace(_oldData, _data);
+        emit(DefectState(_data)..done = true);
+      }
     }
   }
 }

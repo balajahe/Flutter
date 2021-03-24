@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'dart:html' as dom;
 
-Future<Uint8List> pickImage() async {
+Future<Uint8List> pickImage(BuildContext context) async {
   var uploadInput = dom.FileUploadInputElement();
+  uploadInput.accept = 'image/*';
   uploadInput.click();
   await uploadInput.onChange.first;
 

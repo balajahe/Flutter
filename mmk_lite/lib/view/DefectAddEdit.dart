@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
 import '../model/DefectModel.dart';
-import '../model/IssueModel.dart';
 
 import 'lib/common_widgets.dart';
 import 'lib/camera.dart';
@@ -14,17 +13,17 @@ import 'ArrangementLookup.dart';
 import 'DefectImages.dart';
 
 class DefectAddEdit extends StatelessWidget {
-  final Defect _defect;
-  DefectAddEdit(this._defect);
+  final AddEditMode _mode;
+  final Defect _oldData;
+  DefectAddEdit(this._mode, this._oldData);
 
   @override
   build(context) {
     return BlocProvider(
-      create: (_) => DefectModel(_defect),
+      create: (_) => DefectModel(context, _mode, _oldData),
       child: BlocConsumer<DefectModel, DefectState>(
         builder: (context, state) {
-          var issueModel = context.read<IssueModel>();
-          var defectModel = context.read<DefectModel>();
+          var model = context.read<DefectModel>();
           return WillPopScope(
             onWillPop: () => _onExit(context),
             child: Stack(
@@ -37,7 +36,7 @@ class DefectAddEdit extends StatelessWidget {
                       IconButton(
                           tooltip: 'Добавить изображение',
                           icon: Icon(Icons.add_a_photo),
-                          onPressed: () => _pickImage(defectModel)),
+                          onPressed: () => _pickImage(context, model)),
                     ],
                   ),
                   body: Hpadding1(
@@ -48,7 +47,7 @@ class DefectAddEdit extends StatelessWidget {
                               text: state.data.certificate.name,
                               label: 'Сертификат',
                               onSelect: () async {
-                                defectModel.set(
+                                model.set(
                                     certificate: await Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => CertificateLookup()),
@@ -58,7 +57,7 @@ class DefectAddEdit extends StatelessWidget {
                               text: state.data.position.name,
                               label: 'Позиция',
                               onSelect: () async {
-                                defectModel.set(
+                                model.set(
                                     position: await Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => PositionLookup()),
@@ -67,13 +66,13 @@ class DefectAddEdit extends StatelessWidget {
                           StatelessTextField(
                             text: state.data.productType,
                             label: 'Вид продукции',
-                            onChanged: (v) => defectModel.set(productType: v),
+                            onChanged: (v) => model.set(productType: v),
                           ),
                           LookupTextField(
                               text: state.data.defectType.name,
                               label: 'Дефект',
                               onSelect: () async {
-                                defectModel.set(
+                                model.set(
                                     defectType: await Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => DefectTypeLookup()),
@@ -82,7 +81,7 @@ class DefectAddEdit extends StatelessWidget {
                           StatelessTextField(
                             text: state.data.marriageWeight?.toString(),
                             label: 'Вес брака, т',
-                            onChanged: (v) => defectModel.set(marriageWeight: double.parse(v)),
+                            onChanged: (v) => model.set(marriageWeight: double.parse(v)),
                             keyboardType: TextInputType.number,
                             selectOnFocus: true,
                           ),
@@ -90,7 +89,7 @@ class DefectAddEdit extends StatelessWidget {
                               text: state.data.arrangement.name,
                               label: 'Урегулирование',
                               onSelect: () async {
-                                defectModel.set(
+                                model.set(
                                     arrangement: await Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => ArrangementLookup()),
@@ -99,7 +98,7 @@ class DefectAddEdit extends StatelessWidget {
                           StatelessTextField(
                             text: state.data.notes,
                             label: 'Замечания',
-                            onChanged: (v) => defectModel.set(notes: v),
+                            onChanged: (v) => model.set(notes: v),
                             minLines: 2,
                             maxLines: 5,
                           ),
@@ -123,7 +122,7 @@ class DefectAddEdit extends StatelessWidget {
                                     onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => BlocProvider.value(value: defectModel, child: DefectImages()),
+                                        builder: (_) => BlocProvider.value(value: model, child: DefectImages()),
                                       ),
                                     ),
                                   )
@@ -132,7 +131,7 @@ class DefectAddEdit extends StatelessWidget {
                         ),
                         TextButton(
                           child: Text('Сохранить', style: TextStyle(fontSize: 16)),
-                          onPressed: () => defectModel.addToIssue(issueModel),
+                          onPressed: () => model.save(),
                         ),
                       ],
                     ),
@@ -154,9 +153,9 @@ class DefectAddEdit extends StatelessWidget {
     );
   }
 
-  void _pickImage(DefectModel defectModel) async {
-    var image = await pickImage();
-    if (image != null) defectModel.addImage(image);
+  void _pickImage(BuildContext context, DefectModel model) async {
+    var image = await pickImage(context);
+    if (image != null) model.addImage(image);
   }
 
   Future<bool> _onExit(context) async {

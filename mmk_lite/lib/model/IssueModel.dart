@@ -20,7 +20,13 @@ class IssueModel extends Cubit<IssueState> {
     emit(IssueState(_data));
   }
 
-  void del(Defect v) {
+  Future<void> replace(Defect oldData, Defect newData) async {
+    await Future.delayed(Duration(seconds: 1));
+    _data.defects[_data.defects.indexOf(oldData)] = newData;
+    emit(IssueState(_data));
+  }
+
+  Future<void> del(Defect v) async {
     _data.defects.remove(v);
     emit(IssueState(_data));
   }

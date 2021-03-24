@@ -57,7 +57,17 @@ class ErrorScreen extends StatelessWidget {
   final dynamic error;
   ErrorScreen(this.error);
   @override
-  build(context) => Scaffold(body: SingleChildScrollView(child: SelectableText(error.toString())));
+  build(context) => Scaffold(
+        body: Padding(
+          padding: EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: SelectableText(
+              error.toString(),
+              style: TextStyle(color: Colors.red[900]),
+            ),
+          ),
+        ),
+      );
 }
 
 class StatelessTextField extends StatelessWidget {

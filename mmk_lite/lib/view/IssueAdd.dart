@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
 import '../model/IssueModel.dart';
-import 'DefectAddEdit.dart';
+import '../model/DefectModel.dart';
 import 'lib/common_widgets.dart';
+import 'DefectAddEdit.dart';
 
 class IssueAdd extends StatelessWidget {
   @override
@@ -22,7 +23,8 @@ class IssueAdd extends StatelessWidget {
           IconButton(
             tooltip: 'Добавить дефект',
             icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(Defect()))),
+            onPressed: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add, null))),
           ),
           Container(width: 15),
         ],
@@ -54,7 +56,7 @@ class _DefectTile extends StatelessWidget {
   @override
   build(context) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(_defect))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.edit, _defect))),
       child: Row(
         children: [
           Expanded(
