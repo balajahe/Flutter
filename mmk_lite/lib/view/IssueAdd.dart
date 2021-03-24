@@ -10,39 +10,42 @@ import 'DefectAddEdit.dart';
 class IssueAdd extends StatelessWidget {
   @override
   build(context) {
-    var model = context.read<IssueModel>();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Новая претензия'),
-        actions: [
-          IconButton(
-            tooltip: 'Отправить претензию',
-            icon: Icon(Icons.send),
-            onPressed: () {},
+    return BlocBuilder<IssueModel, IssueState>(
+      builder: (context, state) {
+        var model = context.read<IssueModel>();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Новая претензия'),
+            actions: [
+              (state.data.defects.length > 0)
+                  ? IconButton(
+                      tooltip: 'Отправить претензию',
+                      icon: Icon(Icons.send),
+                      onPressed: () {},
+                    )
+                  : Container(),
+              IconButton(
+                tooltip: 'Добавить дефект',
+                icon: Icon(Icons.add, size: 40),
+                onPressed: () =>
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add))),
+              ),
+              Container(width: 15),
+            ],
           ),
-          IconButton(
-            tooltip: 'Добавить дефект',
-            icon: Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add))),
-          ),
-          Container(width: 15),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 7, top: 3),
-        child: BlocBuilder<IssueModel, IssueState>(
-          builder: (context, state) {
-            return (state.data.defects.length > 0)
+          body: Padding(
+            padding: EdgeInsets.only(left: 7, top: 3),
+            child: (state.data.defects.length > 0)
                 ? ListView(
                     children: state.data.defects.map((v) => _DefectTile(v, model)).toList(),
                   )
                 : Center(
                     child:
                         Hpadding2(Text('Нажмите "+" чтобы добавить дефект в претензию', textAlign: TextAlign.center)),
-                  );
-          },
-        ),
-      ),
+                  ),
+          ),
+        );
+      },
     );
   }
 }

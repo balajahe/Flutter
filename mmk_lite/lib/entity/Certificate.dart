@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
 import 'AbstractRef.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 20)
 class Certificate extends AbstractRef {
-  @HiveField(0)
+  @HiveField(10)
   String order;
 
-  @HiveField(1)
+  @HiveField(11)
   DateTime date;
 }

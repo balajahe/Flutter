@@ -34,7 +34,7 @@ class DefectAddEdit extends StatelessWidget {
                     actions: [
                       IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
                       IconButton(
-                          tooltip: 'Добавить изображение',
+                          tooltip: 'Добавить файл',
                           icon: Icon(Icons.add_a_photo),
                           onPressed: () => _pickImage(context, model)),
                     ],

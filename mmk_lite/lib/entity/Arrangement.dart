@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
 import 'AbstractRef.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 10)
 class Arrangement extends AbstractRef {}
