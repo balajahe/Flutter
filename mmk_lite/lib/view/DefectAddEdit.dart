@@ -10,7 +10,7 @@ import 'CertificateLookup.dart';
 import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
 import 'ArrangementLookup.dart';
-import 'DefectImages.dart';
+import 'DefectFiles.dart';
 
 class DefectAddEdit extends StatelessWidget {
   final AddEditMode _mode;
@@ -79,9 +79,9 @@ class DefectAddEdit extends StatelessWidget {
                                 ));
                               }),
                           StatelessTextField(
-                            text: state.data.marriageWeight?.toString(),
+                            text: state.data.weightDefect?.toString(),
                             label: 'Вес брака, т',
-                            onChanged: (v) => model.set(marriageWeight: double.parse(v)),
+                            onChanged: (v) => model.set(weightDefect: double.parse(v)),
                             keyboardType: TextInputType.number,
                             selectOnFocus: true,
                           ),
@@ -96,7 +96,7 @@ class DefectAddEdit extends StatelessWidget {
                                 ));
                               }),
                           StatelessTextField(
-                            text: state.data.notes,
+                            text: state.data.remark,
                             label: 'Замечания',
                             onChanged: (v) => model.set(notes: v),
                             minLines: 2,
@@ -114,15 +114,15 @@ class DefectAddEdit extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text('Изображений: ${state.data.images.length}'),
-                            (state.data.images.length > 0)
+                            Text('Файлов: ${state.data.files.length}'),
+                            (state.data.files.length > 0)
                                 ? IconButton(
-                                    tooltip: 'Перейти к изображениям',
+                                    tooltip: 'Перейти к файлам',
                                     icon: Icon(Icons.photo_library),
                                     onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => BlocProvider.value(value: model, child: DefectImages()),
+                                        builder: (_) => BlocProvider.value(value: model, child: DefectFiles()),
                                       ),
                                     ),
                                   )
@@ -154,8 +154,8 @@ class DefectAddEdit extends StatelessWidget {
   }
 
   void _pickImage(BuildContext context, DefectModel model) async {
-    var image = await pickImage(context);
-    if (image != null) model.addImage(image);
+    var file = await pickFile(context);
+    if (file != null) model.addFile(file);
   }
 
   Future<bool> _onExit(context) async {

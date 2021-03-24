@@ -10,18 +10,18 @@ class Defect {
   Position position = Position();
   String productType = '';
   DefectType defectType = DefectType();
-  double marriageWeight = 0;
+  double weightDefect = 0;
   Arrangement arrangement = Arrangement();
-  String notes = '';
-  List<Uint8List> images = [];
+  String remark = '';
+  List<Uint8List> files = [];
 
   Defect clone() => Defect()
     ..certificate = certificate
     ..position = position
     ..productType = productType
     ..defectType = defectType
-    ..marriageWeight = marriageWeight
+    ..weightDefect = weightDefect
     ..arrangement = arrangement
-    ..notes = notes
-    ..images = List.from(images);
+    ..remark = remark
+    ..files = List.from(files);
 }

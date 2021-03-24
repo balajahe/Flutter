@@ -1,5 +1,7 @@
-import 'package:mmk_lite/entity/AbstractRef.dart';
+import 'package:hive/hive.dart';
+import 'AbstractRef.dart';
 
+@HiveType(typeId: 4)
 class Position extends AbstractRef {
   int num;
   String roll;

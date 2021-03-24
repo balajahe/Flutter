@@ -33,7 +33,7 @@ class DefectModel extends Cubit<DefectState> {
     Position position,
     String productType,
     DefectType defectType,
-    double marriageWeight,
+    double weightDefect,
     Arrangement arrangement,
     String notes,
   }) {
@@ -41,17 +41,17 @@ class DefectModel extends Cubit<DefectState> {
     _data.position = position ?? _data.position;
     _data.productType = productType ?? _data.productType;
     _data.defectType = defectType ?? _data.defectType;
-    _data.marriageWeight = marriageWeight ?? _data.marriageWeight;
+    _data.weightDefect = weightDefect ?? _data.weightDefect;
     _data.arrangement = arrangement ?? _data.arrangement;
-    _data.notes = notes ?? _data.notes;
+    _data.remark = notes ?? _data.remark;
 
     if (certificate != null || position != null || defectType != null || arrangement != null) {
       emit(DefectState(_data));
     }
   }
 
-  void addImage(Uint8List image) {
-    _data.images.add(image);
+  void addFile(Uint8List file) {
+    _data.files.add(file);
     emit(DefectState(_data));
   }
 

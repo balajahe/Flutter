@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<Uint8List> pickImage(BuildContext context) async {
+Future<Uint8List> pickFile(BuildContext context) async {
   ImageSource imageSource;
   await ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(
