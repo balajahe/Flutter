@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/SessionModel.dart';
+import '../model/UserSessionModel.dart';
 import 'lib/common_widgets.dart';
 import 'ContactList.dart';
 
-class SessionLogin extends StatelessWidget {
+class UserSessionLogin extends StatelessWidget {
   @override
   build(context) {
-    var model = context.read<SessionModel>();
-    return BlocConsumer<SessionModel, SessionState>(
+    var model = context.read<UserSessionModel>();
+    return BlocConsumer<UserSessionModel, UserSessionState>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(

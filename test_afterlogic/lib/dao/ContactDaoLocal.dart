@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import '../entity/Contact.dart';
 import '../entity/ContactStorage.dart';
-import 'SessionDao.dart';
+import 'UserSessionDao.dart';
 
 class ContactDaoLocal {
-  SessionDao _sessionDao;
+  UserSessionDao _sessionDao;
   ContactDaoLocal(this._sessionDao);
 
   Future<void> save(List<ContactStorage> storages) async {

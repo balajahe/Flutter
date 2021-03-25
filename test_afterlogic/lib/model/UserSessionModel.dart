@@ -1,22 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'AbstractState.dart';
-import '../entity/User.dart';
-import '../dao/SessionDao.dart';
+import '../entity/UserSession.dart';
+import '../dao/UserSessionDao.dart';
 
-class SessionState extends AbstractState<User> {
-  SessionState(User data) : super(data);
+class UserSessionState extends AbstractState {
+  UserSession data;
+  UserSessionState(this.data);
 }
 
-class SessionModel extends Cubit<SessionState> {
-  User _data = User();
-  SessionDao _dao;
+class UserSessionModel extends Cubit<UserSessionState> {
+  UserSession _data = UserSession();
+  UserSessionDao _dao;
 
-  SessionModel() : super(SessionState(User())) {
-    _dao = SessionDao();
-  }
+  UserSessionModel() : super(UserSessionState(UserSession()));
 
-  SessionDao get dao => _dao;
+  UserSessionDao get dao => _dao;
 
   void set({String host, String email, String password}) {
     _data.host = host ?? _data.host;
@@ -26,25 +25,26 @@ class SessionModel extends Cubit<SessionState> {
 
   Future<void> login() async {
     if (_data.host.length * _data.email.length * _data.password.length == 0) {
-      emit(SessionState(_data)..error = 'Fill in all fields!');
+      emit(UserSessionState(_data)..error = 'Fill in all fields!');
     } else if (!_validateEmail(_data.email)) {
-      emit(SessionState(_data)..error = 'Email is incorrect!');
+      emit(UserSessionState(_data)..error = 'Email is incorrect!');
     } else {
       try {
-        emit(SessionState(_data)..waiting = true);
+        emit(UserSessionState(_data)..waiting = true);
+        _dao = UserSessionDao();
         await _dao.login(_data);
         _data.password = '';
-        emit(SessionState(_data)..done = true);
+        emit(UserSessionState(_data)..done = true);
       } catch (e) {
         print(e.toString());
-        emit(SessionState(_data)..error = 'Authentification error!');
+        emit(UserSessionState(_data)..error = 'Authentification error!');
       }
     }
   }
 
   Future<void> logout() async {
-    _data = User();
-    emit(SessionState(_data));
+    _data = UserSession();
+    emit(UserSessionState(_data));
   }
 
   bool _validateEmail(String v) {

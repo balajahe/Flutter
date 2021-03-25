@@ -15,7 +15,7 @@ class ContactList extends StatelessWidget {
         appBar: AppBar(
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Contacts'),
-            Text(state.data.currentStorage.id, style: TextStyle(fontSize: 11)),
+            Text(state.currentStorage.id, style: TextStyle(fontSize: 11)),
           ]),
           actions: [
             IconButton(
@@ -34,9 +34,9 @@ class ContactList extends StatelessWidget {
         drawer: StorageDrawer(),
         body: (!state.waiting)
             ? ListView.builder(
-                itemCount: state.data.selectedContacts.length,
+                itemCount: state.selectedContacts.length,
                 itemBuilder: (context, i) {
-                  var contact = state.data.selectedContacts[i];
+                  var contact = state.selectedContacts[i];
                   if (contact.email.length > 0) {
                     return ListTile(
                       title: Text(contact.name),

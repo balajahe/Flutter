@@ -10,13 +10,13 @@ class StorageDrawer extends StatelessWidget {
       builder: (context, state) {
         return Drawer(
           child: ListView(
-            children: state.data.storages
+            children: state.storages
                 .map(
                   (v) => ListTile(
                     title: Text(
                       v.id.toUpperCase(),
                       style: TextStyle(
-                        fontWeight: (v == state.data.currentStorage) ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: (v == state.currentStorage) ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                     onTap: () {

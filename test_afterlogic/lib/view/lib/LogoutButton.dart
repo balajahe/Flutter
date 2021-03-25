@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../model/SessionModel.dart';
-import '../SessionLogin.dart';
+import '../../model/UserSessionModel.dart';
+import '../UserSessionLogin.dart';
 
 class LogoutButton extends StatelessWidget {
   @override
@@ -11,10 +11,10 @@ class LogoutButton extends StatelessWidget {
       icon: Icon(Icons.exit_to_app),
       tooltip: 'Logout',
       onPressed: () async {
-        context.read<SessionModel>().logout();
+        context.read<UserSessionModel>().logout();
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => SessionLogin()),
+          MaterialPageRoute(builder: (_) => UserSessionLogin()),
           (_) => false,
         );
       },
