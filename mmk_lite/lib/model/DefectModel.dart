@@ -12,7 +12,8 @@ import 'IssueModel.dart';
 
 class DefectState extends AbstractState {
   Defect data;
-  DefectState(this.data);
+  Defect oldData;
+  DefectState(this.data, this.oldData);
 }
 
 enum AddEditMode { add, edit }
@@ -20,12 +21,13 @@ enum AddEditMode { add, edit }
 class DefectModel extends Cubit<DefectState> {
   final BuildContext _context;
   final AddEditMode _mode;
-  final Defect _oldData;
+  Defect _oldData;
   Defect _data;
 
-  DefectModel(this._context, this._mode, this._oldData) : super(DefectState(Defect())) {
+  DefectModel(this._context, this._mode, this._oldData) : super(DefectState(Defect(), Defect())) {
+    if (_oldData == null) _oldData = Defect();
     _data = (_mode == AddEditMode.add) ? Defect() : _oldData.clone();
-    emit(DefectState(_data));
+    emit(DefectState(_data, _oldData));
   }
 
   void set({
@@ -46,13 +48,13 @@ class DefectModel extends Cubit<DefectState> {
     _data.remark = notes ?? _data.remark;
 
     if (certificate != null || position != null || defectType != null || arrangement != null) {
-      emit(DefectState(_data));
+      emit(DefectState(_data, _oldData));
     }
   }
 
   void addFile(Uint8List file) {
     _data.files.add(file);
-    emit(DefectState(_data));
+    emit(DefectState(_data, _oldData));
   }
 
   Future<void> save() async {
@@ -63,15 +65,15 @@ class DefectModel extends Cubit<DefectState> {
             _data.defectType.id.length *
             _data.arrangement.id.length ==
         0) {
-      emit(DefectState(_data)..userError = 'Заполните все поля!');
+      emit(DefectState(_data, _oldData)..userError = 'Заполните все поля!');
     } else {
-      emit(DefectState(_data)..waiting = true);
+      emit(DefectState(_data, _oldData)..waiting = true);
       if (_mode == AddEditMode.add) {
         await issueModel.add(_data);
-        emit(DefectState(_data)..done = true);
+        emit(DefectState(_data, _oldData)..done = true);
       } else if (_mode == AddEditMode.edit) {
         await issueModel.replace(_oldData, _data);
-        emit(DefectState(_data)..done = true);
+        emit(DefectState(_data, _oldData)..done = true);
       }
     }
   }

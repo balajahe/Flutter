@@ -21,6 +21,7 @@ class IssueModel extends Cubit<IssueState> {
     _daoRemote = IssueDaoLocal(context.read<UserSessionModel>().dao);
     _daoLocal = IssueDaoLocal(context.read<UserSessionModel>().dao);
     _data = _daoLocal.getCurrentIssue() ?? Issue();
+    emit(IssueState(_data));
   }
 
   Future<void> add(Defect v) async {

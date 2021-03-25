@@ -10,13 +10,11 @@ class Position extends AbstractRef {
   @override
   Map toMap() {
     var m = super.toMap();
-    m.addAll({
-      'num': num,
-      'roll': roll,
-      'batch': batch,
-      'dimensions': dimensions,
-      'quantity': quantity,
-    });
+    m['num'] = num;
+    m['roll'] = roll;
+    m['batch'] = batch;
+    m['dimensions'] = dimensions;
+    m['quantity'] = quantity;
     return m;
   }
 

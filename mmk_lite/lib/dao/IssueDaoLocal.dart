@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import '../entity/Issue.dart';
-import '../entity/Defect.dart';
 import 'UserSessionDao.dart';
 
 class IssueDaoLocal {
   UserSessionDao _userSessionDao;
 
   IssueDaoLocal(this._userSessionDao) {
-    _userSessionDao.localStorage.clear();
+    //_userSessionDao.localStorage.clear();
   }
 
   Future<void> putCurrentIssue(Issue issue) {

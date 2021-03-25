@@ -7,10 +7,8 @@ class Certificate extends AbstractRef {
   @override
   Map toMap() {
     var m = super.toMap();
-    m.addAll({
-      'order': order,
-      'date': date.toIso8601String(),
-    });
+    m['order'] = order;
+    m['date'] = date?.toIso8601String();
     return m;
   }
 

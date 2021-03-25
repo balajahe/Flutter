@@ -33,18 +33,18 @@ class Defect {
         'weightDefect': weightDefect,
         'arrangement': arrangement.toMap(),
         'remark': remark,
-        //'defects': defects.map((d) => d.toMap()).toList();
+        'files': files.map((d) => d).toList(),
       };
 
   Defect fromMap(Map m) {
     certificate = Certificate().fromMap(m['certificate']);
-    position = m['position'];
+    position = Position().fromMap(m['position']);
     productType = m['productType'];
-    defectType = m['defectType'];
+    defectType = DefectType().fromMap(m['defectType']);
     weightDefect = m['weightDefect'];
-    arrangement = m['arrangement'];
-    remark = remark;
-    //defects = m['defects'].map((d) => Defect().fromMap(d)).toList();
+    arrangement = Arrangement().fromMap(m['arrangement']);
+    remark = m['remark'];
+    files = m['files'].map<Uint8List>((d) => Uint8List(0)).toList();
     return this;
   }
 }

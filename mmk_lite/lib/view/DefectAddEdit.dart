@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,7 @@ class DefectAddEdit extends StatelessWidget {
         builder: (context, state) {
           var model = context.read<DefectModel>();
           return WillPopScope(
-            onWillPop: () => _onExit(context),
+            onWillPop: () => _onExit(context, state),
             child: Stack(
               children: [
                 Scaffold(
@@ -158,7 +159,8 @@ class DefectAddEdit extends StatelessWidget {
     if (file != null) model.addFile(file);
   }
 
-  Future<bool> _onExit(context) async {
+  Future<bool> _onExit(context, DefectState state) async {
+    if (jsonEncode(state.data.toMap()) == jsonEncode(state.oldData.toMap())) return true;
     var isExit = await showDialog(
       barrierDismissible: false,
       context: context,
@@ -170,6 +172,6 @@ class DefectAddEdit extends StatelessWidget {
         ],
       ),
     );
-    return (isExit is bool && isExit);
+    return isExit ?? false;
   }
 }

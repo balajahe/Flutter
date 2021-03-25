@@ -10,7 +10,7 @@ class Issue {
       };
 
   Issue fromMap(Map m) {
-    defects = m['defects'].map((d) => Defect().fromMap(d)).toList();
+    defects = m['defects'].map<Defect>((d) => Defect().fromMap(d)).toList();
     return this;
   }
 }
