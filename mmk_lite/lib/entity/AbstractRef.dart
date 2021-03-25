@@ -1,12 +1,15 @@
-import 'package:hive/hive.dart';
-
-part 'AbstractRef.g.dart';
-
-@HiveType(typeId: 0)
-class AbstractRef {
-  @HiveField(0)
+abstract class AbstractRef {
   String id = '';
-
-  @HiveField(1)
   String name = '';
+
+  Map toMap() => {
+        'id': id,
+        'name': name,
+      };
+
+  AbstractRef fromMap(Map m) {
+    id = m['id'];
+    name = m['name'];
+    return this;
+  }
 }

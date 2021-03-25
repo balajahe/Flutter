@@ -1,37 +1,18 @@
 import 'dart:typed_data';
-import 'package:hive/hive.dart';
 
 import 'Certificate.dart';
 import 'Position.dart';
 import 'DefectType.dart';
 import 'Arrangement.dart';
 
-part 'Defect.g.dart';
-
-@HiveType(typeId: 30)
 class Defect {
-  @HiveField(0)
   Certificate certificate = Certificate();
-
-  @HiveField(1)
   Position position = Position();
-
-  @HiveField(2)
   String productType = '';
-
-  @HiveField(3)
   DefectType defectType = DefectType();
-
-  @HiveField(4)
   double weightDefect = 0;
-
-  @HiveField(5)
   Arrangement arrangement = Arrangement();
-
-  @HiveField(6)
   String remark = '';
-
-  @HiveField(7)
   List<Uint8List> files = [];
 
   Defect clone() => Defect()
@@ -43,4 +24,27 @@ class Defect {
     ..arrangement = arrangement
     ..remark = remark
     ..files = List.from(files);
+
+  Map toMap() => {
+        'certificate': certificate.toMap(),
+        'position': position.toMap(),
+        'productType': productType,
+        'defectType': defectType.toMap(),
+        'weightDefect': weightDefect,
+        'arrangement': arrangement.toMap(),
+        'remark': remark,
+        //'defects': defects.map((d) => d.toMap()).toList();
+      };
+
+  Defect fromMap(Map m) {
+    certificate = Certificate().fromMap(m['certificate']);
+    position = m['position'];
+    productType = m['productType'];
+    defectType = m['defectType'];
+    weightDefect = m['weightDefect'];
+    arrangement = m['arrangement'];
+    remark = remark;
+    //defects = m['defects'].map((d) => Defect().fromMap(d)).toList();
+    return this;
+  }
 }

@@ -1,13 +1,24 @@
-import 'package:hive/hive.dart';
 import 'AbstractRef.dart';
 
-part 'Certificate.g.dart';
-
-@HiveType(typeId: 20)
 class Certificate extends AbstractRef {
-  @HiveField(10)
   String order;
-
-  @HiveField(11)
   DateTime date;
+
+  @override
+  Map toMap() {
+    var m = super.toMap();
+    m.addAll({
+      'order': order,
+      'date': date.toIso8601String(),
+    });
+    return m;
+  }
+
+  @override
+  Certificate fromMap(Map m) {
+    super.fromMap(m);
+    order = m['order'];
+    date = DateTime.parse(m['date']);
+    return this;
+  }
 }
