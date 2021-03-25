@@ -19,7 +19,6 @@ class UserSessionDao {
   Box<Issue> get newIssueBox => _newIssueBox;
 
   Future<void> login(UserSession userSession) async {
-    Hive.registerAdapter(AbstractRefAdapter());
     Hive.registerAdapter(ArrangementAdapter());
     Hive.registerAdapter(CertificateAdapter());
     Hive.registerAdapter(DefectAdapter());
@@ -27,9 +26,9 @@ class UserSessionDao {
     Hive.registerAdapter(IssueAdapter());
     Hive.registerAdapter(PositionAdapter());
     Hive.registerAdapter(UserSessionAdapter());
+    Hive.registerAdapter(AbstractRefAdapter());
 
     await Hive.initFlutter();
-
     _newIssueBox = await Hive.openBox<Issue>('newIssueBox');
   }
 }
