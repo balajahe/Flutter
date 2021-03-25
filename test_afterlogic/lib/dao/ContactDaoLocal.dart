@@ -8,7 +8,7 @@ class ContactDaoLocal {
   UserSessionDao _sessionDao;
   ContactDaoLocal(this._sessionDao);
 
-  Future<void> save(List<ContactStorage> storages) async {
+  Future<void> putStorages(List<ContactStorage> storages) async {
     var map = storages
         .map((s) => {
               'id': s.id,
@@ -27,12 +27,12 @@ class ContactDaoLocal {
                   .toList(),
             })
         .toList();
-    var res = await _sessionDao.localStorage.setString('allData', jsonEncode(map));
+    var res = await _sessionDao.localStorage.setString('storages', jsonEncode(map));
     if (!res) throw 'Local storage writing error!';
   }
 
-  Future<List<ContactStorage>> load() async {
-    var json = _sessionDao.localStorage.getString('allData');
+  Future<List<ContactStorage>> getStorages() async {
+    var json = _sessionDao.localStorage.getString('storages');
     if (json == null) {
       return [];
     } else {
@@ -56,8 +56,8 @@ class ContactDaoLocal {
     }
   }
 
-  Future<void> clear() async {
-    var res = await _sessionDao.localStorage.remove('allData');
+  Future<void> clearStorages() async {
+    var res = await _sessionDao.localStorage.remove('storages');
     if (!res) throw 'Local storage clearing error!';
   }
 }
