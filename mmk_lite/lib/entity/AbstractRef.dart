@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 
+part 'AbstractRef.g.dart';
+
 @HiveType(typeId: 0)
-abstract class AbstractRef {
+class AbstractRef {
   @HiveField(0)
   String id = '';
 

@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import 'Defect.dart';
 
+part 'Issue.g.dart';
+
 @HiveType(typeId: 50)
 class Issue {
   @HiveField(0)

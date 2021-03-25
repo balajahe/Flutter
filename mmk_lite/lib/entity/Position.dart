@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import 'AbstractRef.dart';
 
+part 'Position.g.dart';
+
 @HiveType(typeId: 60)
 class Position extends AbstractRef {
   @HiveField(10)

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => DefectTypeModel(context)),
         BlocProvider(create: (context) => ArrangementModel(context)),
         BlocProvider(create: (context) => PositionModel(context)),
-        BlocProvider(create: (context) => IssueModel()),
+        BlocProvider(create: (context) => IssueModel(context)),
       ],
       child: MaterialApp(
         title: 'MMK Lite',

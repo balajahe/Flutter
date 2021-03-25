@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'package:hive/hive.dart';
 
+part 'UserSession.g.dart';
+
 @HiveType(typeId: 71)
 enum AuthType {
   @HiveField(0)

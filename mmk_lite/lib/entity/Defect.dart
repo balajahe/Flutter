@@ -6,6 +6,8 @@ import 'Position.dart';
 import 'DefectType.dart';
 import 'Arrangement.dart';
 
+part 'Defect.g.dart';
+
 @HiveType(typeId: 30)
 class Defect {
   @HiveField(0)
