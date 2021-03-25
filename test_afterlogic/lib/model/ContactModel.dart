@@ -37,6 +37,15 @@ class ContactModel extends Cubit<ContactState> {
   Future<void> _load() async {
     _localSavingTimer?.cancel();
     _storages = await _daoRemote.getStorages();
+    _storages.forEach((sr) {
+      try {
+        var sl = _storagesLocal.firstWhere((sl) => sl.id == sr.id && sl.ctag == sr.ctag && sl.contacts.length > 0);
+        sr.contacts = sl.contacts;
+        sr.isLoaded = true;
+      } catch (_) {
+        print('STORAGE INVALIDATE - ${sr.id}');
+      }
+    });
     await setStorage(_currentStorage ?? _storages[0]);
     _localSavingTimer = Timer.periodic(Duration(seconds: 1), (_) => _daoLocal.save(_storages));
   }
@@ -44,14 +53,8 @@ class ContactModel extends Cubit<ContactState> {
   Future<void> setStorage(ContactStorage storage) async {
     emit(ContactState([], ContactStorage(), [])..waiting = true);
     _currentStorage = storage;
-    _storagesLocal = await _daoLocal.load();
-
-    try {
-      var sl = _storagesLocal.firstWhere((sl) =>
-          sl.id == _currentStorage.id && sl.ctag == _currentStorage.ctag && _currentStorage.contacts.length > 0);
-      _currentStorage.contacts = sl.contacts;
-    } catch (_) {
-      print('STORAGE INVALIDATE - ${_currentStorage.id}');
+    if (!_currentStorage.isLoaded) {
+      _storagesLocal = await _daoLocal.load();
       await _daoRemote.getContacts(_currentStorage);
       var newContacts = <Contact>[];
       _currentStorage.contacts.forEach((cr) {
@@ -64,8 +67,8 @@ class ContactModel extends Cubit<ContactState> {
         }
       });
       _currentStorage.contacts = newContacts;
+      _currentStorage.isLoaded = true;
     }
-
     emit(ContactState(_storages, _currentStorage, _currentStorage.contacts));
   }
 
