@@ -19,7 +19,7 @@ Future<DefectFile> pickFile(BuildContext context) async {
                     icon: Icon(Icons.camera, color: Colors.white),
                     onPressed: () {
                       imageSource = ImageSource.camera;
-                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     },
                   ),
                   Text('Камера'),
@@ -36,7 +36,7 @@ Future<DefectFile> pickFile(BuildContext context) async {
                     icon: Icon(Icons.image_search, color: Colors.white),
                     onPressed: () {
                       imageSource = ImageSource.gallery;
-                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     },
                   ),
                   Text('Галлерея'),

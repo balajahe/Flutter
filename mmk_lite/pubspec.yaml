@@ -27,7 +27,8 @@ dependencies:
   http:
   intl:
   image_picker:
-  shared_preferences:
+  hive:
+  hive_flutter:
  
 
   # The following adds the Cupertino Icons font to your application.

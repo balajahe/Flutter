@@ -1,24 +1,17 @@
-import 'dart:convert';
-
 import '../entity/Issue.dart';
 import 'UserSessionDao.dart';
 
 class IssueDaoLocal {
   UserSessionDao _userSessionDao;
 
-  IssueDaoLocal(this._userSessionDao) {
-    //_userSessionDao.localStorage.clear();
-  }
+  IssueDaoLocal(this._userSessionDao);
 
-  Future<void> putCurrentIssue(Issue issue) {
-    return _userSessionDao.localStorage.setString('newIssue', jsonEncode(issue.toMap()));
+  Future<void> putCurrentIssue(Issue issue) async {
+    await _userSessionDao.currentIssueBox.put('currentIssue', issue.toMap());
   }
 
   Issue getCurrentIssue() {
-    var json = _userSessionDao.localStorage.getString('newIssue');
-    if (json == null)
-      return null;
-    else
-      return Issue().fromMap(jsonDecode(json));
+    var issueMap = _userSessionDao.currentIssueBox.get('currentIssue');
+    return (issueMap != null) ? Issue().fromMap(issueMap) : null;
   }
 }

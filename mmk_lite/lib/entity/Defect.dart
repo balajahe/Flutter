@@ -39,7 +39,12 @@ class Defect {
         'weightDefect': weightDefect,
         'arrangement': arrangement.toMap(),
         'remark': remark,
-        'files': files.map((d) => d.name).toList(),
+        'files': files
+            .map((f) => {
+                  'name': f.name,
+                  'file': f.file,
+                })
+            .toList(),
       };
 
   Defect fromMap(Map m) {
@@ -50,7 +55,12 @@ class Defect {
     weightDefect = m['weightDefect'];
     arrangement = Arrangement().fromMap(m['arrangement']);
     remark = m['remark'];
-    files = m['files'].map<DefectFile>((f) => DefectFile(f.name, Uint8List(0))).toList();
+    files = m['files']
+        .map<DefectFile>((f) => DefectFile(
+              f['name'],
+              f['file'],
+            ))
+        .toList();
     return this;
   }
 }

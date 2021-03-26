@@ -1,16 +1,18 @@
 import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../entity/UserSession.dart';
 
 const _url = 'http://module.hq.corp.mmk.chel.su:9090/api/';
 
 class UserSessionDao {
-  SharedPreferences _localStorage;
+  Box<Map> _currentIssueBox;
 
-  SharedPreferences get localStorage => _localStorage;
+  get currentIssueBox => _currentIssueBox;
 
   Future<void> login(UserSession userSession) async {
-    _localStorage = await SharedPreferences.getInstance();
+    await Hive.initFlutter();
+    _currentIssueBox = await Hive.openBox<Map>('currentIssueBox');
   }
 }

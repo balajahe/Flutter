@@ -3,5 +3,6 @@ import 'UserSessionDao.dart';
 
 class IssueDaoRemote {
   UserSessionDao _userSessionDao;
+
   IssueDaoRemote(this._userSessionDao);
 }
