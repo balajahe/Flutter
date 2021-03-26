@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'Certificate.dart';
@@ -62,5 +63,13 @@ class Defect {
             ))
         .toList();
     return this;
+  }
+
+  bool equal(Defect d) {
+    var d1 = toMap();
+    d1['files'] = files.map((f) => f.name).toList();
+    var d2 = d.toMap();
+    d2['files'] = files.map((f) => f.name).toList();
+    return (jsonEncode(d1) == jsonEncode(d2));
   }
 }

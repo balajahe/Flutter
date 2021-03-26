@@ -160,7 +160,7 @@ class DefectAddEdit extends StatelessWidget {
   }
 
   Future<bool> _onExit(context, DefectState state) async {
-    if (jsonEncode(state.data.toMap()) == jsonEncode(state.oldData.toMap())) return true;
+    if (state.data.equal(state.oldData)) return true;
     var isExit = await showDialog(
       barrierDismissible: false,
       context: context,
