@@ -26,7 +26,7 @@ class DefectAddEdit extends StatelessWidget {
         builder: (context, state) {
           var model = context.read<DefectModel>();
           return WillPopScope(
-            onWillPop: () => _onExit(context, state),
+            onWillPop: () => _onExit(context, model, state),
             child: Stack(
               children: [
                 Scaffold(
@@ -159,19 +159,23 @@ class DefectAddEdit extends StatelessWidget {
     if (file != null) model.addFile(file);
   }
 
-  Future<bool> _onExit(context, DefectState state) async {
-    if (state.data.equal(state.oldData)) return true;
-    var isExit = await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Выйти без сохранения?'),
-        actions: <Widget>[
-          TextButton(child: Text('Нет'), onPressed: () => Navigator.pop(context, false)),
-          TextButton(child: Text('Да'), onPressed: () => Navigator.pop(context, true)),
-        ],
-      ),
-    );
-    return isExit ?? false;
+  Future<bool> _onExit(context, DefectModel model, DefectState state) async {
+    if (state.data.equal(state.oldData)) {
+      return true;
+    } else {
+      var isSave = await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Сохранить изменения?'),
+          actions: <Widget>[
+            TextButton(child: Text('Нет'), onPressed: () => Navigator.pop(context, false)),
+            TextButton(child: Text('Да'), onPressed: () => Navigator.pop(context, true)),
+          ],
+        ),
+      );
+      if (isSave) model.save();
+      return !isSave;
+    }
   }
 }

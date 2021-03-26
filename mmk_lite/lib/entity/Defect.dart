@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:convert';
 
 import 'Certificate.dart';
 import 'Position.dart';
@@ -65,11 +65,12 @@ class Defect {
     return this;
   }
 
-  bool equal(Defect d) {
-    var d1 = toMap();
-    d1['files'] = files.map((f) => f.name).toList();
-    var d2 = d.toMap();
-    d2['files'] = files.map((f) => f.name).toList();
-    return (jsonEncode(d1) == jsonEncode(d2));
+  bool equal(Defect other) {
+    Map _transform(Map d) {
+      d['files'] = d['files'].map((f) => f['name']).toList();
+      return d;
+    }
+
+    return (jsonEncode(_transform(this.toMap())) == jsonEncode(_transform(other.toMap())));
   }
 }
