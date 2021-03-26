@@ -1,8 +1,9 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:html' as dom;
 
-Future<Uint8List> pickFile(BuildContext context) async {
+import '../../entity/Defect.dart';
+
+Future<DefectFile> pickFile(BuildContext context) async {
   var uploadInput = dom.FileUploadInputElement();
   //uploadInput.accept = 'image/*';
   uploadInput.click();
@@ -14,7 +15,7 @@ Future<Uint8List> pickFile(BuildContext context) async {
     var reader = dom.FileReader();
     reader.readAsArrayBuffer(file);
     await reader.onLoadEnd.first;
-    return reader.result;
+    return DefectFile(file.relativePath + file.name, reader.result);
   } else {
     return null;
   }

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,7 +51,7 @@ class DefectModel extends Cubit<DefectState> {
     }
   }
 
-  void addFile(Uint8List file) {
+  void addFile(DefectFile file) {
     _data.files.add(file);
     emit(DefectState(_data, _oldData));
   }

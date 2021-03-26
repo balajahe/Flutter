@@ -15,7 +15,7 @@ class DefectFiles extends StatelessWidget {
                 .map(
                   (v) => Padding(
                     padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 0),
-                    child: Image.memory(v),
+                    child: Image.memory(v.file),
                   ),
                 )
                 .toList(),

@@ -5,6 +5,12 @@ import 'Position.dart';
 import 'DefectType.dart';
 import 'Arrangement.dart';
 
+class DefectFile {
+  String name;
+  Uint8List file;
+  DefectFile(this.name, this.file);
+}
+
 class Defect {
   Certificate certificate = Certificate();
   Position position = Position();
@@ -13,7 +19,7 @@ class Defect {
   double weightDefect = 0;
   Arrangement arrangement = Arrangement();
   String remark = '';
-  List<Uint8List> files = [];
+  List<DefectFile> files = [];
 
   Defect clone() => Defect()
     ..certificate = certificate
@@ -33,7 +39,7 @@ class Defect {
         'weightDefect': weightDefect,
         'arrangement': arrangement.toMap(),
         'remark': remark,
-        'files': files.map((d) => d).toList(),
+        'files': files.map((d) => d.name).toList(),
       };
 
   Defect fromMap(Map m) {
@@ -44,7 +50,7 @@ class Defect {
     weightDefect = m['weightDefect'];
     arrangement = Arrangement().fromMap(m['arrangement']);
     remark = m['remark'];
-    files = m['files'].map<Uint8List>((d) => Uint8List(0)).toList();
+    files = m['files'].map<DefectFile>((f) => DefectFile(f.name, Uint8List(0))).toList();
     return this;
   }
 }

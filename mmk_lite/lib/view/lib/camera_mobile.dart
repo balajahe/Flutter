@@ -1,9 +1,10 @@
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<Uint8List> pickFile(BuildContext context) async {
+import '../../entity/Defect.dart';
+
+Future<DefectFile> pickFile(BuildContext context) async {
   ImageSource imageSource;
   await ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(
@@ -47,9 +48,9 @@ Future<Uint8List> pickFile(BuildContext context) async {
       )))
       .closed;
   if (imageSource != null) {
-    var pfile = await ImagePicker().getImage(source: imageSource);
-    if (pfile != null) {
-      return await File(pfile.path).readAsBytes();
+    var file = await ImagePicker().getImage(source: imageSource);
+    if (file != null) {
+      return DefectFile(file.path, await File(file.path).readAsBytes());
     }
   }
   return null;
