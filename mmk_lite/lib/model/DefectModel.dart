@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
-import '../entity/Certificate.dart';
-import '../entity/Position.dart';
-import '../entity/DefectType.dart';
-import '../entity/Arrangement.dart';
 import 'AbstractState.dart';
 import 'IssueModel.dart';
+
+export '../entity/Defect.dart';
 
 class DefectState extends AbstractState {
   Defect data;
@@ -68,10 +66,10 @@ class DefectModel extends Cubit<DefectState> {
     } else {
       emit(DefectState(_data, _oldData)..waiting = true);
       if (_mode == AddEditMode.add) {
-        await issueModel.add(_data);
+        await issueModel.addDefect(_data);
         emit(DefectState(_data, _oldData)..done = true);
       } else if (_mode == AddEditMode.edit) {
-        await issueModel.replace(_oldData, _data);
+        await issueModel.setDefect(_oldData, _data);
         emit(DefectState(_data, _oldData)..done = true);
       }
     }

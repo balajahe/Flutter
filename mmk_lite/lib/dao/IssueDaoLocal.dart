@@ -3,10 +3,9 @@ import 'UserSessionDao.dart';
 
 class IssueDaoLocal {
   UserSessionDao _userSessionDao;
-
   IssueDaoLocal(this._userSessionDao);
 
-  Future<void> putCurrentIssue(Issue issue) async {
+  Future<void> setCurrentIssue(Issue issue) async {
     await _userSessionDao.currentIssueBox.put('currentIssue', issue.toMap());
   }
 

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Issue.dart';
-import '../entity/Defect.dart';
 import '../dao/IssueDaoLocal.dart';
 import '../model/UserSessionModel.dart';
 import 'AbstractState.dart';
+
+export '../entity/Issue.dart';
 
 class IssueState extends AbstractState {
   Issue data;
@@ -24,23 +25,23 @@ class IssueModel extends Cubit<IssueState> {
     emit(IssueState(_data));
   }
 
-  Future<void> add(Defect v) async {
+  Future<void> addDefect(Defect v) async {
     await Future.delayed(Duration(seconds: 1));
     _data.defects.add(v);
-    _daoLocal.putCurrentIssue(_data);
+    _daoLocal.setCurrentIssue(_data);
     emit(IssueState(_data));
   }
 
-  Future<void> replace(Defect oldData, Defect newData) async {
+  Future<void> setDefect(Defect oldData, Defect newData) async {
     await Future.delayed(Duration(seconds: 1));
     _data.defects[_data.defects.indexOf(oldData)] = newData;
-    _daoLocal.putCurrentIssue(_data);
+    _daoLocal.setCurrentIssue(_data);
     emit(IssueState(_data));
   }
 
-  Future<void> del(Defect v) async {
+  Future<void> delDefect(Defect v) async {
     _data.defects.remove(v);
-    _daoLocal.putCurrentIssue(_data);
+    _daoLocal.setCurrentIssue(_data);
     emit(IssueState(_data));
   }
 }

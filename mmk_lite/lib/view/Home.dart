@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'IssueAdd.dart';
+import 'IssueList.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class Home extends StatelessWidget {
         body: TabBarView(
           children: [
             IssueAdd(),
-            Container(),
+            IssueList(),
             Container(),
           ],
         ),

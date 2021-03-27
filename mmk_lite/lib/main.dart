@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'model/UserSessionModel.dart';
-import 'model/IssueModel.dart';
 import 'model/CertificateModel.dart';
 import 'model/PositionModel.dart';
 import 'model/DefectTypeModel.dart';
 import 'model/ArrangementModel.dart';
+import 'model/IssuesModel.dart';
+import 'model/IssueModel.dart';
 
 import 'view/UserSessionLogin.dart';
 import 'view/lib/common_widgets.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => DefectTypeModel(context)),
         BlocProvider(create: (context) => ArrangementModel(context)),
         BlocProvider(create: (context) => PositionModel(context)),
+        BlocProvider(create: (context) => IssuesModel(context)),
         BlocProvider(create: (context) => IssueModel(context)),
       ],
       child: MaterialApp(

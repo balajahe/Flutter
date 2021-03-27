@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../entity/Defect.dart';
 import '../model/DefectModel.dart';
 
 import 'lib/common_widgets.dart';

@@ -6,6 +6,11 @@ import 'Position.dart';
 import 'DefectType.dart';
 import 'Arrangement.dart';
 
+export 'Certificate.dart';
+export 'Position.dart';
+export 'DefectType.dart';
+export 'Arrangement.dart';
+
 class DefectFile {
   String name;
   Uint8List file;
