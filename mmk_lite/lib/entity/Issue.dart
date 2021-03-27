@@ -12,7 +12,10 @@ class Issue {
     return s.substring(1, s.length - 1);
   }
 
-  double weightDefects() => defects.fold(0, (s, d) => s += d.weightDefect);
+  double weightDefects() {
+    var s = defects.fold<double>(0, (s, d) => s += d.weightDefect);
+    return (s * 100).truncateToDouble() / 100;
+  }
 
   Map toMap() => {
         'defects': defects.map((d) => d.toMap()).toList(),

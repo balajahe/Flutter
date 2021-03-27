@@ -8,19 +8,24 @@ import 'AbstractState.dart';
 
 export '../entity/Issue.dart';
 
+enum IssueFormMode { add, view }
+
 class IssueState extends AbstractState {
   Issue data;
   IssueState(this.data);
 }
 
 class IssueModel extends Cubit<IssueState> {
+  final BuildContext _context;
+  final IssueFormMode _mode;
+
   Issue _data;
   IssueDaoLocal _daoRemote;
   IssueDaoLocal _daoLocal;
 
-  IssueModel(BuildContext context) : super(IssueState(Issue())) {
-    _daoRemote = IssueDaoLocal(context.read<UserSessionModel>().dao);
-    _daoLocal = IssueDaoLocal(context.read<UserSessionModel>().dao);
+  IssueModel(this._context, this._mode) : super(IssueState(Issue())) {
+    _daoRemote = IssueDaoLocal(_context.read<UserSessionModel>().dao);
+    _daoLocal = IssueDaoLocal(_context.read<UserSessionModel>().dao);
     _data = _daoLocal.getCurrentIssue() ?? Issue();
     emit(IssueState(_data));
   }

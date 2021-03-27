@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../model/IssuesModel.dart';
 import 'lib/common_widgets.dart';
+import 'IssueView.dart';
 
 class IssueList extends StatelessWidget {
   @protected
@@ -44,7 +45,7 @@ class IssueList extends StatelessWidget {
                       ),
                       subtitle: Text(issue.defectTypes()),
                       visualDensity: VisualDensity.compact,
-                      onTap: () {},
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => IssueView(issue))),
                     );
                   },
                 ),

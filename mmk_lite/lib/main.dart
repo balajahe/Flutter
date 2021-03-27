@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ArrangementModel(context)),
         BlocProvider(create: (context) => PositionModel(context)),
         BlocProvider(create: (context) => IssuesModel(context)),
-        BlocProvider(create: (context) => IssueModel(context)),
+        BlocProvider(create: (context) => IssueModel(context, IssueFormMode.add)),
       ],
       child: MaterialApp(
         title: 'MMK Lite',

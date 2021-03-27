@@ -27,7 +27,7 @@ class IssueAdd extends StatelessWidget {
                 tooltip: 'Добавить дефект',
                 icon: Icon(Icons.add, size: 40),
                 onPressed: () =>
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.add))),
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(DefectFormMode.add))),
               ),
               Container(width: 15),
             ],
@@ -57,7 +57,8 @@ class _DefectTile extends StatelessWidget {
   @override
   build(context) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(AddEditMode.edit, _defect))),
+      onTap: () =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(DefectFormMode.edit, _defect))),
       child: Row(
         children: [
           Expanded(

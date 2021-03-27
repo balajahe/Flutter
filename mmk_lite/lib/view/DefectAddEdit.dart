@@ -12,7 +12,7 @@ import 'ArrangementLookup.dart';
 import 'DefectFiles.dart';
 
 class DefectAddEdit extends StatelessWidget {
-  final AddEditMode _mode;
+  final DefectFormMode _mode;
   final Defect _oldData;
   DefectAddEdit(this._mode, [this._oldData]);
 

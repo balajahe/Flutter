@@ -20,10 +20,25 @@ class IssueDaoRemote {
               ..id = '1'
               ..name = 'плена'),
           Defect()
-            ..weightDefect = 0.5
+            ..weightDefect = 0.7
             ..defectType = (DefectType()
               ..id = '3'
               ..name = 'геометрия')
+        ],
+      Issue()
+        ..id = '2'
+        ..date = DateTime.now()
+        ..defects = [
+          Defect()
+            ..weightDefect = 3.2
+            ..defectType = (DefectType()
+              ..id = '4'
+              ..name = 'раковина'),
+          Defect()
+            ..weightDefect = 1.1
+            ..defectType = (DefectType()
+              ..id = '5'
+              ..name = 'заусенец')
         ]
     ];
   }
