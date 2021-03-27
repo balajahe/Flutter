@@ -25,6 +25,7 @@ class AbstractRefLookup<TData extends AbstractRef, TModel extends AbstractRefMod
         appBar: AppBar(
           title: SearchTextField(
             hint: hint,
+            autofocus: true,
             controller: searchController,
             onChanged: (v) => model.filter(v),
           ),

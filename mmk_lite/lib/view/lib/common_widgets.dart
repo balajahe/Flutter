@@ -142,13 +142,13 @@ class LookupTextField extends StatelessWidget {
 
 class SearchTextField extends StatelessWidget {
   final String text;
-
   final String hint;
+  final bool autofocus;
   final Function(String) onChanged;
   final Function(String) onSubmitted;
   final TextEditingController controller;
 
-  SearchTextField({this.text, this.hint, this.onChanged, this.onSubmitted, this.controller});
+  SearchTextField({this.text, this.hint, this.autofocus = false, this.onChanged, this.onSubmitted, this.controller});
 
   @override
   build(context) => TextField(
@@ -161,7 +161,7 @@ class SearchTextField extends StatelessWidget {
         style: TextStyle(color: Colors.white),
         cursorColor: Colors.white,
         cursorWidth: 2,
-        autofocus: true,
+        autofocus: autofocus,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
       );

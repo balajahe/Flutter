@@ -110,7 +110,7 @@ void _del(context, model, v) async {
         TextButton(
           child: Text('Да'),
           onPressed: () {
-            model.del(v);
+            model.delDefect(v);
             Navigator.pop(context);
           },
         ),
