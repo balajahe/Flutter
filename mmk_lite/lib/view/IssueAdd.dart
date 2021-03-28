@@ -66,26 +66,11 @@ class _DefectTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(height: 5),
-                Row(
-                  children: [
-                    Expanded(flex: 2, child: Text('Серт. №', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(_defect.certificate.name)),
-                  ],
-                ),
+                ViewField(label: 'Серт. №', text: _defect.certificate.name),
                 Hline1(),
-                Row(
-                  children: [
-                    Expanded(flex: 2, child: Text('Вид продукции', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(_defect.productType)),
-                  ],
-                ),
+                ViewField(label: 'Вид продукции', text: _defect.productType),
                 Hline1(),
-                Row(
-                  children: [
-                    Expanded(flex: 2, child: Text('Дефект', style: gridHeaderStyle)),
-                    Expanded(flex: 3, child: Text(_defect.defectType.name)),
-                  ],
-                ),
+                ViewField(label: 'Дефект', text: _defect.defectType.name),
                 Hline2(),
               ],
             ),

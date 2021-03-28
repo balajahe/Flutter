@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-final gridHeaderStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
+final labelStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 11);
 
 class Hpadding1 extends StatelessWidget {
   final Widget child;
@@ -67,6 +67,22 @@ class ErrorScreen extends StatelessWidget {
             ),
           ),
         ),
+      );
+}
+
+class ViewField extends StatelessWidget {
+  final String label;
+  final String text;
+  final int labelFlex;
+  final int textFlex;
+  ViewField({this.label, this.text, this.labelFlex = 2, this.textFlex = 3});
+
+  @override
+  build(context) => Row(
+        children: [
+          Expanded(flex: labelFlex, child: Text(label, style: labelStyle)),
+          Expanded(flex: textFlex, child: Text(text)),
+        ],
       );
 }
 

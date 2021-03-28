@@ -32,6 +32,7 @@ class IssueList extends StatelessWidget {
                   itemBuilder: (context, i) {
                     var issue = state.data[i];
                     return ListTile(
+                      visualDensity: VisualDensity.compact,
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -43,8 +44,13 @@ class IssueList extends StatelessWidget {
                           Text(issue.weightDefects().toString() + ' тонн'),
                         ],
                       ),
-                      subtitle: Text(issue.defectTypes()),
-                      visualDensity: VisualDensity.compact,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(issue.defectTypes()),
+                          Hline1(),
+                        ],
+                      ),
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => IssueView(issue))),
                     );
                   },

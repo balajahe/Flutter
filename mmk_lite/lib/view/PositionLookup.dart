@@ -17,11 +17,11 @@ class PositionLookup extends AbstractRefLookup<Position, PositionModel> {
             children: [
               Row(
                 children: [
-                  Expanded(child: Text('№', style: gridHeaderStyle), flex: 1),
-                  Expanded(child: Text('Рулон', style: gridHeaderStyle), flex: 3),
-                  Expanded(child: Text('Партия', style: gridHeaderStyle), flex: 2),
-                  Expanded(child: Text('Толщ.Шир.', style: gridHeaderStyle), flex: 3),
-                  Expanded(child: Text('Кол-во', style: gridHeaderStyle), flex: 4),
+                  Expanded(child: Text('№', style: labelStyle), flex: 1),
+                  Expanded(child: Text('Рулон', style: labelStyle), flex: 3),
+                  Expanded(child: Text('Партия', style: labelStyle), flex: 2),
+                  Expanded(child: Text('Толщ.Шир.', style: labelStyle), flex: 3),
+                  Expanded(child: Text('Кол-во', style: labelStyle), flex: 4),
                 ],
               ),
               Row(
