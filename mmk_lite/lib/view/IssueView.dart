@@ -17,9 +17,21 @@ class IssueView extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
-            children: [
-              Text(_issue.id),
-            ],
+            children: _issue.defects
+                .map((d) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Text(d.certificate.name),
+                        //Text(d.certificate.order),
+                        Text(d.productType, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                        //Text(d.position.batch),
+                        Text('Дефект: ' + d.defectType.name),
+                        Text('Вес брака, т: ' + d.weightDefect.toString()),
+                        Hline1(),
+                        Container(height: 5),
+                      ],
+                    ))
+                .toList(),
           ),
         ),
       ),

@@ -38,7 +38,7 @@ class IssueList extends StatelessWidget {
                           Text('№ ' + issue.id),
                           Text(
                             DateFormat('dd.MM.y').format(issue.date),
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(fontSize: 11, color: Colors.grey),
                           ),
                           Text(issue.weightDefects().toString() + ' тонн'),
                         ],

@@ -15,11 +15,13 @@ class IssueDaoRemote {
         ..date = DateTime.now()
         ..defects = [
           Defect()
+            ..productType = 'Прокат листовой травленый'
             ..weightDefect = 0.5
             ..defectType = (DefectType()
               ..id = '1'
               ..name = 'плена'),
           Defect()
+            ..productType = 'Прокат г/к листовой травленый'
             ..weightDefect = 0.7
             ..defectType = (DefectType()
               ..id = '3'
@@ -30,11 +32,13 @@ class IssueDaoRemote {
         ..date = DateTime.now()
         ..defects = [
           Defect()
+            ..productType = 'Прокат листовой травленый'
             ..weightDefect = 3.2
             ..defectType = (DefectType()
               ..id = '4'
               ..name = 'раковина'),
           Defect()
+            ..productType = 'Прокат г/к листовой травленый'
             ..weightDefect = 1.1
             ..defectType = (DefectType()
               ..id = '5'
