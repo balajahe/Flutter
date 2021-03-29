@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../model/IssuesModel.dart';
+import '../model/IssueListModel.dart';
 import 'lib/common_widgets.dart';
 import 'IssueView.dart';
 
@@ -12,10 +12,10 @@ class IssueList extends StatelessWidget {
 
   @override
   build(context) {
-    var model = context.read<IssuesModel>();
+    var model = context.read<IssueListModel>();
     model.clearFilter();
     var searchController = TextEditingController();
-    return BlocBuilder<IssuesModel, IssuesState>(builder: (context, state) {
+    return BlocBuilder<IssueListModel, IssueListState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           title: SearchTextField(

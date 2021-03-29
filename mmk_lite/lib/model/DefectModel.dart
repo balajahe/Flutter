@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../entity/Defect.dart';
 import 'AbstractState.dart';
-import 'IssueModel.dart';
+import 'IssueAddModel.dart';
 
 export '../entity/Defect.dart';
 
@@ -55,7 +55,7 @@ class DefectModel extends Cubit<DefectState> {
   }
 
   Future<void> save() async {
-    var issueModel = _context.read<IssueModel>();
+    var issueModel = _context.read<IssueAddModel>();
     if (_data.certificate.id.length *
             _data.position.id.length *
             _data.productType.length *

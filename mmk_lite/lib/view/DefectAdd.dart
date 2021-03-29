@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../model/DefectModel.dart';
 
@@ -11,10 +12,10 @@ import 'DefectTypeLookup.dart';
 import 'ArrangementLookup.dart';
 import 'DefectFiles.dart';
 
-class DefectAddEdit extends StatelessWidget {
+class DefectAdd extends StatelessWidget {
   final DefectFormMode _mode;
   final Defect _oldData;
-  DefectAddEdit(this._mode, [this._oldData]);
+  DefectAdd(this._mode, [this._oldData]);
 
   @override
   build(context) {
@@ -31,7 +32,11 @@ class DefectAddEdit extends StatelessWidget {
                   appBar: AppBar(
                     title: Text('Дефект'),
                     actions: [
-                      IconButton(tooltip: 'Сканировать штрихкод', icon: Icon(Icons.qr_code_scanner), onPressed: () {}),
+                      IconButton(
+                        tooltip: 'Сканировать штрихкод',
+                        icon: Icon(Icons.qr_code_scanner),
+                        onPressed: () => _scan(),
+                      ),
                       IconButton(
                           tooltip: 'Добавить файл',
                           icon: Icon(Icons.add_a_photo),
@@ -155,6 +160,10 @@ class DefectAddEdit extends StatelessWidget {
   void _pickImage(BuildContext context, DefectModel model) async {
     var file = await pickFile(context);
     if (file != null) model.addFile(file);
+  }
+
+  Future<void> _scan() async {
+    //var barcode = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Отмена", true, ScanMode.BARCODE);
   }
 
   Future<bool> _onExit(context, DefectModel model, DefectState state) async {

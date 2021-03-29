@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/IssueModel.dart';
+import '../model/IssueAddModel.dart';
 import '../model/DefectModel.dart';
 import 'lib/common_widgets.dart';
-import 'DefectAddEdit.dart';
+import 'DefectAdd.dart';
 
 class IssueAdd extends StatelessWidget {
   @override
   build(context) {
-    return BlocBuilder<IssueModel, IssueState>(
+    return BlocBuilder<IssueAddModel, IssueAddState>(
       builder: (context, state) {
-        var model = context.read<IssueModel>();
+        var model = context.read<IssueAddModel>();
         return Scaffold(
           appBar: AppBar(
             title: Text('Новая претензия'),
@@ -27,7 +27,7 @@ class IssueAdd extends StatelessWidget {
                 tooltip: 'Добавить дефект',
                 icon: Icon(Icons.add, size: 40),
                 onPressed: () =>
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(DefectFormMode.add))),
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAdd(DefectFormMode.add))),
               ),
               Container(width: 15),
             ],
@@ -51,14 +51,13 @@ class IssueAdd extends StatelessWidget {
 
 class _DefectTile extends StatelessWidget {
   final Defect _defect;
-  final IssueModel _issueModel;
-  _DefectTile(this._defect, this._issueModel);
+  final IssueAddModel _model;
+  _DefectTile(this._defect, this._model);
 
   @override
   build(context) {
     return InkWell(
-      onTap: () =>
-          Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAddEdit(DefectFormMode.edit, _defect))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DefectAdd(DefectFormMode.edit, _defect))),
       child: Row(
         children: [
           Expanded(
@@ -77,7 +76,7 @@ class _DefectTile extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () => _del(context, _issueModel, _defect),
+            onPressed: () => _del(context, _model, _defect),
           ),
         ],
       ),
@@ -85,7 +84,7 @@ class _DefectTile extends StatelessWidget {
   }
 }
 
-void _del(context, model, v) async {
+void _del(context, model, defect) async {
   showDialog<void>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
@@ -95,7 +94,7 @@ void _del(context, model, v) async {
         TextButton(
           child: Text('Да'),
           onPressed: () {
-            model.delDefect(v);
+            model.delDefect(defect);
             Navigator.pop(context);
           },
         ),
