@@ -26,8 +26,8 @@ dependencies:
   flutter_bloc:
   http:
   intl:
-  image_picker:
-  hive:
+  image_picker: ^0.7.3
+  camera: ^0.8.1
   hive_flutter:
  
 

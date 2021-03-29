@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../model/DefectModel.dart';
 
@@ -11,6 +10,7 @@ import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
 import 'ArrangementLookup.dart';
 import 'DefectFiles.dart';
+//import 'DefectBarcodeScan.dart';
 
 class DefectAdd extends StatelessWidget {
   final DefectFormMode _mode;
@@ -35,7 +35,7 @@ class DefectAdd extends StatelessWidget {
                       IconButton(
                         tooltip: 'Сканировать штрихкод',
                         icon: Icon(Icons.qr_code_scanner),
-                        onPressed: () => _scan(),
+                        onPressed: () => _scan(context),
                       ),
                       IconButton(
                           tooltip: 'Добавить файл',
@@ -162,8 +162,8 @@ class DefectAdd extends StatelessWidget {
     if (file != null) model.addFile(file);
   }
 
-  Future<void> _scan() async {
-    //var barcode = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Отмена", true, ScanMode.BARCODE);
+  Future<void> _scan(context) async {
+    //Navigator.push(context, MaterialPageRoute(builder: (_) => DefectBarcodeScan()));
   }
 
   Future<bool> _onExit(context, DefectModel model, DefectState state) async {
