@@ -10,7 +10,7 @@ import 'PositionLookup.dart';
 import 'DefectTypeLookup.dart';
 import 'ArrangementLookup.dart';
 import 'DefectFiles.dart';
-//import 'DefectBarcodeScan.dart';
+import 'DefectBarcodeScan.dart';
 
 class DefectAdd extends StatelessWidget {
   final DefectFormMode _mode;
@@ -163,7 +163,7 @@ class DefectAdd extends StatelessWidget {
   }
 
   Future<void> _scan(context) async {
-    //Navigator.push(context, MaterialPageRoute(builder: (_) => DefectBarcodeScan()));
+    var code = Navigator.push(context, MaterialPageRoute(builder: (_) => DefectBarcodeScan()));
   }
 
   Future<bool> _onExit(context, DefectModel model, DefectState state) async {

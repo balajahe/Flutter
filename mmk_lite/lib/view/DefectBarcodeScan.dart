@@ -16,15 +16,12 @@ class _DefectBarcodeScanState extends State<DefectBarcodeScan> {
   @override
   void initState() {
     super.initState();
-    _initFuture = init();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> init() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    var cameras = await availableCameras();
-    _controller = CameraController(cameras[0], ResolutionPreset.max);
-    await _controller.initialize();
+    _initFuture = (() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      var cameras = await availableCameras();
+      _controller = CameraController(cameras[0], ResolutionPreset.max);
+      await _controller.initialize();
+    })();
   }
 
   @override
@@ -42,5 +39,11 @@ class _DefectBarcodeScanState extends State<DefectBarcodeScan> {
                 : Waiting(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 }
