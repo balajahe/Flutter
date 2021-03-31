@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'view/PhoneDetect.dart';
-import 'view/common_widgets.dart';
+import 'DetectUi.dart';
+import 'common_widgets.dart';
 
 void main() {
   ErrorWidget.builder = (e) => ErrorScreen(e);
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: PhoneDetect(),
+      home: DetectUi(),
     );
   }
 }
