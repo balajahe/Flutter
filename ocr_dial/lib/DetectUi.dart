@@ -23,7 +23,7 @@ class _DetectUiState extends State<DetectUi> {
       WidgetsFlutterBinding.ensureInitialized();
       _camera = CameraController(
         (await availableCameras())[0],
-        ResolutionPreset.low,
+        ResolutionPreset.medium,
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.yuv420,
       );
