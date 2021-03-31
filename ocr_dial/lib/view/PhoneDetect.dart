@@ -1,6 +1,8 @@
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:image/image.dart' as il;
 //import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 import 'common_widgets.dart';
@@ -14,8 +16,7 @@ class _PhoneDetectState extends State<PhoneDetect> {
   CameraController _camera;
   //ImageLabeler _labeler;
   Future<void> _initFuture;
-  bool _do;
-  Uint8List _img = Uint8List(0);
+  List<int> _img;
 
   @override
   void initState() {
@@ -25,18 +26,48 @@ class _PhoneDetectState extends State<PhoneDetect> {
 
     _initFuture = (() async {
       WidgetsFlutterBinding.ensureInitialized();
-      _camera = CameraController((await availableCameras())[0], ResolutionPreset.max, enableAudio: false);
+      _camera = CameraController(
+        (await availableCameras())[0],
+        ResolutionPreset.low,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.yuv420,
+      );
       await _camera.initialize();
-      //_start();
+      _start();
     })();
   }
 
-  Future<void> _start() async {
-    _do = true;
-
-    await _camera.startImageStream((img) {
-      setState(() => _img = img.planes[0].bytes);
+  void _start() {
+    var i = 0;
+    _camera.startImageStream((cimg) {
+      i++;
+      if (i == 100) {
+        setState(() => _img = _decodeImg(cimg));
+        i = 0;
+      }
     });
+  }
+
+  List<int> _decodeImg(CameraImage cimg) {
+    var img = il.Image(cimg.width, cimg.height); // Create Image buffer
+
+    Plane plane = cimg.planes[0];
+    const int shift = (0xFF << 24);
+
+    // Fill image buffer with plane[0] from YUV420_888
+    for (int x = 0; x < cimg.width; x++) {
+      for (int planeOffset = 0; planeOffset < cimg.height * cimg.width; planeOffset += cimg.width) {
+        final pixelColor = plane.bytes[planeOffset + x];
+        // color: 0x FF  FF  FF  FF
+        //           A   B   G   R
+        // Calculate pixel color
+        var newVal = shift | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
+
+        img.data[planeOffset + x] = newVal;
+      }
+    }
+    var pngEncoder = new il.PngEncoder(level: 0, filter: 0);
+    return pngEncoder.encodeImage(img);
   }
 
   @override
@@ -49,14 +80,10 @@ class _PhoneDetectState extends State<PhoneDetect> {
         future: _initFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done)
-            return Stack(
+            return Column(
               children: [
-                Center(child: CameraPreview(_camera)),
-                Container(
-                  width: 100,
-                  height: 100,
-                  child: (_img.length > 0) ? Image.memory(_img) : Container(),
-                )
+                Expanded(child: CameraPreview(_camera)),
+                Expanded(child: (_img != null) ? Image.memory(_img) : Container()),
               ],
             );
           else if (snapshot.hasError)
