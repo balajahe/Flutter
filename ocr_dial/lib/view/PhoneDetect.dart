@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 import 'common_widgets.dart';
 
@@ -11,14 +11,14 @@ class PhoneDetect extends StatefulWidget {
 
 class _PhoneDetectState extends State<PhoneDetect> {
   CameraController _camera;
-  ImageLabeler _labeler;
+  //ImageLabeler _labeler;
   Future<void> _initFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _labeler = FirebaseVision.instance.imageLabeler();
+    //_labeler = FirebaseVision.instance.imageLabeler();
 
     _initFuture = (() async {
       WidgetsFlutterBinding.ensureInitialized();
