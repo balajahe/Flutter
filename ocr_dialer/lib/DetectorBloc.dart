@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as il;
+
 //import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 const _period = Duration(milliseconds: 200);

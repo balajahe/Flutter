@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:camera/camera.dart';
-//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 import 'DetectorBloc.dart';
 import 'common_widgets.dart';
