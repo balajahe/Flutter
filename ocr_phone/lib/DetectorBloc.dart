@@ -3,23 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as il;
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:tflite_flutter/tflite_flutter.dart' as tf;
 
 //import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 const _period = Duration(milliseconds: 200);
 
 class DetectorState {
+  bool loading = false;
   List<int> image;
   DetectorState([this.image]);
 }
 
 class DetectorBloc extends Cubit<DetectorState> {
+  tf.Interpreter _interpreter;
   CameraController _camera;
   DateTime _time = DateTime.now();
   bool _detecting = false;
 
-  DetectorBloc(this._camera) : super(DetectorState());
+  DetectorBloc(this._camera) : super(DetectorState()..loading = true) {
+    (() async {
+      _interpreter =
+          await tf.Interpreter.fromAsset('lite-model_keras-ocr_dr_2.tflite');
+      emit(DetectorState());
+    })();
+  }
 
   void start() {
     _camera.startImageStream((cimg) async {
