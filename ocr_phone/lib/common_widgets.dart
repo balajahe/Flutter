@@ -59,7 +59,7 @@ class ErrorScreen extends StatelessWidget {
   @override
   build(context) => Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.only(top: 30, left: 5),
           child: SingleChildScrollView(
             child: SelectableText(
               error.toString(),
@@ -109,7 +109,8 @@ class StatelessTextField extends StatelessWidget {
 
   @override
   build(context) {
-    var ctrl = (controller != null) ? controller : TextEditingController(text: text);
+    var ctrl =
+        (controller != null) ? controller : TextEditingController(text: text);
     return TextField(
       controller: ctrl,
       decoration: InputDecoration(labelText: label),
@@ -118,7 +119,8 @@ class StatelessTextField extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       onTap: selectOnFocus
-          ? () => ctrl.selection = TextSelection(baseOffset: 0, extentOffset: ctrl.value.text.length)
+          ? () => ctrl.selection =
+              TextSelection(baseOffset: 0, extentOffset: ctrl.value.text.length)
           : null,
     );
   }
@@ -164,11 +166,19 @@ class SearchTextField extends StatelessWidget {
   final Function(String) onSubmitted;
   final TextEditingController controller;
 
-  SearchTextField({this.text, this.hint, this.autofocus = false, this.onChanged, this.onSubmitted, this.controller});
+  SearchTextField(
+      {this.text,
+      this.hint,
+      this.autofocus = false,
+      this.onChanged,
+      this.onSubmitted,
+      this.controller});
 
   @override
   build(context) => TextField(
-        controller: (controller != null) ? controller : TextEditingController(text: text),
+        controller: (controller != null)
+            ? controller
+            : TextEditingController(text: text),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: TextStyle(color: Colors.white60),

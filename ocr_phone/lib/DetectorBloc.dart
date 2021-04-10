@@ -5,40 +5,62 @@ import 'package:camera/camera.dart';
 import 'package:image/image.dart' as il;
 import 'package:tflite_flutter/tflite_flutter.dart' as tf;
 
-//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-
 const _period = Duration(milliseconds: 200);
 
 class DetectorState {
   bool loading = false;
+  String error;
+  CameraController camera;
   List<int> image;
-  DetectorState([this.image]);
+  DetectorState([this.camera, this.image]);
 }
 
 class DetectorBloc extends Cubit<DetectorState> {
-  tf.Interpreter _interpreter;
   CameraController _camera;
+  tf.Interpreter _interpreter;
   DateTime _time = DateTime.now();
   bool _detecting = false;
 
-  DetectorBloc(this._camera) : super(DetectorState()..loading = true) {
+  DetectorBloc() : super(DetectorState()..loading = true) {
     (() async {
-      _interpreter =
-          await tf.Interpreter.fromAsset('lite-model_keras-ocr_dr_2.tflite');
-      emit(DetectorState());
+      try {
+        WidgetsFlutterBinding.ensureInitialized();
+        _camera = CameraController(
+          (await availableCameras())[0],
+          ResolutionPreset.medium,
+          enableAudio: false,
+          imageFormatGroup: ImageFormatGroup.yuv420,
+        );
+        await _camera.initialize();
+
+        // _interpreter =
+        //     await tf.Interpreter.fromAsset('lite-model_rosetta_dr_1.tflite');
+
+        _camera.startImageStream((cimg) async {
+          if (!_detecting &&
+              DateTimeRange(start: _time, end: DateTime.now()).duration >
+                  _period) {
+            _detecting = true;
+            emit(
+                DetectorState(_camera, await compute(_decodeFromYuv420, cimg)));
+            _time = DateTime.now();
+            _detecting = false;
+          }
+        });
+
+        emit(DetectorState(_camera));
+      } catch (e) {
+        emit(DetectorState()..error = e.toString());
+      }
     })();
   }
 
-  void start() {
-    _camera.startImageStream((cimg) async {
-      if (!_detecting &&
-          DateTimeRange(start: _time, end: DateTime.now()).duration > _period) {
-        _detecting = true;
-        emit(DetectorState(await compute(_decodeFromYuv420, cimg)));
-        _time = DateTime.now();
-        _detecting = false;
-      }
-    });
+  @override
+  Future<void> close() async {
+    await _camera?.stopImageStream();
+    await _camera?.dispose();
+    _interpreter?.close();
+    super.close();
   }
 }
 
