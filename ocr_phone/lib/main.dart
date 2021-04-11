@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   build(context) {
     return MaterialApp(
-      title: 'OCR Dialer',
+      title: 'OCR Phone',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
