@@ -22,37 +22,38 @@ class DetectorBloc extends Cubit<DetectorState> {
   bool _detecting = false;
 
   DetectorBloc() : super(DetectorState()..loading = true) {
-    (() async {
-      try {
-        WidgetsFlutterBinding.ensureInitialized();
-        _camera = CameraController(
-          (await availableCameras())[0],
-          ResolutionPreset.medium,
-          enableAudio: false,
-          imageFormatGroup: ImageFormatGroup.yuv420,
-        );
-        await _camera.initialize();
+    _load();
+  }
 
-        // _interpreter =
-        //     await tf.Interpreter.fromAsset('lite-model_rosetta_dr_1.tflite');
+  Future<void> _load() async {
+    try {
+      WidgetsFlutterBinding.ensureInitialized();
+      _camera = CameraController(
+        (await availableCameras())[0],
+        ResolutionPreset.medium,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.yuv420,
+      );
+      await _camera.initialize();
 
-        _camera.startImageStream((cimg) async {
-          if (!_detecting &&
-              DateTimeRange(start: _time, end: DateTime.now()).duration >
-                  _period) {
-            _detecting = true;
-            emit(
-                DetectorState(_camera, await compute(_decodeFromYuv420, cimg)));
-            _time = DateTime.now();
-            _detecting = false;
-          }
-        });
+      _interpreter =
+          await tf.Interpreter.fromAsset('lite-model_rosetta_float16_1.tflite');
 
-        emit(DetectorState(_camera));
-      } catch (e) {
-        emit(DetectorState()..error = e.toString());
-      }
-    })();
+      _camera.startImageStream(_detect);
+      emit(DetectorState(_camera));
+    } catch (e) {
+      emit(DetectorState()..error = e);
+    }
+  }
+
+  Future<void> _detect(CameraImage cimg) async {
+    if (!_detecting &&
+        DateTimeRange(start: _time, end: DateTime.now()).duration > _period) {
+      _detecting = true;
+      emit(DetectorState(_camera, await compute(_decodeFromYuv420, cimg)));
+      _time = DateTime.now();
+      _detecting = false;
+    }
   }
 
   @override
