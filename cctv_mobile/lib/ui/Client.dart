@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'dart:async';
 import 'dart:ui' as ui;
-import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -14,8 +13,8 @@ class Client extends StatefulWidget {
 
 class _ClientState extends State<Client> {
   CameraController _camera;
-  Uint8List _image;
-  ui.Image _image1;
+  Uint8List _arr;
+  ui.Image _image;
   bool _processing = false;
 
   @override
@@ -26,8 +25,7 @@ class _ClientState extends State<Client> {
     (() async {
       _camera = CameraController(
         (await availableCameras())[0],
-        ResolutionPreset.high,
-        imageFormatGroup: ImageFormatGroup.bgra8888,
+        ResolutionPreset.low,
       );
       await _camera.initialize();
       setState(() {});
@@ -35,13 +33,9 @@ class _ClientState extends State<Client> {
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
-          //var img1 = await compute(_convertImage, img);
-          // setState(() {
-          //   _image = img1;
-          // });
-          var img1 = await _convertImage1(img);
+          var img1 = await _convertImage(img);
           setState(() {
-            _image1 = img1;
+            _image = img1;
           });
           _processing = false;
         }
@@ -51,30 +45,32 @@ class _ClientState extends State<Client> {
 
   @override
   build(context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Camera'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: (_camera != null)
-                ? CameraPreview(_camera)
-                : Center(child: CircularProgressIndicator()),
-          ),
-          Expanded(
-            child: (_image1 != null)
-                ? CustomPaint(painter: _ImageViever(_image1))
-                : Center(child: CircularProgressIndicator()),
-          ),
+    return
+        // Scaffold(
+        //   appBar: AppBar(
+        //     title: Text('Camera'),
+        //   ),
+        //   body:
+        Center(
+      //crossAxisAlignment: CrossAxisAlignment.center,
+      child:
           // Expanded(
-          //   child: (_image != null)
-          //       ? Image.memory(_image)
+          //   child: (_camera != null)
+          //       ? CameraPreview(_camera)
           //       : Center(child: CircularProgressIndicator()),
           // ),
-        ],
+          Expanded(
+        child: (_image != null)
+            ? CustomPaint(painter: _ImageViever(_image))
+            : Center(child: CircularProgressIndicator()),
       ),
+      // Expanded(
+      //   child: (_image != null)
+      //       ? Image.memory(_image)
+      //       : Center(child: CircularProgressIndicator()),
+      // ),
+      // ],
+      // ),
     );
   }
 
@@ -83,25 +79,63 @@ class _ClientState extends State<Client> {
     _camera?.dispose();
     super.dispose();
   }
+
+  Future<ui.Image> _convertImage(CameraImage img) async {
+    final completer = new Completer<ui.Image>();
+    if (img.format.group == ImageFormatGroup.bgra8888) {
+      ui.decodeImageFromPixels(
+        img.planes[0].bytes,
+        img.width,
+        img.height,
+        ui.PixelFormat.bgra8888,
+        (img) => completer.complete(img),
+      );
+    } else if (img.format.group == ImageFormatGroup.yuv420) {
+      if (_arr == null) {
+        _arr = Uint8List(img.height * img.width * 4);
+      }
+      final yarr = img.planes[0].bytes;
+
+      // for (int x = 0; x < img.width; x++) {
+      //   for (int y = 0; y < img.height * img.width; y += img.width) {
+      for (int y = 0; y < img.height; y++) {
+        for (int x = 0; x < img.height * img.width; x += img.height) {
+          final luma = yarr[y + x];
+          final y1 = x;
+          final x1 = img.height - y;
+          final i = (y + x) * 4;
+          _arr[i] = luma;
+          _arr[i + 1] = luma;
+          _arr[i + 2] = luma;
+          _arr[i + 3] = 0xFF;
+        }
+      }
+      ui.decodeImageFromPixels(
+        _arr,
+        img.width,
+        img.height,
+        ui.PixelFormat.bgra8888,
+        (img) => completer.complete(img),
+      );
+    }
+    return completer.future;
+  }
 }
 
 class _ImageViever extends CustomPainter {
-  ui.Image image;
-
-  _ImageViever(this.image);
+  ui.Image img;
+  _ImageViever(this.img);
 
   @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawImage(image, new Offset(0.0, 0.0), new Paint());
+  paint(Canvas canvas, Size size) {
+    canvas.drawImage(img, new Offset(-img.width / 2, -img.height / 2), Paint());
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-Uint8List _convertImage(CameraImage img) {
+Uint8List _convertImage1(CameraImage img) {
   try {
     imglib.Image img1;
     if (img.format.group == ImageFormatGroup.bgra8888) {
@@ -136,16 +170,4 @@ Uint8List _convertImage(CameraImage img) {
     print(">>>>>>>>>>>> ERROR:" + e.toString());
     return null;
   }
-}
-
-Future<ui.Image> _convertImage1(CameraImage img) async {
-  final Completer<ui.Image> completer = new Completer();
-  ui.decodeImageFromPixels(
-    img.planes[0].bytes,
-    img.width,
-    img.height,
-    ui.PixelFormat.bgra8888,
-    (img) => completer.complete(img),
-  );
-  return completer.future;
 }
