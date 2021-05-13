@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:image/image.dart' as imglib;
 
 class Client extends StatefulWidget {
   @override
@@ -34,9 +33,7 @@ class _ClientState extends State<Client> {
         if (!_processing) {
           _processing = true;
           var img1 = await _convertImage(img);
-          setState(() {
-            _image = img1;
-          });
+          setState(() => _image = img1);
           _processing = false;
         }
       });
@@ -51,27 +48,18 @@ class _ClientState extends State<Client> {
         //     title: Text('Camera'),
         //   ),
         //   body:
-        Center(
-      //crossAxisAlignment: CrossAxisAlignment.center,
-      child:
-          // Expanded(
-          //   child: (_camera != null)
-          //       ? CameraPreview(_camera)
-          //       : Center(child: CircularProgressIndicator()),
-          // ),
-          Expanded(
-        child: (_image != null)
-            ? CustomPaint(painter: _ImageViever(_image))
-            : Center(child: CircularProgressIndicator()),
-      ),
-      // Expanded(
-      //   child: (_image != null)
-      //       ? Image.memory(_image)
-      //       : Center(child: CircularProgressIndicator()),
-      // ),
-      // ],
-      // ),
-    );
+        //Center(
+        //crossAxisAlignment: CrossAxisAlignment.center,
+        //child:
+        // Expanded(
+        //   child: (_camera != null)
+        //       ? CameraPreview(_camera)
+        //       : Center(child: CircularProgressIndicator()),
+        // ),
+        //Expanded(
+        (_image != null)
+            ? CustomPaint(painter: _ImageViewer(_image))
+            : Center(child: CircularProgressIndicator());
   }
 
   @override
@@ -94,16 +82,17 @@ class _ClientState extends State<Client> {
       if (_arr == null) {
         _arr = Uint8List(img.height * img.width * 4);
       }
-      final yarr = img.planes[0].bytes;
+      final lumas = img.planes[0].bytes;
+      var width = img.width;
+      var height = img.height;
 
-      // for (int x = 0; x < img.width; x++) {
-      //   for (int y = 0; y < img.height * img.width; y += img.width) {
-      for (int y = 0; y < img.height; y++) {
-        for (int x = 0; x < img.height * img.width; x += img.height) {
-          final luma = yarr[y + x];
-          final y1 = x;
-          final x1 = img.height - y;
-          final i = (y + x) * 4;
+      for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+          final luma = lumas[y * height + x];
+          final i = (y * height + x) * 4;
+          // final y1 = x;
+          // final x1 = img.height - y;
+          // final i = (y1 * img.width + x1) * 4;
           _arr[i] = luma;
           _arr[i + 1] = luma;
           _arr[i + 2] = luma;
@@ -112,8 +101,8 @@ class _ClientState extends State<Client> {
       }
       ui.decodeImageFromPixels(
         _arr,
-        img.width,
-        img.height,
+        width,
+        height,
         ui.PixelFormat.bgra8888,
         (img) => completer.complete(img),
       );
@@ -122,52 +111,52 @@ class _ClientState extends State<Client> {
   }
 }
 
-class _ImageViever extends CustomPainter {
+class _ImageViewer extends CustomPainter {
   ui.Image img;
-  _ImageViever(this.img);
+  _ImageViewer(this.img);
 
   @override
   paint(Canvas canvas, Size size) {
-    canvas.drawImage(img, new Offset(-img.width / 2, -img.height / 2), Paint());
+    canvas.drawImage(img, new Offset(0, 0), Paint());
   }
 
   @override
   shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-Uint8List _convertImage1(CameraImage img) {
-  try {
-    imglib.Image img1;
-    if (img.format.group == ImageFormatGroup.bgra8888) {
-      img1 = imglib.Image.fromBytes(
-        img.width,
-        img.height,
-        img.planes[0].bytes,
-        format: imglib.Format.bgra,
-      );
-    } else if (img.format.group == ImageFormatGroup.yuv420) {
-      img1 = imglib.Image(img.width, img.height); // Create Image buffer
+// Uint8List _convertImage1(CameraImage img) {
+//   try {
+//     imglib.Image img1;
+//     if (img.format.group == ImageFormatGroup.bgra8888) {
+//       img1 = imglib.Image.fromBytes(
+//         img.width,
+//         img.height,
+//         img.planes[0].bytes,
+//         format: imglib.Format.bgra,
+//       );
+//     } else if (img.format.group == ImageFormatGroup.yuv420) {
+//       img1 = imglib.Image(img.width, img.height); // Create Image buffer
 
-      Plane plane = img.planes[0];
-      const int shift = (0xFF << 24);
+//       Plane plane = img.planes[0];
+//       const int shift = (0xFF << 24);
 
-      // Fill image buffer with plane[0] from YUV420_888
-      for (int x = 0; x < img.width; x++) {
-        for (int planeOffset = 0; planeOffset < img.height * img.width; planeOffset += img.width) {
-          final pixelColor = plane.bytes[planeOffset + x];
-          // color: 0x FF  FF  FF  FF
-          //           A   B   G   R
-          // Calculate pixel color
-          var newVal = shift | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
+//       // Fill image buffer with plane[0] from YUV420_888
+//       for (int x = 0; x < img.width; x++) {
+//         for (int planeOffset = 0; planeOffset < img.height * img.width; planeOffset += img.width) {
+//           final pixelColor = plane.bytes[planeOffset + x];
+//           // color: 0x FF  FF  FF  FF
+//           //           A   B   G   R
+//           // Calculate pixel color
+//           var newVal = shift | (pixelColor << 16) | (pixelColor << 8) | pixelColor;
 
-          img1.data[planeOffset + x] = newVal;
-        }
-      }
-    }
-    imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
-    return pngEncoder.encodeImage(img1);
-  } catch (e) {
-    print(">>>>>>>>>>>> ERROR:" + e.toString());
-    return null;
-  }
-}
+//           img1.data[planeOffset + x] = newVal;
+//         }
+//       }
+//     }
+//     imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
+//     return pngEncoder.encodeImage(img1);
+//   } catch (e) {
+//     print(">>>>>>>>>>>> ERROR:" + e.toString());
+//     return null;
+//   }
+// }
