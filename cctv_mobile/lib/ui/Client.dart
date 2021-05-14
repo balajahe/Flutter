@@ -12,6 +12,7 @@ class Client extends StatefulWidget {
 
 class _ClientState extends State<Client> {
   CameraController _camera;
+  bool _isVertical;
   Uint8List _arr;
   ui.Image _image;
   bool _processing = false;
@@ -22,11 +23,10 @@ class _ClientState extends State<Client> {
     WidgetsFlutterBinding.ensureInitialized();
 
     (() async {
-      _camera = CameraController(
-        (await availableCameras())[0],
-        ResolutionPreset.low,
-      );
+      _camera = CameraController((await availableCameras())[0], ResolutionPreset.low);
       await _camera.initialize();
+      var media = MediaQuery.of(context).size;
+      _isVertical = (media.width < media.height);
       setState(() {});
 
       _camera.startImageStream((img) async {
@@ -38,34 +38,6 @@ class _ClientState extends State<Client> {
         }
       });
     })();
-  }
-
-  @override
-  build(context) {
-    return
-        // Scaffold(
-        //   appBar: AppBar(
-        //     title: Text('Camera'),
-        //   ),
-        //   body:
-        //Center(
-        //crossAxisAlignment: CrossAxisAlignment.center,
-        //child:
-        // Expanded(
-        //   child: (_camera != null)
-        //       ? CameraPreview(_camera)
-        //       : Center(child: CircularProgressIndicator()),
-        // ),
-        //Expanded(
-        (_image != null)
-            ? CustomPaint(painter: _ImageViewer(_image))
-            : Center(child: CircularProgressIndicator());
-  }
-
-  @override
-  dispose() {
-    _camera?.dispose();
-    super.dispose();
   }
 
   Future<ui.Image> _convertImage(CameraImage img) async {
@@ -85,11 +57,15 @@ class _ClientState extends State<Client> {
       final lumas = img.planes[0].bytes;
       var width = img.width;
       var height = img.height;
+      var yy = 0;
 
       for (int y = 0; y < height; y++) {
+        yy += height;
         for (int x = 0; x < width; x++) {
-          final luma = lumas[y * height + x];
-          final i = (y * height + x) * 4;
+          final luma = lumas[yy + x];
+          final i = (yy + x) * 4;
+
+          //media.width < media.height && image.width > image.height);
           // final y1 = x;
           // final x1 = img.height - y;
           // final i = (y1 * img.width + x1) * 4;
@@ -108,6 +84,21 @@ class _ClientState extends State<Client> {
       );
     }
     return completer.future;
+  }
+
+  @override
+  build(context) {
+    return Center(
+      child: (_image != null)
+          ? CustomPaint(painter: _ImageViewer(_image))
+          : Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  @override
+  dispose() {
+    _camera?.dispose();
+    super.dispose();
   }
 }
 
