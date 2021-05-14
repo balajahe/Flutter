@@ -12,7 +12,6 @@ class Client extends StatefulWidget {
 
 class _ClientState extends State<Client> {
   CameraController _camera;
-  bool _isVertical;
   Uint8List _arr;
   ui.Image _image;
   bool _processing = false;
@@ -25,15 +24,17 @@ class _ClientState extends State<Client> {
     (() async {
       _camera = CameraController((await availableCameras())[0], ResolutionPreset.low);
       await _camera.initialize();
-      var media = MediaQuery.of(context).size;
-      _isVertical = (media.width < media.height);
+      // var media = MediaQuery.of(context).size;
+      // _isVertical = (media.width < media.height);
       setState(() {});
 
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
           var img1 = await _convertImage(img);
-          setState(() => _image = img1);
+          try {
+            setState(() => _image = img1);
+          } catch (_) {}
           _processing = false;
         }
       });
@@ -51,28 +52,29 @@ class _ClientState extends State<Client> {
         (img) => completer.complete(img),
       );
     } else if (img.format.group == ImageFormatGroup.yuv420) {
-      if (_arr == null) {
-        _arr = Uint8List(img.height * img.width * 4);
-      }
+      //if (_arr == null) {
+      _arr = Uint8List(img.height * img.width * 4);
+      //}
       final lumas = img.planes[0].bytes;
       var width = img.width;
       var height = img.height;
-      var yy = 0;
 
       for (int y = 0; y < height; y++) {
-        yy += height;
         for (int x = 0; x < width; x++) {
-          final luma = lumas[yy + x];
-          final i = (yy + x) * 4;
-
-          //media.width < media.height && image.width > image.height);
-          // final y1 = x;
-          // final x1 = img.height - y;
-          // final i = (y1 * img.width + x1) * 4;
-          _arr[i] = luma;
-          _arr[i + 1] = luma;
-          _arr[i + 2] = luma;
-          _arr[i + 3] = 0xFF;
+          final luma = lumas[y * width + x];
+          // int xy;
+          // if (false && _isVertical) {
+          //   width = img.height;
+          //   height = img.width;
+          //   final y1 = x;
+          //   final x1 = img.height - y;
+          //   xy = (y1 * height + x1) * 4;
+          // } else {
+          final xy = (y * width + x) * 4;
+          _arr[xy] = luma;
+          _arr[xy + 1] = luma;
+          _arr[xy + 2] = luma;
+          _arr[xy + 3] = 0xFF;
         }
       }
       ui.decodeImageFromPixels(
@@ -97,6 +99,7 @@ class _ClientState extends State<Client> {
 
   @override
   dispose() {
+    _camera?.stopImageStream();
     _camera?.dispose();
     super.dispose();
   }
@@ -108,7 +111,7 @@ class _ImageViewer extends CustomPainter {
 
   @override
   paint(Canvas canvas, Size size) {
-    canvas.drawImage(img, new Offset(0, 0), Paint());
+    canvas.drawImage(img, new Offset(-img.width / 2, -img.height / 2), Paint());
   }
 
   @override
