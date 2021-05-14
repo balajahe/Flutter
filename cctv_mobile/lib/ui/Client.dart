@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'dart:async';
 import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'Viewer.dart';
 
 class Client extends StatefulWidget {
   @override
@@ -22,11 +22,11 @@ class _ClientState extends State<Client> {
     WidgetsFlutterBinding.ensureInitialized();
 
     (() async {
-      _camera = CameraController((await availableCameras())[0], ResolutionPreset.low);
+      _camera = CameraController(
+        (await availableCameras())[0],
+        ResolutionPreset.low,
+      );
       await _camera.initialize();
-      // var media = MediaQuery.of(context).size;
-      // _isVertical = (media.width < media.height);
-      setState(() {});
 
       _camera.startImageStream((img) async {
         if (!_processing) {
@@ -52,9 +52,9 @@ class _ClientState extends State<Client> {
         (img) => completer.complete(img),
       );
     } else if (img.format.group == ImageFormatGroup.yuv420) {
-      //if (_arr == null) {
-      _arr = Uint8List(img.height * img.width * 4);
-      //}
+      if (_arr == null) {
+        _arr = Uint8List(img.height * img.width * 4);
+      }
       final lumas = img.planes[0].bytes;
       var width = img.width;
       var height = img.height;
@@ -90,11 +90,7 @@ class _ClientState extends State<Client> {
 
   @override
   build(context) {
-    return Center(
-      child: (_image != null)
-          ? CustomPaint(painter: _ImageViewer(_image))
-          : Center(child: CircularProgressIndicator()),
-    );
+    return Viewer(_image);
   }
 
   @override
@@ -103,19 +99,6 @@ class _ClientState extends State<Client> {
     _camera?.dispose();
     super.dispose();
   }
-}
-
-class _ImageViewer extends CustomPainter {
-  ui.Image img;
-  _ImageViewer(this.img);
-
-  @override
-  paint(Canvas canvas, Size size) {
-    canvas.drawImage(img, new Offset(-img.width / 2, -img.height / 2), Paint());
-  }
-
-  @override
-  shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
 // Uint8List _convertImage1(CameraImage img) {
