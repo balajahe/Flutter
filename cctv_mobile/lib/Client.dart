@@ -1,16 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'image_tools.dart';
 import 'ImageViewer.dart';
 
 class Client extends StatefulWidget {
+  final String serverAddress;
+  Client(this.serverAddress);
   @override
   createState() => _ClientState();
 }
 
 class _ClientState extends State<Client> {
   CameraController _camera;
-  ImageDto _imgd;
+  WebSocket _server;
+  ImageDto _imageDto;
   bool _processing = false;
 
   @override
@@ -25,10 +29,13 @@ class _ClientState extends State<Client> {
       );
       await _camera.initialize();
 
+      _server = await WebSocket.connect('ws://${widget.serverAddress}/');
+
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
-          _imgd = camera2Dto(img);
+          _imageDto = camera2Dto(img);
+          _server.add(_imageDto.bytes);
           try {
             setState(() {});
           } catch (_) {}
@@ -40,7 +47,7 @@ class _ClientState extends State<Client> {
 
   @override
   build(context) {
-    return ImageViewer(_imgd);
+    return ImageViewer(_imageDto);
   }
 
   @override

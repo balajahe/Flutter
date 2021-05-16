@@ -4,18 +4,33 @@ import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
 
 class ImageDto {
+  final Uint8List bytes;
   final int width;
   final int height;
-  final Uint8List pixels;
-  ImageDto(this.width, this.height, this.pixels);
+
+  ImageDto(this.bytes, this.width, this.height) {
+    final buf = bytes.buffer.asByteData(bytes.length - 4);
+    buf.setInt8(0, width);
+    buf.setInt8(2, height);
+  }
+
+  factory ImageDto.fromBytes(Uint8List bytes) {
+    final buf = bytes.buffer.asByteData(bytes.length - 4);
+    return ImageDto(bytes, buf.getInt8(0), buf.getInt8(2));
+  }
 }
 
 ImageDto camera2Dto(CameraImage img) {
   if (img.format.group == ImageFormatGroup.bgra8888) {
-    return ImageDto(img.width, img.height, img.planes[0].bytes);
+    return ImageDto(
+      //исправить - размер нужно добавить в конец массива!
+      img.planes[0].bytes,
+      img.width,
+      img.height,
+    );
   } else if (img.format.group == ImageFormatGroup.yuv420) {
     final lumas = img.planes[0].bytes;
-    final pixels = Uint8List(img.height * img.width * 4);
+    final pixels = Uint8List(img.height * img.width * 4 + 4);
     var yy = 0;
     for (int y = 0; y < img.height; y++) {
       yy += img.width;
@@ -29,18 +44,18 @@ ImageDto camera2Dto(CameraImage img) {
           ..[xy + 3] = 0xFF;
       }
     }
-    return ImageDto(img.width, img.height, pixels);
+    return ImageDto(pixels, img.width, img.height);
   } else {
-    return ImageDto(0, 0, Uint8List(0));
+    return ImageDto(Uint8List(4), 0, 0);
   }
 }
 
-Future<ui.Image> dto2Image(ImageDto img) async {
+Future<ui.Image> dto2Image(ImageDto imageDto) async {
   final completer = new Completer<ui.Image>();
   ui.decodeImageFromPixels(
-    img.pixels,
-    img.width,
-    img.height,
+    imageDto.bytes,
+    imageDto.width,
+    imageDto.height,
     ui.PixelFormat.bgra8888,
     (img1) => completer.complete(img1),
   );

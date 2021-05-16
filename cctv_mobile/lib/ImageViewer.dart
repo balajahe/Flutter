@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'image_tools.dart';
 
 class ImageViewer extends StatelessWidget {
-  final ImageDto _imgd;
-  ImageViewer(this._imgd);
+  final ImageDto _imageDto;
+  ImageViewer(this._imageDto);
 
   @override
   build(context) {
     return Center(
       child: FutureBuilder(
-        future: dto2Image(_imgd),
+        future: dto2Image(_imageDto),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return OrientationBuilder(builder: (context, orientation) {
