@@ -1,9 +1,7 @@
-import 'dart:typed_data';
-import 'dart:async';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'Viewer.dart';
+import 'image_tools.dart';
+import 'ImageViewer.dart';
 
 class Client extends StatefulWidget {
   @override
@@ -12,8 +10,7 @@ class Client extends StatefulWidget {
 
 class _ClientState extends State<Client> {
   CameraController _camera;
-  Uint8List _arr;
-  ui.Image _image;
+  ImageDto _imgd;
   bool _processing = false;
 
   @override
@@ -31,9 +28,9 @@ class _ClientState extends State<Client> {
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
-          var img1 = await _convertImage(img);
+          _imgd = camera2Dto(img);
           try {
-            setState(() => _image = img1);
+            setState(() {});
           } catch (_) {}
           _processing = false;
         }
@@ -41,56 +38,9 @@ class _ClientState extends State<Client> {
     })();
   }
 
-  Future<ui.Image> _convertImage(CameraImage img) async {
-    final completer = new Completer<ui.Image>();
-    if (img.format.group == ImageFormatGroup.bgra8888) {
-      ui.decodeImageFromPixels(
-        img.planes[0].bytes,
-        img.width,
-        img.height,
-        ui.PixelFormat.bgra8888,
-        (img) => completer.complete(img),
-      );
-    } else if (img.format.group == ImageFormatGroup.yuv420) {
-      if (_arr == null) {
-        _arr = Uint8List(img.height * img.width * 4);
-      }
-      final lumas = img.planes[0].bytes;
-      var width = img.width;
-      var height = img.height;
-
-      for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-          final luma = lumas[y * width + x];
-          // int xy;
-          // if (false && _isVertical) {
-          //   width = img.height;
-          //   height = img.width;
-          //   final y1 = x;
-          //   final x1 = img.height - y;
-          //   xy = (y1 * height + x1) * 4;
-          // } else {
-          final xy = (y * width + x) * 4;
-          _arr[xy] = luma;
-          _arr[xy + 1] = luma;
-          _arr[xy + 2] = luma;
-          _arr[xy + 3] = 0xFF;
-        }
-      }
-      ui.decodeImageFromPixels(
-        _arr,
-        width,
-        height,
-        ui.PixelFormat.bgra8888,
-        (img) => completer.complete(img),
-      );
-    }
-    return completer.future;
-  }
-
   @override
   build(context) {
-    return Viewer(_image);
+    return ImageViewer(_imgd);
   }
 
   @override
@@ -100,6 +50,53 @@ class _ClientState extends State<Client> {
     super.dispose();
   }
 }
+
+// Future<ui.Image> _convertImage(CameraImage img) async {
+//   final completer = new Completer<ui.Image>();
+//   if (img.format.group == ImageFormatGroup.bgra8888) {
+//     ui.decodeImageFromPixels(
+//       img.planes[0].bytes,
+//       img.width,
+//       img.height,
+//       ui.PixelFormat.bgra8888,
+//       (img) => completer.complete(img),
+//     );
+//   } else if (img.format.group == ImageFormatGroup.yuv420) {
+//     if (_arr == null) {
+//       _arr = Uint8List(img.height * img.width * 4);
+//     }
+//     final lumas = img.planes[0].bytes;
+//     var width = img.width;
+//     var height = img.height;
+
+//     for (int y = 0; y < height; y++) {
+//       for (int x = 0; x < width; x++) {
+//         final luma = lumas[y * width + x];
+//         // int xy;
+//         // if (false && _isVertical) {
+//         //   width = img.height;
+//         //   height = img.width;
+//         //   final y1 = x;
+//         //   final x1 = img.height - y;
+//         //   xy = (y1 * height + x1) * 4;
+//         // } else {
+//         final xy = (y * width + x) * 4;
+//         _arr[xy] = luma;
+//         _arr[xy + 1] = luma;
+//         _arr[xy + 2] = luma;
+//         _arr[xy + 3] = 0xFF;
+//       }
+//     }
+//     ui.decodeImageFromPixels(
+//       _arr,
+//       width,
+//       height,
+//       ui.PixelFormat.bgra8888,
+//       (img) => completer.complete(img),
+//     );
+//   }
+//   return completer.future;
+// }
 
 // Uint8List _convertImage1(CameraImage img) {
 //   try {
