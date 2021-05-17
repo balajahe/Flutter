@@ -8,49 +8,49 @@ class ImageDto {
   final int width;
   final int height;
 
-  ImageDto(this.bytes, this.width, this.height) {
-    final buf = bytes.buffer.asByteData(bytes.length - 4);
-    buf.setInt8(0, width);
-    buf.setInt8(2, height);
-  }
+  ImageDto(this.bytes, this.width, this.height);
 
   factory ImageDto.fromBytes(Uint8List bytes) {
     final buf = bytes.buffer.asByteData(bytes.length - 4);
-    return ImageDto(bytes, buf.getInt8(0), buf.getInt8(2));
+    return ImageDto(
+      bytes, //.buffer.asUint8List(0, bytes.length - 4), - опасно, но работает)
+      buf.getInt16(0),
+      buf.getInt16(2),
+    );
   }
 }
 
-ImageDto camera2Dto(CameraImage img) {
+Uint8List camera2Bytes(CameraImage img) {
   if (img.format.group == ImageFormatGroup.bgra8888) {
-    return ImageDto(
-      //исправить - размер нужно добавить в конец массива!
-      img.planes[0].bytes,
-      img.width,
-      img.height,
-    );
+    //исправить - размер нужно добавить в конец массива!
+    return img.planes[0].bytes;
   } else if (img.format.group == ImageFormatGroup.yuv420) {
     final lumas = img.planes[0].bytes;
-    final pixels = Uint8List(img.height * img.width * 4 + 4);
-    var yy = 0;
-    for (int y = 0; y < img.height; y++) {
-      yy += img.width;
+
+    final bytes = Uint8List(img.width * img.height * 4 + 4);
+    final buf = bytes.buffer.asByteData(bytes.length - 4);
+    buf.setInt16(0, img.width);
+    buf.setInt16(2, img.height);
+
+    for (int y = 0; y < img.height * img.width; y += img.width) {
       for (int x = 0; x < img.width; x++) {
-        final luma = lumas[yy + x];
-        final xy = (yy + x) * 4;
-        pixels
+        final luma = lumas[y + x];
+        final xy = (y + x) * 4;
+        bytes
           ..[xy] = luma
           ..[xy + 1] = luma
           ..[xy + 2] = luma
           ..[xy + 3] = 0xFF;
       }
     }
-    return ImageDto(pixels, img.width, img.height);
+    return bytes;
   } else {
-    return ImageDto(Uint8List(4), 0, 0);
+    return null;
   }
 }
 
-Future<ui.Image> dto2Image(ImageDto imageDto) async {
+Future<ui.Image> bytes2Image(Uint8List imageBytes) async {
+  final imageDto = ImageDto.fromBytes(imageBytes);
   final completer = new Completer<ui.Image>();
   ui.decodeImageFromPixels(
     imageDto.bytes,

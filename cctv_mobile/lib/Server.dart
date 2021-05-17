@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:async';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'ImageViewer.dart';
 
 class Server extends StatefulWidget {
+  final int _serverPort;
+  Server(this._serverPort);
   @override
   createState() => _ServerState();
 }
@@ -14,16 +13,17 @@ class Server extends StatefulWidget {
 class _ServerState extends State<Server> {
   HttpServer _listener;
   WebSocket _client;
+  Uint8List _imageBytes;
 
   @override
   initState() {
     super.initState();
     (() async {
-      _listener = await HttpServer.bind('127.0.0.1', 4040);
+      _listener = await HttpServer.bind('127.0.0.1', widget._serverPort);
       _listener.listen((req) async {
         _client = await WebSocketTransformer.upgrade(req);
         _client.listen((msg) {
-          print(msg);
+          setState(() => _imageBytes = msg);
         });
       });
     })();
@@ -31,10 +31,13 @@ class _ServerState extends State<Server> {
 
   @override
   build(context) {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return ImageViewer(_imageBytes);
+  }
+
+  @override
+  dispose() {
+    _client?.close();
+    _listener?.close();
+    super.dispose();
   }
 }
