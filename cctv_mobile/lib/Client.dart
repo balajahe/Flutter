@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'image_tools.dart';
 import 'ImageViewer.dart';
+import 'main.dart';
 
 class Client extends StatefulWidget {
   final String serverAddress;
@@ -30,13 +31,21 @@ class _ClientState extends State<Client> {
       );
       await _camera.initialize();
 
-      _server = await WebSocket.connect('ws://${widget.serverAddress}');
+      try {
+        _server = await WebSocket.connect('ws://${widget.serverAddress}');
+      } catch (e) {
+        showErrorScreen(context, e);
+      }
 
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
-          _imageBytes = camera2Bytes(img);
-          _server.add(_imageBytes);
+          try {
+            _imageBytes = camera2Bytes(img);
+            _server.add(_imageBytes);
+          } catch (e) {
+            showErrorScreen(context, e);
+          }
           try {
             setState(() {});
           } catch (_) {}
