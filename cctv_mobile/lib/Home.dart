@@ -9,7 +9,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _serverPort = TextEditingController(text: '4040');
-  final _serverIp = TextEditingController(text: '127.0.0.1');
+  final _serverIp = TextEditingController(text: '192.168.34.80');
 
   @override
   build(context) {
@@ -34,8 +34,11 @@ class _HomeState extends State<Home> {
                   Expanded(
                     child: ElevatedButton(
                       child: Text('Start Recorder'),
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => Server(int.parse(_serverPort.text)))),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  Server(int.parse(_serverPort.text)))),
                     ),
                   ),
                 ],
@@ -46,7 +49,8 @@ class _HomeState extends State<Home> {
                     flex: 1,
                     child: TextField(
                       controller: _serverIp,
-                      decoration: InputDecoration(hintText: 'Server IP-address'),
+                      decoration:
+                          InputDecoration(hintText: 'Server IP-address'),
                     ),
                   ),
                   Expanded(
@@ -55,7 +59,8 @@ class _HomeState extends State<Home> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => Client(_serverIp.text + ':' + _serverPort.text))),
+                              builder: (_) => Client(
+                                  _serverIp.text + ':' + _serverPort.text))),
                     ),
                   ),
                 ],

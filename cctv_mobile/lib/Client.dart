@@ -40,13 +40,9 @@ class _ClientState extends State<Client> {
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
+          _imageBytes = camera2Bytes(img);
           try {
-            _imageBytes = camera2Bytes(img);
             _server.add(_imageBytes);
-          } catch (e) {
-            showErrorScreen(context, e);
-          }
-          try {
             setState(() {});
           } catch (_) {}
           _processing = false;

@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cctv_mobile">
+  <uses-permission android:name="android.permission.INTERNET"/>
    <application
+        android:usesCleartextTraffic="true"
         android:label="cctv_mobile"
         android:icon="@mipmap/ic_launcher">
         <activity
