@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'image_tools.dart';
 import 'ImageViewer.dart';
-import 'main.dart';
 
 class Client extends StatefulWidget {
   final String serverAddress;
@@ -17,7 +16,7 @@ class _ClientState extends State<Client> {
   CameraController _camera;
   WebSocket _server;
   Uint8List _imageBytes;
-  bool _processing = false;
+  bool _isProcessing = false;
   String _msg = '';
 
   @override
@@ -33,22 +32,30 @@ class _ClientState extends State<Client> {
       await _camera.initialize();
 
       _camera.startImageStream((img) async {
-        if (!_processing) {
-          _processing = true;
+        if (!_isProcessing) {
+          _isProcessing = true;
           _imageBytes = camera2Bytes(img);
           try {
             setState(() {});
             _server.add(_imageBytes);
-          } catch (_) {}
-          _processing = false;
+          } catch (e) {
+            setState(() => _msg = e.toString());
+          }
+          _isProcessing = false;
         }
       });
 
-      try {
-        _server = await WebSocket.connect('ws://${widget.serverAddress}');
-      } catch (e) {
-        setState(() => _msg = e.toString());
-        //showErrorScreen(context, e);
+      while (true) {
+        try {
+          _server = await WebSocket.connect('ws://${widget.serverAddress}');
+          setState(() => _msg = '');
+          break;
+        } catch (e) {
+          setState(() => _msg = e.toString());
+          await Future.delayed(Duration(milliseconds: 500));
+          setState(() => _msg = 'Connecting...');
+          await Future.delayed(Duration(milliseconds: 500));
+        }
       }
     })();
   }
