@@ -10,15 +10,15 @@ class Both extends StatelessWidget {
 
   @override
   build(context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Client(_host + ':' + _port.toString()),
-            //Server(_port),
-          ],
+    return Column(
+      children: [
+        Expanded(
+          child: Client(_host + ':' + _port.toString()),
         ),
-      ),
+        Expanded(
+          child: Server(_port),
+        ),
+      ],
     );
   }
 }

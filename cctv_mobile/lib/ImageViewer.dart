@@ -19,7 +19,8 @@ class ImageViewer extends StatelessWidget {
                     return (orientation == Orientation.portrait)
                         ? RotatedBox(
                             quarterTurns: 1,
-                            child: CustomPaint(painter: _ImagePainter(snapshot.data)),
+                            child: CustomPaint(
+                                painter: _ImagePainter(snapshot.data)),
                           )
                         : CustomPaint(painter: _ImagePainter(snapshot.data));
                   });
@@ -28,7 +29,7 @@ class ImageViewer extends StatelessWidget {
                 }
               },
             )
-          : Container(),
+          : CircularProgressIndicator(),
     );
   }
 }
@@ -38,8 +39,8 @@ class _ImagePainter extends CustomPainter {
   _ImagePainter(this.img);
 
   @override
-  paint(canvas, size) =>
-      canvas.drawImage(img, new Offset(-img.width / 2, -img.height / 2), Paint());
+  paint(canvas, size) => canvas.drawImage(
+      img, new Offset(-img.width / 2, -img.height / 2), Paint());
 
   @override
   shouldRepaint(oldDelegate) => true;
