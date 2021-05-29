@@ -18,6 +18,7 @@ class _ClientState extends State<Client> {
   WebSocket _server;
   Uint8List _imageBytes;
   bool _processing = false;
+  String _msg = '';
 
   @override
   initState() {
@@ -31,29 +32,40 @@ class _ClientState extends State<Client> {
       );
       await _camera.initialize();
 
-      try {
-        _server = await WebSocket.connect('ws://${widget.serverAddress}');
-      } catch (e) {
-        showErrorScreen(context, e);
-      }
-
       _camera.startImageStream((img) async {
         if (!_processing) {
           _processing = true;
           _imageBytes = camera2Bytes(img);
           try {
-            _server.add(_imageBytes);
             setState(() {});
+            _server.add(_imageBytes);
           } catch (_) {}
           _processing = false;
         }
       });
+
+      try {
+        _server = await WebSocket.connect('ws://${widget.serverAddress}');
+      } catch (e) {
+        setState(() => _msg = e.toString());
+        //showErrorScreen(context, e);
+      }
     })();
   }
 
   @override
   build(context) {
-    return ImageViewer(_imageBytes);
+    return Scaffold(
+      body: Stack(
+        children: [
+          ImageViewer(_imageBytes),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(_msg),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

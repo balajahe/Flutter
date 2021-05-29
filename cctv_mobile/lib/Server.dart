@@ -40,7 +40,9 @@ class _ServerState extends State<Server> {
 
   @override
   build(context) {
-    return ImageViewer(_imageBytes);
+    return Scaffold(
+      body: ImageViewer(_imageBytes),
+    );
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
 import 'Client.dart';
+import 'Both.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,32 +18,11 @@ class _HomeState extends State<Home> {
       body: Center(
         child: SizedBox(
           width: 300,
-          height: 100,
+          height: 170,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: TextField(
-                      controller: _serverPort,
-                      decoration: InputDecoration(hintText: 'Server IP-port'),
-                    ),
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      child: Text('Start Recorder'),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                                  Server(int.parse(_serverPort.text)))),
-                    ),
-                  ),
-                ],
-              ),
               Row(
                 children: [
                   Expanded(
@@ -55,7 +35,7 @@ class _HomeState extends State<Home> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      child: Text('Start Camera'),
+                      child: Text('Run Camera'),
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -64,6 +44,35 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: TextField(
+                      controller: _serverPort,
+                      decoration: InputDecoration(hintText: 'Server IP-port'),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      child: Text('Run Recorder'),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  Server(int.parse(_serverPort.text)))),
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                child: Text('Run both locally'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>
+                            Both(_serverIp.text, int.parse(_serverPort.text)))),
               ),
             ],
           ),
