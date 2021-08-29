@@ -3,15 +3,15 @@ import 'Camera.dart';
 import 'Recorder.dart';
 import 'BothLocally.dart';
 
+final _serverIp = TextEditingController(text: '192.168.53.80');
+final _serverPort = TextEditingController(text: '8181');
+
 class Home extends StatefulWidget {
   @override
   createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  final _serverPort = TextEditingController(text: '4040');
-  final _serverIp = TextEditingController(text: '192.168.34.80');
-
   @override
   build(context) {
     return Scaffold(

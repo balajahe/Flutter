@@ -17,14 +17,19 @@ class _RecorderState extends State<Recorder> {
   HttpServer _listener;
   WebSocket _socket;
   Uint8List _imageBytes;
+  String _msg = '';
 
   @override
   initState() {
     super.initState();
     (() async {
       try {
+        setState(() => _msg = 'Binding...');
         _listener = await HttpServer.bind('127.0.0.1', widget._serverPort);
+        setState(() => _msg = 'Waiting cameras...');
+
         _listener.listen((req) async {
+          setState(() => _msg = req.connectionInfo.remoteAddress.host);
           try {
             _socket = await WebSocketTransformer.upgrade(req);
             _socket.listen((msg) {
@@ -43,7 +48,15 @@ class _RecorderState extends State<Recorder> {
   @override
   build(context) {
     return Scaffold(
-      body: ImageViewer(_imageBytes),
+      body: Stack(
+        children: [
+          ImageViewer(_imageBytes),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(_msg),
+          ),
+        ],
+      ),
     );
   }
 

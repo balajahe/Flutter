@@ -51,10 +51,11 @@ class _CameraState extends State<Camera> {
 
       while (_isConnecting) {
         try {
-          setState(() => _msg = 'Connecting to Recorder...');
-          _socket = await WebSocket.connect(
-              'ws://${widget.serverAddress}:${widget.serverPort}');
-          setState(() => _msg = 'Connected');
+          var s = 'ws://${widget.serverAddress}:${widget.serverPort}';
+          print('Connecting to... $s');
+          setState(() => _msg = 'Connecting to... $s');
+          _socket = await WebSocket.connect(s);
+          setState(() => _msg = 'Connected to $s');
           _isConnecting = false;
         } catch (e) {
           print(e);
