@@ -34,7 +34,7 @@ class _CameraState extends State<Camera> {
     (() async {
       _camera = CameraController(
         (await availableCameras())[0],
-        ResolutionPreset.high,
+        ResolutionPreset.low,
       );
       await _camera.initialize();
 

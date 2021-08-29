@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cctv_mobile/image_tools.dart';
 import 'package:flutter/material.dart';
 import 'ImageViewer.dart';
 import 'main.dart';
@@ -39,14 +40,21 @@ class _RecorderState extends State<Recorder> {
 
   @override
   build(context) {
-    return Column(
-      children: [
-        ImageViewer(_imageBytes),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Text(_msg),
+    final imageInfo = infoFromBytes(_imageBytes);
+    return SizedBox(
+      width: imageInfo.width.toDouble() * 2,
+      height: imageInfo.height.toDouble() * 2,
+      child: FittedBox(
+        child: Column(
+          children: [
+            ImageViewer(_imageBytes),
+            Align(
+              alignment: Alignment.center,
+              child: Text(_msg),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

@@ -42,7 +42,7 @@ class _RecordersState extends State<Recorders> {
         ),
       ),
       body: Center(
-        child: Wrap(children: _recorders),
+        child: Wrap(runSpacing: 30, children: _recorders),
       ),
     );
   }
