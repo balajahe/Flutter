@@ -1,44 +1,35 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'image_tools.dart';
 import 'ImageViewer.dart';
 import 'main.dart';
 
 class Recorder extends StatefulWidget {
-  final int _serverPort;
+  final HttpRequest _request;
 
-  Recorder(this._serverPort);
+  Recorder(this._request);
 
   @override
   createState() => _RecorderState();
 }
 
 class _RecorderState extends State<Recorder> {
-  HttpServer _listener;
   WebSocket _socket;
-  ImageDto _imageDto;
+  Uint8List _imageBytes;
   String _msg = '';
 
   @override
   initState() {
     super.initState();
+    setState(() {
+      final info = widget._request.connectionInfo;
+      _msg = info.remoteAddress.address + ':' + info.remotePort.toString();
+    });
     (() async {
       try {
-        setState(() => _msg = 'Binding...');
-        _listener = await HttpServer.bind(InternetAddress.anyIPv4, widget._serverPort);
-        setState(() => _msg = 'Waiting for cameras...');
-
-        _listener.listen((req) async {
-          setState(
-              () => _msg = req.connectionInfo.remoteAddress.address + ':' + req.connectionInfo.remotePort.toString());
-          try {
-            _socket = await WebSocketTransformer.upgrade(req);
-            _socket.listen((msg) {
-              setState(() => _imageDto = ImageDto.fromBytes(msg));
-            });
-          } catch (e) {
-            showErrorScreen(context, e);
-          }
+        _socket = await WebSocketTransformer.upgrade(widget._request);
+        _socket.listen((msg) {
+          setState(() => _imageBytes = msg);
         });
       } catch (e) {
         showErrorScreen(context, e);
@@ -48,24 +39,20 @@ class _RecorderState extends State<Recorder> {
 
   @override
   build(context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Wrap(
-        children: [
-          ImageViewer(_imageDto),
-          // Align(
-          //   alignment: Alignment.topCenter,
-          //   child: Text(_msg),
-          // ),
-        ],
-      ),
+    return Column(
+      children: [
+        ImageViewer(_imageBytes),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Text(_msg),
+        ),
+      ],
     );
   }
 
   @override
   dispose() {
     _socket?.close();
-    _listener?.close();
     super.dispose();
   }
 }

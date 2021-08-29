@@ -3,29 +3,23 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
 
-class ImageDto {
-  final Uint8List bytes;
-  final int width;
-  final int height;
+class ImageInfo {
+  int width;
+  int height;
 
-  ImageDto(this.bytes, this.width, this.height);
+  ImageInfo(this.width, this.height);
+}
 
-  factory ImageDto.blank() => ImageDto(Uint8List(0), 0, 0);
-
-  factory ImageDto.fromBytes(Uint8List bytes) {
-    if (bytes == null || bytes.length == 0) {
-      return ImageDto.blank();
-    }
+ImageInfo infoFromBytes(Uint8List bytes) {
+  if (bytes.length >= 4) {
     final buf = bytes.buffer.asByteData(bytes.length - 4);
-    return ImageDto(
-      bytes, //хвостовые байты остались, опасно, но пока работает...
-      buf.getInt16(0),
-      buf.getInt16(2),
-    );
+    return ImageInfo(buf.getInt16(0), buf.getInt16(2));
+  } else {
+    return ImageInfo(0, 0);
   }
 }
 
-ImageDto camera2Dto(CameraImage img) {
+Uint8List cameraToBytes(CameraImage img) {
   if (img.format.group == ImageFormatGroup.yuv420) {
     final lumas = img.planes[0].bytes;
 
@@ -45,20 +39,22 @@ ImageDto camera2Dto(CameraImage img) {
           ..[xy + 3] = 0xFF;
       }
     }
-    return ImageDto.fromBytes(bytes);
+    return bytes;
   } else if (img.format.group == ImageFormatGroup.bgra8888) {
-    return null; //img.planes[0].bytes; //доделать - добавить размер в конец массива!
+    //var bytes = img.planes[0].bytes; //добавить размер в конец
+    return Uint8List(0);
   } else {
-    return null;
+    return Uint8List(0);
   }
 }
 
-Future<ui.Image> dto2Image(ImageDto imageDto) async {
+Future<ui.Image> bytesToImage(Uint8List bytes) async {
+  final imageInfo = infoFromBytes(bytes);
   final completer = new Completer<ui.Image>();
   ui.decodeImageFromPixels(
-    imageDto.bytes,
-    imageDto.width,
-    imageDto.height,
+    bytes,
+    imageInfo.width,
+    imageInfo.height,
     ui.PixelFormat.bgra8888,
     (img1) => completer.complete(img1),
   );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Camera.dart';
-import 'Recorder.dart';
+import 'Recorders.dart';
 
-final _serverPort = 8080;
+const _serverPort = 8080;
 
 class BothLocally extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class BothLocally extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: Recorder(_serverPort),
+          child: Recorders(_serverPort),
         ),
         Expanded(
           child: Camera('127.0.0.1', _serverPort),

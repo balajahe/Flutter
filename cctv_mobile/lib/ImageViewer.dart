@@ -1,42 +1,44 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'image_tools.dart';
 
 class ImageViewer extends StatelessWidget {
-  final ImageDto _imageDto;
+  final Uint8List _imageBytes;
 
-  ImageViewer(this._imageDto);
+  ImageViewer(this._imageBytes);
 
   @override
   build(context) {
-    if (_imageDto != null) {
+    if (_imageBytes != null) {
       return FutureBuilder(
-        future: dto2Image(_imageDto),
+        future: bytesToImage(_imageBytes),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            final imageInfo = infoFromBytes(_imageBytes);
             return OrientationBuilder(builder: (context, orientation) {
               return (orientation == Orientation.portrait)
                   ? RotatedBox(
                       quarterTurns: 1,
                       child: SizedBox(
-                        width: _imageDto.width.toDouble(),
-                        height: _imageDto.height.toDouble(),
+                        width: imageInfo.width.toDouble(),
+                        height: imageInfo.height.toDouble(),
                         child: CustomPaint(painter: _ImagePainter(snapshot.data)),
                       ),
                     )
                   : SizedBox(
-                      width: _imageDto.width.toDouble(),
-                      height: _imageDto.height.toDouble(),
+                      width: imageInfo.width.toDouble(),
+                      height: imageInfo.height.toDouble(),
                       child: CustomPaint(painter: _ImagePainter(snapshot.data)),
                     );
             });
           } else {
-            return CircularProgressIndicator();
+            return Container();
           }
         },
       );
     } else {
-      return CircularProgressIndicator();
+      return Container();
     }
   }
 }

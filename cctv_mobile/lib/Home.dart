@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Camera.dart';
-import 'Recorder.dart';
+import 'Recorders.dart';
 import 'BothLocally.dart';
 
 final _serverIp = TextEditingController(text: '192.168.XX.80');
@@ -27,19 +27,7 @@ class _HomeState extends State<Home> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: Text('Recorder IP:'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(controller: _serverIp),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text('Recorder Port:'),
+                    child: Text('Recorder port:'),
                   ),
                   Expanded(
                     flex: 1,
@@ -52,11 +40,22 @@ class _HomeState extends State<Home> {
                 onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => Recorder(
+                        builder: (_) => Recorders(
                               int.parse(_serverPort.text),
                             ))),
               ),
-              Container(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text('Recorder address:'),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: TextField(controller: _serverIp),
+                  ),
+                ],
+              ),
               ElevatedButton(
                 child: Text('Run Camera'),
                 onPressed: () => Navigator.push(
