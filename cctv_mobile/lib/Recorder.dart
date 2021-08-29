@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'ImageViewer.dart';
 import 'main.dart';
 
-class Server extends StatefulWidget {
+class Recorder extends StatefulWidget {
   final int _serverPort;
 
-  Server(this._serverPort);
+  Recorder(this._serverPort);
 
   @override
-  createState() => _ServerState();
+  createState() => _RecorderState();
 }
 
-class _ServerState extends State<Server> {
+class _RecorderState extends State<Recorder> {
   HttpServer _listener;
-  WebSocket _client;
+  WebSocket _socket;
   Uint8List _imageBytes;
 
   @override
@@ -26,8 +26,8 @@ class _ServerState extends State<Server> {
         _listener = await HttpServer.bind('127.0.0.1', widget._serverPort);
         _listener.listen((req) async {
           try {
-            _client = await WebSocketTransformer.upgrade(req);
-            _client.listen((msg) {
+            _socket = await WebSocketTransformer.upgrade(req);
+            _socket.listen((msg) {
               setState(() => _imageBytes = msg);
             });
           } catch (e) {
@@ -49,7 +49,7 @@ class _ServerState extends State<Server> {
 
   @override
   dispose() {
-    _client?.close();
+    _socket?.close();
     _listener?.close();
     super.dispose();
   }

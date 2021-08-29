@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Server.dart';
-import 'Client.dart';
+import 'Camera.dart';
+import 'Recorder.dart';
 import 'BothLocally.dart';
 
 class Home extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: SizedBox(
           width: 300,
-          height: 170,
+          height: 270,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -27,23 +27,11 @@ class _HomeState extends State<Home> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: TextField(
-                      controller: _serverIp,
-                      decoration:
-                          InputDecoration(hintText: 'Server IP-address'),
-                    ),
+                    child: Text('Recorder IP:'),
                   ),
                   Expanded(
-                    child: ElevatedButton(
-                      child: Text('Run Camera'),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => Client(
-                                    _serverIp.text,
-                                    int.parse(_serverPort.text),
-                                  ))),
-                    ),
+                    flex: 1,
+                    child: TextField(controller: _serverIp),
                   ),
                 ],
               ),
@@ -51,24 +39,35 @@ class _HomeState extends State<Home> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: TextField(
-                      controller: _serverPort,
-                      decoration: InputDecoration(hintText: 'Server IP-port'),
-                    ),
+                    child: Text('Recorder Port:'),
                   ),
                   Expanded(
-                    child: ElevatedButton(
-                      child: Text('Run Recorder'),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                                  Server(int.parse(_serverPort.text)))),
-                    ),
+                    flex: 1,
+                    child: TextField(controller: _serverPort),
                   ),
                 ],
               ),
+              Container(height: 10),
               ElevatedButton(
+                child: Text('Run Camera'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Camera(
+                              _serverIp.text,
+                              int.parse(_serverPort.text),
+                            ))),
+              ),
+              ElevatedButton(
+                child: Text('Run Recorder'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Recorder(
+                              int.parse(_serverPort.text),
+                            ))),
+              ),
+              TextButton(
                 child: Text('Run both locally'),
                 onPressed: () => Navigator.push(
                     context, MaterialPageRoute(builder: (_) => BothLocally())),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Client.dart';
-import 'Server.dart';
+import 'Camera.dart';
+import 'Recorder.dart';
 
 final int _port = 8181;
 
@@ -10,10 +10,10 @@ class BothLocally extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: Client('127.0.0.1', _port),
+          child: Camera('127.0.0.1', _port),
         ),
         Expanded(
-          child: Server(_port),
+          child: Recorder(_port),
         ),
       ],
     );

@@ -5,6 +5,7 @@ import 'image_tools.dart';
 
 class ImageViewer extends StatelessWidget {
   final Uint8List _imageBytes;
+
   ImageViewer(this._imageBytes);
 
   @override
