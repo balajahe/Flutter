@@ -6,7 +6,9 @@ import 'main.dart';
 
 class Server extends StatefulWidget {
   final int _serverPort;
+
   Server(this._serverPort);
+
   @override
   createState() => _ServerState();
 }

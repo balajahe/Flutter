@@ -7,7 +7,10 @@ import 'ImageViewer.dart';
 
 class Client extends StatefulWidget {
   final String serverAddress;
-  Client(this.serverAddress);
+  final int serverPort;
+
+  Client(this.serverAddress, this.serverPort);
+
   @override
   createState() => _ClientState();
 }
@@ -37,7 +40,7 @@ class _ClientState extends State<Client> {
           _imageBytes = camera2Bytes(img);
           try {
             setState(() {});
-            _server.add(_imageBytes);
+            _server?.add(_imageBytes);
           } catch (e) {
             setState(() => _msg = e.toString());
           }
@@ -47,14 +50,15 @@ class _ClientState extends State<Client> {
 
       while (true) {
         try {
-          _server = await WebSocket.connect('ws://${widget.serverAddress}');
+          setState(() => _msg = 'Connecting...');
+          _server = await WebSocket.connect(
+              'ws://${widget.serverAddress}:${widget.serverPort}');
           setState(() => _msg = '');
           break;
         } catch (e) {
+          print(e);
           setState(() => _msg = e.toString());
-          await Future.delayed(Duration(milliseconds: 500));
-          setState(() => _msg = 'Connecting...');
-          await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(Duration(milliseconds: 3000));
         }
       }
     })();

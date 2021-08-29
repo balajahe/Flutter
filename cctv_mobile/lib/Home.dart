@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
 import 'Client.dart';
-import 'Both.dart';
+import 'BothLocally.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -40,7 +40,9 @@ class _HomeState extends State<Home> {
                           context,
                           MaterialPageRoute(
                               builder: (_) => Client(
-                                  _serverIp.text + ':' + _serverPort.text))),
+                                    _serverIp.text,
+                                    int.parse(_serverPort.text),
+                                  ))),
                     ),
                   ),
                 ],
@@ -69,10 +71,7 @@ class _HomeState extends State<Home> {
               ElevatedButton(
                 child: Text('Run both locally'),
                 onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) =>
-                            Both(_serverIp.text, int.parse(_serverPort.text)))),
+                    context, MaterialPageRoute(builder: (_) => BothLocally())),
               ),
             ],
           ),
