@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'image_tools.dart';
 import 'ImageViewer.dart';
+
+const _dropFrames = 10;
 
 class Camera extends StatefulWidget {
   final String serverAddress;
@@ -18,9 +19,10 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   CameraController _camera;
   WebSocket _socket;
-  Uint8List _imageBytes;
+  ImageDto _imageDto;
   bool _isConnecting = true;
   bool _isProcessing = false;
+  int _droppedFrames = 0;
   String _msg = '';
 
   @override
@@ -38,12 +40,16 @@ class _CameraState extends State<Camera> {
       _camera.startImageStream((img) async {
         if (!_isProcessing) {
           _isProcessing = true;
-          _imageBytes = camera2Bytes(img);
+          _imageDto = camera2Dto(img);
           try {
-            setState(() {});
-            _socket?.add(_imageBytes);
+            _socket?.add(_imageDto.bytes);
           } catch (e) {
             setState(() => _msg = e.toString());
+          }
+          _droppedFrames++;
+          if (_droppedFrames == _dropFrames) {
+            setState(() {});
+            _droppedFrames = 0;
           }
           _isProcessing = false;
         }
@@ -73,7 +79,7 @@ class _CameraState extends State<Camera> {
     return Scaffold(
       body: Stack(
         children: [
-          ImageViewer(_imageBytes),
+          ImageViewer(_imageDto),
           Align(
             alignment: Alignment.bottomCenter,
             child: Text(_msg),

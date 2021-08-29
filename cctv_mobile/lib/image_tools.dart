@@ -10,21 +10,23 @@ class ImageDto {
 
   ImageDto(this.bytes, this.width, this.height);
 
+  factory ImageDto.blank() => ImageDto(Uint8List(0), 0, 0);
+
   factory ImageDto.fromBytes(Uint8List bytes) {
+    if (bytes == null || bytes.length == 0) {
+      return ImageDto.blank();
+    }
     final buf = bytes.buffer.asByteData(bytes.length - 4);
     return ImageDto(
-      bytes, //.buffer.asUint8List(0, bytes.length - 4), - опасно, но работает)
+      bytes, //хвостовые байты остались, опасно, но пока работает...
       buf.getInt16(0),
       buf.getInt16(2),
     );
   }
 }
 
-Uint8List camera2Bytes(CameraImage img) {
-  if (img.format.group == ImageFormatGroup.bgra8888) {
-    //исправить - размер нужно добавить в конец массива!
-    return img.planes[0].bytes;
-  } else if (img.format.group == ImageFormatGroup.yuv420) {
+ImageDto camera2Dto(CameraImage img) {
+  if (img.format.group == ImageFormatGroup.yuv420) {
     final lumas = img.planes[0].bytes;
 
     final bytes = Uint8List(img.width * img.height * 4 + 4);
@@ -43,14 +45,15 @@ Uint8List camera2Bytes(CameraImage img) {
           ..[xy + 3] = 0xFF;
       }
     }
-    return bytes;
+    return ImageDto.fromBytes(bytes);
+  } else if (img.format.group == ImageFormatGroup.bgra8888) {
+    return null; //img.planes[0].bytes; //доделать - добавить размер в конец массива!
   } else {
     return null;
   }
 }
 
-Future<ui.Image> bytes2Image(Uint8List imageBytes) async {
-  final imageDto = ImageDto.fromBytes(imageBytes);
+Future<ui.Image> dto2Image(ImageDto imageDto) async {
   final completer = new Completer<ui.Image>();
   ui.decodeImageFromPixels(
     imageDto.bytes,

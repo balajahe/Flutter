@@ -3,8 +3,8 @@ import 'Camera.dart';
 import 'Recorder.dart';
 import 'BothLocally.dart';
 
-final _serverIp = TextEditingController(text: '192.168.53.80');
-final _serverPort = TextEditingController(text: '8181');
+final _serverIp = TextEditingController(text: '192.168.XX.80');
+final _serverPort = TextEditingController(text: '8080');
 
 class Home extends StatefulWidget {
   @override
@@ -47,6 +47,15 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
+              ElevatedButton(
+                child: Text('Run Recorder'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Recorder(
+                              int.parse(_serverPort.text),
+                            ))),
+              ),
               Container(height: 10),
               ElevatedButton(
                 child: Text('Run Camera'),
@@ -58,19 +67,9 @@ class _HomeState extends State<Home> {
                               int.parse(_serverPort.text),
                             ))),
               ),
-              ElevatedButton(
-                child: Text('Run Recorder'),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => Recorder(
-                              int.parse(_serverPort.text),
-                            ))),
-              ),
               TextButton(
                 child: Text('Run both locally'),
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => BothLocally())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BothLocally())),
               ),
             ],
           ),
