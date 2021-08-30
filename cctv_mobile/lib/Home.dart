@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
             child: Container(
               width: 380,
               height: 380,
+              padding: EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
                   Row(
                     children: [
                       Expanded(child: Text('Recorder port:')),
-                      Expanded(child: TextField(controller: _serverPort)),
+                      Expanded(flex: 1, child: TextField(controller: _serverPort)),
                     ],
                   ),
                   ElevatedButton(
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
                   Row(
                     children: [
                       Expanded(child: Text('Recorder IP:')),
-                      Expanded(flex: 2, child: TextField(controller: _serverIp)),
+                      Expanded(flex: 1, child: TextField(controller: _serverIp)),
                     ],
                   ),
                   Row(
