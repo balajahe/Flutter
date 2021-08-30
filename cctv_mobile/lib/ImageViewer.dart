@@ -22,16 +22,16 @@ class ImageViewer extends StatelessWidget {
                       child: CustomPaint(
                         painter: _ImagePainter(uiImage),
                         size: Size(
-                          uiImage.width,
-                          uiImage.height,
+                          uiImage.width.toDouble(),
+                          uiImage.height.toDouble(),
                         ),
                       ),
                     )
                   : CustomPaint(
                       painter: _ImagePainter(snapshot.data),
                       size: Size(
-                        uiImage.width,
-                        uiImage.height,
+                        uiImage.width.toDouble(),
+                        uiImage.height.toDouble(),
                       ),
                       // ),
                     );
@@ -53,7 +53,7 @@ class _ImagePainter extends CustomPainter {
   _ImagePainter(this.img);
 
   @override
-  paint(canvas, size) => canvas.drawImage(img, new Offset(0 * -img.width / 2, 0 * -img.height / 2), Paint());
+  paint(canvas, size) => canvas.drawImage(img, new Offset(0, 0), Paint());
 
   @override
   shouldRepaint(oldDelegate) => true;
