@@ -83,7 +83,7 @@ class _CameraState extends State<Camera> {
           // ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Text(_msg),
+            child: Text(_msg, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
