@@ -4,7 +4,7 @@ import 'Recorders.dart';
 
 final _serverPort = 8080;
 final _cameraResolution = 0;
-final _dropFrames = 10;
+final _dropFrames = 8;
 
 class BothLocally extends StatelessWidget {
   @override

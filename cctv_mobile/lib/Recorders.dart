@@ -45,7 +45,10 @@ class _RecordersState extends State<Recorders> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Wrap(runSpacing: 30, children: _recorders),
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Wrap(spacing: 20, runSpacing: 20, children: _recorders),
+          ),
         ),
       ),
     );

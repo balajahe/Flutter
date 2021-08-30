@@ -44,20 +44,16 @@ class _RecorderState extends State<Recorder> {
   @override
   build(context) {
     return Container(
-      width: 640,
+      width: 480,
       height: 640,
-      child: Stack(
-        children: [
-          Center(
-            child: FittedBox(
-              child: ImageViewer(_imageData),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(_msg, style: TextStyle(color: Colors.red, fontSize: 20)),
-          ),
-        ],
+      child: FittedBox(
+        //fit: BoxFit.fill,
+        child: Stack(
+          children: [
+            ImageViewer(_imageData),
+            Text(_msg, style: TextStyle(color: Colors.red, fontSize: 15)),
+          ],
+        ),
       ),
     );
   }
