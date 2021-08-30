@@ -5,8 +5,8 @@ import 'package:camera/camera.dart';
 
 class ImageData {
   final Uint8List bytes;
-  int width;
-  int height;
+  final int width;
+  final int height;
 
   ImageData(this.bytes, this.width, this.height);
 
