@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Camera.dart';
 import 'Recorders.dart';
 
-const _serverPort = 8080;
+final _serverPort = 8080;
 
 class BothLocally extends StatelessWidget {
   @override

@@ -5,7 +5,8 @@ import 'package:camera/camera.dart';
 import 'image_tools.dart';
 import 'ImageViewer.dart';
 
-const _dropFrames = 10;
+final _resolution = ResolutionPreset.values[2];
+final _dropFrames = 5;
 
 class Camera extends StatefulWidget {
   final String serverAddress;
@@ -21,8 +22,7 @@ class _CameraState extends State<Camera> {
   CameraController _camera;
   WebSocket _socket;
   Uint8List _imageBytes;
-  bool _isConnecting = true;
-  bool _isProcessing = false;
+  bool _isConnected = false;
   int _droppedFrames = 0;
   String _msg = '';
 
@@ -34,41 +34,39 @@ class _CameraState extends State<Camera> {
     (() async {
       _camera = CameraController(
         (await availableCameras())[0],
-        ResolutionPreset.low,
+        _resolution,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.yuv420, // только для Андроид!
       );
       await _camera.initialize();
 
-      _camera.startImageStream((img) async {
-        if (!_isProcessing) {
-          _isProcessing = true;
+      _camera.startImageStream((img) {
+        _droppedFrames++;
+        if (_droppedFrames == _dropFrames) {
+          _droppedFrames = 0;
           _imageBytes = cameraToBytes(img);
           try {
             _socket?.add(_imageBytes);
           } catch (e) {
             setState(() => _msg = e.toString());
           }
-          _droppedFrames++;
-          if (_droppedFrames == _dropFrames) {
-            setState(() {});
-            _droppedFrames = 0;
-          }
-          _isProcessing = false;
+          setState(() {});
         }
       });
 
-      while (_isConnecting) {
+      while (!_isConnected) {
         try {
           var s = 'ws://${widget.serverAddress}:${widget.serverPort}';
           print('Connecting to... $s');
           setState(() => _msg = 'Connecting to... $s');
           _socket = await WebSocket.connect(s);
           setState(() => _msg = 'Connected to $s');
-          _isConnecting = false;
+          _isConnected = true;
         } catch (e) {
           print(e);
           try {
             setState(() => _msg = e.toString());
-            await Future.delayed(Duration(milliseconds: 10000));
+            await Future.delayed(Duration(milliseconds: 7000));
           } catch (_) {}
         }
       }
@@ -94,7 +92,7 @@ class _CameraState extends State<Camera> {
 
   @override
   dispose() {
-    _isConnecting = false;
+    _isConnected = true;
     _socket?.close();
     _camera?.stopImageStream();
     _camera?.dispose();

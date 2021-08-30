@@ -3,7 +3,7 @@ import 'Camera.dart';
 import 'Recorders.dart';
 import 'BothLocally.dart';
 
-final _serverIp = TextEditingController(text: '192.168.XX.80');
+final _serverIp = TextEditingController(text: '192.168.30.80');
 final _serverPort = TextEditingController(text: '8080');
 
 class Home extends StatefulWidget {

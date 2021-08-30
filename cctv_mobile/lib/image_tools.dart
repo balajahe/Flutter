@@ -11,7 +11,7 @@ class ImageInfo {
 }
 
 ImageInfo infoFromBytes(Uint8List bytes) {
-  if (bytes.length >= 4) {
+  if (bytes != null && bytes.length >= 4) {
     final buf = bytes.buffer.asByteData(bytes.length - 4);
     return ImageInfo(buf.getInt16(0), buf.getInt16(2));
   } else {

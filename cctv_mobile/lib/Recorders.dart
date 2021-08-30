@@ -15,17 +15,15 @@ class Recorders extends StatefulWidget {
 class _RecordersState extends State<Recorders> {
   HttpServer _listener;
   List<Recorder> _recorders = [];
-  String _msg = '';
 
   @override
   initState() {
     super.initState();
     (() async {
       try {
-        setState(() => _msg = 'Binding...');
         _listener = await HttpServer.bind(InternetAddress.anyIPv4, widget._serverPort);
         _listener.listen((req) async {
-          setState(() => _recorders.add(Recorder(req)));
+          setState(() => _recorders.add(Recorder(req, onDisconnect)));
         });
       } catch (e) {
         showErrorScreen(context, e);
@@ -33,12 +31,16 @@ class _RecordersState extends State<Recorders> {
     })();
   }
 
+  void onDisconnect(Recorder rec) {
+    setState(() => _recorders.remove(rec));
+  }
+
   @override
   build(context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _recorders.length == 0 ? 'Waiting for cameras...' : 'Connected ${_recorders.length} cams',
+          _recorders.length == 0 ? 'Waiting for cameras...' : 'Connected ${_recorders.length} cameras',
         ),
       ),
       body: Center(
@@ -49,7 +51,7 @@ class _RecordersState extends State<Recorders> {
 
   @override
   dispose() {
-    _recorders.clear();
+    //_recorders.clear();
     _listener?.close();
     super.dispose();
   }
