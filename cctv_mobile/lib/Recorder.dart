@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'ImageViewer.dart';
-import 'image_tools.dart';
+import 'ImageData.dart';
 
 class Recorder extends StatefulWidget {
   final HttpRequest _request;
@@ -16,7 +16,7 @@ class Recorder extends StatefulWidget {
 
 class _RecorderState extends State<Recorder> {
   WebSocket _socket;
-  Uint8List _imageBytes;
+  ImageData _imageData;
   String _msg = '';
 
   @override
@@ -30,8 +30,8 @@ class _RecorderState extends State<Recorder> {
       try {
         _socket = await WebSocketTransformer.upgrade(widget._request);
         _socket.listen(
-          (msg) {
-            setState(() => _imageBytes = msg);
+          (bytes) {
+            setState(() => _imageData = ImageData.fromBytes(bytes));
           },
           onError: (e) => setState(() => _msg = e.toString()),
           //onDone: () => widget._onDisconnect(widget),
@@ -44,15 +44,14 @@ class _RecorderState extends State<Recorder> {
 
   @override
   build(context) {
-    //final imageInfo = infoFromBytes(_imageBytes);
-    return SizedBox(
+    return Container(
       width: 640,
       height: 640,
       child: Stack(
         children: [
           Center(
             child: FittedBox(
-              child: ImageViewer(_imageBytes),
+              child: ImageViewer(_imageData),
             ),
           ),
           Align(

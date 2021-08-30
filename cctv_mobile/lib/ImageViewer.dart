@@ -1,35 +1,39 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'image_tools.dart';
+import 'ImageData.dart';
 
 class ImageViewer extends StatelessWidget {
-  final Uint8List _imageBytes;
+  final ImageData _imageData;
 
-  ImageViewer(this._imageBytes);
+  ImageViewer(this._imageData);
 
   @override
   build(context) {
-    if (_imageBytes != null) {
+    if (_imageData != null) {
       return FutureBuilder(
-        future: bytesToImage(_imageBytes),
+        future: _imageData.toUiImage(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final imageInfo = infoFromBytes(_imageBytes);
+            final uiImage = snapshot.data;
             return OrientationBuilder(builder: (context, orientation) {
               return (orientation == Orientation.portrait)
                   ? RotatedBox(
                       quarterTurns: 1,
-                      child: SizedBox(
-                        width: imageInfo.width.toDouble(),
-                        height: imageInfo.height.toDouble(),
-                        child: CustomPaint(painter: _ImagePainter(snapshot.data)),
+                      child: CustomPaint(
+                        painter: _ImagePainter(uiImage),
+                        size: Size(
+                          uiImage.width,
+                          uiImage.height,
+                        ),
                       ),
                     )
-                  : SizedBox(
-                      width: imageInfo.width.toDouble(),
-                      height: imageInfo.height.toDouble(),
-                      child: CustomPaint(painter: _ImagePainter(snapshot.data)),
+                  : CustomPaint(
+                      painter: _ImagePainter(snapshot.data),
+                      size: Size(
+                        uiImage.width,
+                        uiImage.height,
+                      ),
+                      // ),
                     );
             });
           } else {

@@ -1,18 +1,16 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'image_tools.dart';
+import 'ImageData.dart';
 import 'ImageViewer.dart';
 
-final _resolution = ResolutionPreset.values[2];
-
 class Camera extends StatefulWidget {
-  final String serverAddress;
-  final int serverPort;
+  final String _serverAddress;
+  final int _serverPort;
+  final int _cameraResolution;
   final int _dropFrames;
 
-  Camera(this.serverAddress, this.serverPort, this._dropFrames);
+  Camera(this._serverAddress, this._serverPort, this._cameraResolution, this._dropFrames);
 
   @override
   createState() => _CameraState();
@@ -21,7 +19,7 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   CameraController _camera;
   WebSocket _socket;
-  Uint8List _imageBytes;
+  ImageData _imageData;
   bool _isConnected = false;
   int _droppedFrames = 0;
   String _msg = '';
@@ -34,7 +32,7 @@ class _CameraState extends State<Camera> {
     (() async {
       _camera = CameraController(
         (await availableCameras())[0],
-        _resolution,
+        ResolutionPreset.values[widget._cameraResolution],
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.yuv420, // только для Андроид!
       );
@@ -42,11 +40,11 @@ class _CameraState extends State<Camera> {
 
       _camera.startImageStream((img) {
         _droppedFrames++;
-        if (_droppedFrames == widget._dropFrames) {
+        if (_droppedFrames > widget._dropFrames) {
           _droppedFrames = 0;
-          _imageBytes = cameraToBytes(img);
+          _imageData = ImageData.fromCamera(img);
           try {
-            _socket?.add(_imageBytes);
+            _socket?.add(_imageData.bytes);
           } catch (e) {
             setState(() => _msg = e.toString());
           }
@@ -56,7 +54,7 @@ class _CameraState extends State<Camera> {
 
       while (!_isConnected) {
         try {
-          var s = 'ws://${widget.serverAddress}:${widget.serverPort}';
+          var s = 'ws://${widget._serverAddress}:${widget._serverPort}';
           print('Connecting to... $s');
           setState(() => _msg = 'Connecting to... $s');
           _socket = await WebSocket.connect(s);
@@ -79,8 +77,10 @@ class _CameraState extends State<Camera> {
       body: Stack(
         children: [
           Center(
-            child: ImageViewer(_imageBytes),
+            // child: FittedBox(
+            child: ImageViewer(_imageData),
           ),
+          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Text(_msg),

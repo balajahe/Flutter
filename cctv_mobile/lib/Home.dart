@@ -5,7 +5,8 @@ import 'BothLocally.dart';
 
 final _serverPort = TextEditingController(text: '8080');
 final _serverIp = TextEditingController(text: '192.168.30.80');
-final _dropFrames = TextEditingController(text: '5');
+final _cameraResolution = TextEditingController(text: '2');
+final _dropFrames = TextEditingController(text: '7');
 
 class Home extends StatefulWidget {
   @override
@@ -19,21 +20,15 @@ class _HomeState extends State<Home> {
       body: Center(
         child: SizedBox(
           width: 300,
-          height: 320,
+          height: 350,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text('Recorder port:'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(controller: _serverPort),
-                  ),
+                  Expanded(child: Text('Recorder port:')),
+                  Expanded(child: TextField(controller: _serverPort)),
                 ],
               ),
               ElevatedButton(
@@ -48,26 +43,20 @@ class _HomeState extends State<Home> {
               Expanded(child: Container()),
               Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text('Recorder address:'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(controller: _serverIp),
-                  ),
+                  Expanded(child: Text('Recorder address:')),
+                  Expanded(child: TextField(controller: _serverIp)),
                 ],
               ),
               Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text('Drop frames:'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextField(controller: _dropFrames),
-                  ),
+                  Expanded(child: Text('Camera resolution:')),
+                  Expanded(child: TextField(controller: _cameraResolution)),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(child: Text('Drop frames:')),
+                  Expanded(child: TextField(controller: _dropFrames)),
                 ],
               ),
               ElevatedButton(
@@ -78,6 +67,7 @@ class _HomeState extends State<Home> {
                         builder: (_) => Camera(
                               _serverIp.text,
                               int.parse(_serverPort.text),
+                              int.parse(_cameraResolution.text),
                               int.parse(_dropFrames.text),
                             ))),
               ),
