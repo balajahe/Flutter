@@ -3,8 +3,9 @@ import 'Camera.dart';
 import 'Recorders.dart';
 import 'BothLocally.dart';
 
-final _serverIp = TextEditingController(text: '192.168.30.80');
 final _serverPort = TextEditingController(text: '8080');
+final _serverIp = TextEditingController(text: '192.168.30.80');
+final _dropFrames = TextEditingController(text: '5');
 
 class Home extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: SizedBox(
           width: 300,
-          height: 270,
+          height: 320,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,6 +45,7 @@ class _HomeState extends State<Home> {
                               int.parse(_serverPort.text),
                             ))),
               ),
+              Expanded(child: Container()),
               Row(
                 children: [
                   Expanded(
@@ -56,6 +58,18 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text('Drop frames:'),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: TextField(controller: _dropFrames),
+                  ),
+                ],
+              ),
               ElevatedButton(
                 child: Text('Run Camera'),
                 onPressed: () => Navigator.push(
@@ -64,8 +78,10 @@ class _HomeState extends State<Home> {
                         builder: (_) => Camera(
                               _serverIp.text,
                               int.parse(_serverPort.text),
+                              int.parse(_dropFrames.text),
                             ))),
               ),
+              Expanded(child: Container()),
               TextButton(
                 child: Text('Run both locally'),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BothLocally())),

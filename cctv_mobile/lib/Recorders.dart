@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'common_widgets.dart';
 import 'Recorder.dart';
-import 'main.dart';
 
 class Recorders extends StatefulWidget {
   final int _serverPort;
@@ -44,7 +44,9 @@ class _RecordersState extends State<Recorders> {
         ),
       ),
       body: Center(
-        child: Wrap(runSpacing: 30, children: _recorders),
+        child: SingleChildScrollView(
+          child: Wrap(runSpacing: 30, children: _recorders),
+        ),
       ),
     );
   }

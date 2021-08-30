@@ -6,13 +6,13 @@ import 'image_tools.dart';
 import 'ImageViewer.dart';
 
 final _resolution = ResolutionPreset.values[2];
-final _dropFrames = 5;
 
 class Camera extends StatefulWidget {
   final String serverAddress;
   final int serverPort;
+  final int _dropFrames;
 
-  Camera(this.serverAddress, this.serverPort);
+  Camera(this.serverAddress, this.serverPort, this._dropFrames);
 
   @override
   createState() => _CameraState();
@@ -42,7 +42,7 @@ class _CameraState extends State<Camera> {
 
       _camera.startImageStream((img) {
         _droppedFrames++;
-        if (_droppedFrames == _dropFrames) {
+        if (_droppedFrames == widget._dropFrames) {
           _droppedFrames = 0;
           _imageBytes = cameraToBytes(img);
           try {

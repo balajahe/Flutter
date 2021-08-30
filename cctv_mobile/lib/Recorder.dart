@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cctv_mobile/image_tools.dart';
 import 'package:flutter/material.dart';
 import 'ImageViewer.dart';
+import 'image_tools.dart';
 
 class Recorder extends StatefulWidget {
   final HttpRequest _request;
@@ -34,7 +34,7 @@ class _RecorderState extends State<Recorder> {
             setState(() => _imageBytes = msg);
           },
           onError: (e) => setState(() => _msg = e.toString()),
-          onDone: () => widget._onDisconnect(widget),
+          //onDone: () => widget._onDisconnect(widget),
         );
       } catch (e) {
         setState(() => _msg = e.toString());
@@ -48,16 +48,18 @@ class _RecorderState extends State<Recorder> {
     return SizedBox(
       width: 640,
       height: 640,
-      child: FittedBox(
-        child: Column(
-          children: [
-            ImageViewer(_imageBytes),
-            Align(
-              alignment: Alignment.center,
-              child: Text(_msg),
+      child: Stack(
+        children: [
+          Center(
+            child: FittedBox(
+              child: ImageViewer(_imageBytes),
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(_msg, style: TextStyle(color: Colors.red, fontSize: 20)),
+          ),
+        ],
       ),
     );
   }
