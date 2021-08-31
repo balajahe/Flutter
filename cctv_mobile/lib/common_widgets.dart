@@ -5,7 +5,7 @@ class ErrorScreen extends StatelessWidget {
   ErrorScreen(this.error);
   @override
   build(context) => Scaffold(
-        appBar: AppBar(title: Text('ERROR')),
+        // appBar: AppBar(title: Text('ERROR')),
         body: Padding(
           padding: EdgeInsets.all(10),
           child: SingleChildScrollView(
@@ -18,5 +18,9 @@ class ErrorScreen extends StatelessWidget {
       );
 }
 
-showErrorScreen(BuildContext context, dynamic e) =>
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ErrorScreen(e)));
+showErrorScreen(BuildContext context, dynamic e) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => ErrorScreen(e),
+      fullscreenDialog: true,
+    ));

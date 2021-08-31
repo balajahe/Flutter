@@ -23,7 +23,7 @@ class _RecordersState extends State<Recorders> {
       try {
         _listener = await HttpServer.bind(InternetAddress.anyIPv4, widget._serverPort);
         _listener.listen((req) async {
-          setState(() => _recorders.add(Recorder(req, onDisconnect)));
+          setState(() => _recorders.insert(0, Recorder(req, onDisconnect)));
         });
       } catch (e) {
         showErrorScreen(context, e);
@@ -43,11 +43,15 @@ class _RecordersState extends State<Recorders> {
           _recorders.length == 0 ? 'Waiting for cameras...' : 'Connected ${_recorders.length} cameras',
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Center(
           child: Padding(
             padding: EdgeInsets.all(20),
-            child: Wrap(spacing: 20, runSpacing: 20, children: _recorders),
+            child: Wrap(
+              spacing: 20,
+              runSpacing: 20,
+              children: _recorders,
+            ),
           ),
         ),
       ),
