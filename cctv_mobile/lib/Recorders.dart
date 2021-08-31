@@ -43,18 +43,24 @@ class _RecordersState extends State<Recorders> {
           _recorders.length == 0 ? 'Waiting for cameras...' : 'Connected ${_recorders.length} cameras',
         ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Wrap(
-              spacing: 20,
-              runSpacing: 20,
-              children: _recorders,
+      body: _recorders.length != 1
+          ? SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    children: _recorders,
+                  ),
+                ),
+              ),
+            )
+          : Center(
+              child: FittedBox(
+                child: _recorders[0],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
