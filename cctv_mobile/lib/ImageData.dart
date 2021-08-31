@@ -15,7 +15,7 @@ class ImageData {
   }
 
   factory ImageData.fromBytes(Uint8List bytes) {
-    if (bytes != null && bytes.length >= 4) {
+    if (bytes != null && bytes.length > 4) {
       final buf = bytes.buffer.asByteData(bytes.length - 4);
       return ImageData(bytes, buf.getInt16(0), buf.getInt16(2));
     } else {

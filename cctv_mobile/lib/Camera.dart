@@ -78,7 +78,7 @@ class _CameraState extends State<Camera> {
         children: [
           Center(
             // child: FittedBox(
-            child: ImageViewer(_imageData),
+            child: (_camera != null) ? CameraPreview(_camera) : Container(), //ImageViewer(_imageData),
           ),
           // ),
           Align(

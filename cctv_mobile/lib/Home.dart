@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
                   Row(
                     children: [
                       Expanded(child: Text('Recorder port:')),
-                      Expanded(flex: 1, child: TextField(controller: _serverPort)),
+                      Expanded(flex: 2, child: TextField(controller: _serverPort)),
                     ],
                   ),
                   ElevatedButton(
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
                   Row(
                     children: [
                       Expanded(child: Text('Recorder IP:')),
-                      Expanded(flex: 1, child: TextField(controller: _serverIp)),
+                      Expanded(flex: 2, child: TextField(controller: _serverIp)),
                     ],
                   ),
                   Row(
