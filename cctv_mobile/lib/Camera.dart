@@ -44,7 +44,7 @@ class _CameraState extends State<Camera> {
           _droppedFrames = 0;
           _imageData = ImageData.fromCamera(img);
           try {
-            _socket?.add(_imageData.bytes);
+            _socket?.add(_imageData.dto);
           } catch (e) {
             setState(() => _msg = e.toString());
           }
@@ -77,14 +77,12 @@ class _CameraState extends State<Camera> {
       body: Stack(
         children: [
           Center(
-            child: FittedBox(
-              // child: (_camera != null) ? CameraPreview(_camera) : Container(),
-              child: (_camera != null) ? ImageViewer(_imageData) : Container(),
-            ),
+            child: (_camera != null) ? CameraPreview(_camera) : Container(),
+            // child: (_camera != null) ? FittedBox(child: ImageViewer(_imageData)) : Container(),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Text(_msg, style: TextStyle(color: Colors.red)),
+            child: Text(_msg),
           ),
         ],
       ),

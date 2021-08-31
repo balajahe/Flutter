@@ -11,8 +11,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _serverPort = TextEditingController(text: '8080');
   final _serverIp = TextEditingController(text: '192.168.30.80');
-  double _cameraResolution = 2;
-  double _dropFrames = 8;
+  int _cameraResolution = 2;
+  int _dropFrames = 8;
 
   @override
   build(context) {
@@ -57,12 +57,12 @@ class _HomeState extends State<Home> {
                       Expanded(
                         flex: 2,
                         child: Slider(
-                          value: _cameraResolution,
+                          value: _cameraResolution.toDouble(),
                           min: 0,
                           max: 5,
                           divisions: 5,
                           label: _cameraResolution.round().toString(),
-                          onChanged: (v) => setState(() => _cameraResolution = v),
+                          onChanged: (v) => setState(() => _cameraResolution = v.toInt()),
                         ),
                       ),
                     ],
@@ -73,12 +73,12 @@ class _HomeState extends State<Home> {
                       Expanded(
                         flex: 2,
                         child: Slider(
-                          value: _dropFrames,
+                          value: _dropFrames.toDouble(),
                           min: 0,
                           max: 20,
                           divisions: 10,
                           label: _dropFrames.round().toString(),
-                          onChanged: (v) => setState(() => _dropFrames = v),
+                          onChanged: (v) => setState(() => _dropFrames = v.toInt()),
                         ),
                       ),
                     ],
@@ -91,8 +91,8 @@ class _HomeState extends State<Home> {
                           builder: (_) => Camera(
                             _serverIp.text,
                             int.parse(_serverPort.text),
-                            _cameraResolution.toInt(),
-                            _dropFrames.toInt(),
+                            _cameraResolution,
+                            _dropFrames,
                           ),
                         )),
                   ),
@@ -102,7 +102,11 @@ class _HomeState extends State<Home> {
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => BothLocally(),
+                          builder: (_) => BothLocally(
+                            int.parse(_serverPort.text),
+                            _cameraResolution,
+                            _dropFrames,
+                          ),
                         )),
                   ),
                 ],

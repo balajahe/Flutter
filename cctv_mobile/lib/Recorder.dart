@@ -32,7 +32,7 @@ class _RecorderState extends State<Recorder> {
         _socket.listen(
           (bytes) {
             setState(() {
-              _imageData = ImageData.fromBytes(bytes);
+              _imageData = ImageData.fromDto(bytes);
               _msg = _title + ' / ' + DateTime.now().toIso8601String().substring(0, 19);
             });
           },
