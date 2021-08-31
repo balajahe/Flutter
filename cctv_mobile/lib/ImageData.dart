@@ -24,6 +24,7 @@ class ImageData {
   }
 
   factory ImageData.fromCamera(CameraImage img) {
+    //print('VIDEO FORMAT - ' + img.format.group.toString());
     if (img.format.group == ImageFormatGroup.yuv420) {
       final lumas = img.planes[0].bytes;
 
