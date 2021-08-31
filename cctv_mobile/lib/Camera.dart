@@ -77,10 +77,8 @@ class _CameraState extends State<Camera> {
       body: Stack(
         children: [
           Center(
-            // child: FittedBox(
             child: (_camera != null) ? CameraPreview(_camera) : Container(), //ImageViewer(_imageData),
           ),
-          // ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Text(_msg, style: TextStyle(color: Colors.red)),
