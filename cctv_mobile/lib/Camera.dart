@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'Detector.dart';
 import 'ImageData.dart';
-import 'ImageViewer.dart';
 
 class Camera extends StatefulWidget {
   final String _serverAddress;
@@ -18,6 +18,7 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   CameraController _camera;
+  Detector _detector;
   WebSocket _socket;
   ImageData _imageData;
   bool _isConnected = false;
@@ -38,10 +39,18 @@ class _CameraState extends State<Camera> {
       );
       await _camera.initialize();
 
-      _camera.startImageStream((img) {
+      _detector = Detector();
+
+      _camera.startImageStream((img) async {
         _droppedFrames++;
         if (_droppedFrames > widget._dropFrames) {
           _droppedFrames = 0;
+
+          print('==============================================================');
+          print(img.format.group.toString());
+          print(img.format.raw.toString());
+          await _detector.detect(img);
+
           _imageData = ImageData.fromCamera(img);
           try {
             _socket?.add(_imageData.dto);
