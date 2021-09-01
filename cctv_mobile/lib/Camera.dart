@@ -101,8 +101,9 @@ class _CameraState extends State<Camera> {
   @override
   dispose() {
     _isConnected = true;
-    _socket?.close();
     _camera?.stopImageStream();
+    _detector.close();
+    _socket?.close();
     _camera?.dispose();
     super.dispose();
   }

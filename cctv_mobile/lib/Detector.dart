@@ -5,7 +5,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:camera/camera.dart';
 
 class Detector {
-  final objectDetector =
+  final _detector =
       GoogleMlKit.vision.objectDetector(ObjectDetectorOptions(classifyObjects: true, trackMutipleObjects: false));
 
   Future<void> detect(CameraImage img) async {
@@ -23,10 +23,12 @@ class Detector {
           planeData: null,
           imageRotation: InputImageRotation.Rotation_0deg,
         ));
-    final output = await objectDetector.processImage(input);
+    final output = await _detector.processImage(input);
 
     output.forEach((obj) {
       print(obj.getLabels().map((l) => l.getText()).join('\n'));
     });
   }
+
+  void close() => _detector.close();
 }
